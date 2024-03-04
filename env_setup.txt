@@ -1,0 +1,32 @@
+Electron Environment Setup
+
+(First time setup)
+1. npm init, set main = 'main.js';
+2. npm install --save-dev electron;
+
+(Coding & debugging)
+3. Setup all files needed;
+4. npm start; (running code as an app)
+
+(Packaging - first time setup)
+1. npm install --save-dev @electron-forge/cli
+2. npx electron-forge import
+3. npm i -D @electron-forge/plugin-fuses @electron/fuses
+
+(Packaging)
+4. npm run make
+
+To add more target archs - in package.json:
+
+  "scripts": {
+    "package": "electron-forge package --arch=arm64,x64",
+    "make": "electron-forge make --arch=arm64,x64"
+  },
+
+Project Terminal Path:
+cd /Library/WebServer/Documents/motf_app
+
+To build for Windows:
+"package": "electron-forge package --platform=darwin,win32 --arch=arm64,x64",
+"make": "electron-forge make --platform=darwin,win32 ---arch=arm64,x64"
+Error: Wrapper command 'wine64' not found on the system. Run `brew install --cask wine-stable` to install 64-bit wine on macOS via Homebrew.

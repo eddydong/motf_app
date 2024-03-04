@@ -1,0 +1,95 @@
+var Work = {};
+
+(function(){
+
+Work.global= {
+	composer: {
+		workname: "Another Piece of Shit",
+		author: "noname",
+		key: 0, // 0-11 / offset from C, in chromatic scale
+		bpMeas: 4,
+		bpNote: 4,
+	}
+	volume: -6,
+	effect: {
+		roomsize: 2,
+	}
+	metro_vol: 0, 	
+	rhythm_vol: 0, 	
+	human_vel: 0.1,
+	human_tem: 0.1,
+	magnet: 0,
+	bpm: 108,
+	layer_sel: 0,
+	imp_pre_sel: 0,
+	seqXY: [],
+	autoChord: [],
+// [layer, tick, 1/0 pedal down / up]
+// 	pedal: [[0,0,1],[0,15,0],
+// 			[0,16,1],[0,31,0],
+// 			[0,32,1],[0,47,0],
+// 			[0,48,1],[0,63,0]],
+	pedal: [],
+	selectedMeas: [],
+	settings: {			
+		metronome: 0,
+		showRhythm: 0,
+		showCanvas: 0,
+		scaledKeyboard: 0,
+		through: 1,
+	}
+};
+
+Work.part= [
+	{
+		name: "part 1",
+		start: x, //in meas
+		length: x,  //in meas
+		layer: [
+			{
+				name: "",
+				instrument: 0,
+				note: [
+					{
+						x: tick, // in relation to part.start
+						y: x, // 0-87
+						v: x, // 0-3, velocity
+						d: x, // duration, in tick
+					}
+				]
+			}
+		]
+	}
+]
+
+Work.layer= [  // T01..T10
+	{
+		name: "Layer 1",
+		instrument: 0,
+		mute: 0,
+		solo: 0,
+		volume: -12,
+		pan: 0,
+		seq: [],
+		meas: {
+			scale_id: 70,
+			rhythm_id: 1, 
+		},
+	}]
+	
+}())
+
+
+Dictionaries:
+
+scale = []
+
+chord = []
+
+rhythm = [
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/4],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/16,1/16,1/8,1/16,1/16,1/16,1/16,1/16,1/16]
+],
+

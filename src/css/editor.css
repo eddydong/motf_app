@@ -1,0 +1,280 @@
+::-webkit-scrollbar {
+    display: none;
+}
+
+@font-face {
+  font-family: myFont;
+  src: url(Xolonium.ttf);
+}
+
+* {
+ 	font-size: 16px;
+	font-family: myFont;
+}
+
+body {
+	background-color:black; 
+	padding: 0;
+	margin: 0;
+    height: 100%;
+    overflow: hidden;
+	-webkit-app-region: drag;
+}
+
+a {
+	color: #ee77ee;
+}
+
+span{
+ 	color: #eeeeee;
+}
+
+button {
+	color: #eeeeee;
+	padding: 2px 5px;
+	background-color: #666666;
+	border-width: 1px;
+	margin: 0;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	-webkit-app-region: no-drag;
+}
+
+button:active {
+	background-color: #777777;
+}
+
+button.mute {
+	border-width:0;
+	display: inline-block;
+	width:20px;
+	padding:0;
+	margin-top:3px;
+	background: #660000;
+}
+button.solo {
+	border-width:0;
+	display: inline-block;
+	width:20px;
+	padding:0;
+	margin-top:3px;
+	background: #006600;
+}
+button.layer {
+	border-width:0;
+	display: inline-block;
+	width:118px;
+	margin-top:3px;
+}
+button.imp{
+	width:100px;
+}
+
+label{
+	color: #eeeeee;
+	padding: 2px 8px;
+	width: 90px;
+	background-color: #666666;
+}
+label.lab1{
+	color: #eeeeee;
+	padding: 0px 5px;
+	background-color: #333333;
+}
+input[type=range] {
+	width: 100px;	  
+}
+input[type=text] {
+	width: 140px;
+	text-align: center;
+}
+.select_instrument{
+	width: 210px;
+	text-align: center;
+}
+input[type=number] {
+	width: 55px;
+}
+.layer-name{
+	width: 210px;
+	border-width: 0;
+}
+.tool-bar-global {
+	background: #555555;
+	height:25px;
+    white-space: nowrap;
+    margin:0;
+    padding:0;
+	user-select: none;
+	-webkit-user-select: none;
+	-webkit-app-region: drag;	
+}
+.tool-bar-layer {
+	margin: 0;
+	padding: 0;
+	background: #222222;
+	height:25px;
+    white-space: nowrap;
+}
+#top-bar-group {
+	margin: 0;
+	padding: 0;
+	height:26px;
+	width: 100%;
+	background: #444444;
+}
+#div-root {
+	height:110px;
+	width:100%;
+	background: #444444;
+	position: fixed;
+	bottom:0;
+	display: none;
+	margin:0;
+	padding:0;
+}
+
+label.lab1 {
+	text-align: center;
+	display: inline-block;
+	width:40px;
+}
+
+#canvas-nav {
+	height: 100%;
+	width: 100%;
+	margin:0;
+	padding:0;
+}
+
+#canvas-main {
+	height: 100%;
+	width: 100%;
+	margin:0;
+	padding: 0;
+}
+
+#canvas-nav-div {
+	height:40px;
+	margin:0;
+	padding: 0;	
+}
+
+#canvas-main-div {
+	margin:0;
+	padding: 0;	
+}
+
+.logo {
+	color:#ffffff; 
+	background: #bb33bb;
+	width:60px;
+	padding:3px;
+	text-align:center;
+	display: inline-block;
+}
+
+#mask {
+	left: 0px;
+	top: 0px;
+	width:100%;
+	height:100%;
+	position: absolute;
+	display: block;
+	margin: 0;
+	z-Index: 1;
+	opacity: 0.6;
+	background:#000000;
+	vertical-align: middle;
+}
+
+.modaldiv {
+	left: 100px;
+	top: 100px;
+	width:400px;
+	height:400px;
+	position: absolute;
+	display: block;
+	border-color: #bb33bb;
+	border-width: 6px;
+	border-style: solid;
+	border-radius: 20px;
+	margin: 0;
+	z-Index: 1;
+	opacity: 1;
+	background:#aaaaaa;
+	vertical-align: middle;	
+	display: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin:0;
+  padding:0;
+  z-index:3;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #555555;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  border-style: solid;
+  border-color: #eeeeee;
+  border-width: 3px;
+  border-radius: 6px;
+  z-index:3;  
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  z-index:3;
+}
+
+.dropdown1 {
+  position: relative;
+  display: inline-block;
+  z-index:3;
+}
+
+.dropdown-content1 {
+  display: none;
+  position: absolute;
+  background-color: #555555;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  border-style: solid;
+  border-color: #eeeeee;
+  border-width: 3px;
+  border-radius: 6px;
+  z-index:3;
+}
+
+.dropdown1:hover .dropdown-content1 {
+  display: block;
+  z-index: 3;
+}
+
+.center-text {
+	width:300px;
+	height:100px;
+	margin-top: -50px;
+	margin-left: -150px;
+/*  	margin: auto; */
+	position: absolute;
+	top: 50% ;
+	left: 50%;
+	background: rgba(255,100,255,0.6);
+	font-size: 30px;
+	color: #eeeeee;
+	opacity: 1;
+	z-index: 2;
+	text-align:center;
+	line-height: 50px;
+}

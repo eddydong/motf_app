@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- <meta charset="UTF-8" /> -->
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">  -->
+    <title>motf pianoroll</title>
+    <link rel="stylesheet" type="text/css" href="./src/css/editor.css" />
+	<!-- <link rel="shortcut icon" type="image/x-icon" href=""> -->
+</head>
+
+<body>
+
+<div id="top-bar-group">
+
+<div class="tool-bar-global">
+
+<div class="dropdown">
+	<label class="logo">motf.io</label>	
+  <div class="dropdown-content" style="color:#eeeeee">
+	<label class="logo">motf.io</label>
+	<span style="margin-right: 220px;"></span>
+	<div class="dropdown">
+	  <span id="fps">FPS</span>
+	</div>	
+	<br>
+	<br>motf or Motif, or Music Of The Future, an
+	<br>very easy-to-use and free-of-charge music 
+	<br>composing Software-as-a-Service, featuring
+	<br>some signature improvising tools, designed 
+	<br>and hand-crafted by <a href="mailto: eddy1199@qq.com">Eddy K. Dong</a>
+	<br><br>Current Version: 0.1 (Internal Testing)
+	<br><br>Eddy K. Dong (C) 2022 All Rights Reserved	
+</div>
+</div>
+
+	<span>|</span>
+<div class="dropdown">
+  <span>Project</span>
+  <div class="dropdown-content">
+	<button id="btn_import" title="Command+I">Import MIDI File</button>
+	<button id="btn_export" title="Command+E">Export MIDI File</button>
+	<span>|</span>
+	<button id="btn_open" title="Command+O">Open motf Project</button>
+	<br>
+	<button id="btn_save" title="Command+S">Save motf Project</button>
+	<span>
+	Work Name:
+	<input id="input_workname" maxlength=22 type="text" style="width:220px;" value="Another Piece of Shit" />
+	.motf
+	</span>	<br>
+
+	<br>	
+	<button id="btn_render">Render & Download Audio File</button>
+
+	<br><br>
+	<button id="btn_new" title="Command+N">New Project</button>
+	<span>Key
+	<select id="select_key">
+		<option>C</option>
+		<option>C#/Db</option>
+		<option>D</option>
+		<option>D#/Eb</option>
+		<option>E</option>
+		<option>F</option>
+		<option>F#/Gb</option>
+		<option>G</option>
+		<option>G#/Ab</option>
+		<option>A</option>
+		<option>A#/Bb</option>
+		<option>B</option>
+	</select>
+	</span>
+	<span>Scale
+	<select id="select_scale">
+	</select>
+	</sapn>
+	<br>
+	<span>Time Sig.: </span>
+	<span>
+	<select id="select_bpMeas">
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>6</option>
+		<option>8</option>
+		<option>9</option>
+		<option>12</option>
+	</select>(Beat Per Measure)
+	</span>
+	<span>/</span>
+	<span>
+	<select id="select_bpNote">
+		<option>2</option>
+		<option>4</option>
+		<option>8</option>
+		<option>16</option>
+	</select>(Beat Per Note)
+	</span>
+
+	<br>
+	<button id="btn_detectKeyScale">Auto Detect Key & Scale</button>
+	
+  </div>
+</div>
+
+
+	<span>|</span>
+<div class="dropdown">
+  <span>Layer</span>
+  <div class="dropdown-content">
+
+	<button id="btn_add_layer"">Add Layer</button>	
+
+	<div class="dropdown1">
+	<span style="margin-left:15px">Edit Current Layer</span>
+	  	<div class="dropdown-content1">
+			<select>
+		  	<optgroup label="asdfasd">
+				<option>asdfsadfs</option>
+				<option>asdfsadfs</option>
+				<option>asdfsadfs</option>
+			</optgroup>
+		  	<optgroup label="asdfasd">
+				<option>asdfsadfs</option>
+				<option>asdfsadfs</option>
+				<option>asdfsadfs</option>
+			</optgroup>
+		  	<optgroup label="asdfasd">
+				<option>asdfsadfs</option>
+				<option>asdfsadfs</option>
+				<option>asdfsadfs</option>
+			</optgroup>
+			</select>
+		</div>
+	</div>
+
+	<br>
+	
+	<div id="div-layer-container">
+<!-- 
+	<button class="layer" id="btn_layer_00">Melody 1</button>
+	<button class="mute" id="btn_layer_00_mute" >M</button>
+	<button class="solo" id="btn_layer_00_solo" >S</button>
+	<span>Vol
+	<input id="input_layer_volume" type="range" min=-30 max=0 step=1 value=-12></input>
+	</span>
+	<span>Pan
+	<input id="input_layer_pan" type="range" min=-1 max=1 step=0.1 value=0></input>
+	</span>
+	<br>
+ -->
+	</div>
+
+	<br>
+	<span>Shift + Arrow Up / Down To Switch Layer</span>
+</div>
+</div>
+
+	<span>|</span>
+
+<div class="dropdown">
+  	<span>Rhythm</span>
+  	<div class="dropdown-content">
+  		<button>Show Rhythm Layer</button>
+		<span>Volume<input id="input_rhythm_volume" value=-10 min=-40 max=0 step=0.1 type="range" /></span>
+	  	<br><span>Shortcut: R</span>
+  		<br><br>
+  		<button>Copy Rhythm In Current Measure</button>
+	  	<br><span>Shortcut: Ctrl + Cmd(Win) + C</span>
+  		<br><br>
+  		<button>Paste Rhythm To Current Measure</button>
+	  	<br><span>Shortcut: Ctrl + Cmd(Win) + V</span>
+ 	</div>
+</div>
+
+	<span>|</span>
+<div class="dropdown">
+  <span>Canvas</span>
+  <div class="dropdown-content">
+	<span>Canvas Tools
+	<button id="btn_skeleton">Skeleton</button>
+	<span>|</span>	
+	<button id="btn_mask_pen">Pen</button>
+	<button id="btn_split">Line</button>	
+	<br><br>
+	<span>Draw To
+	<select id="select_draw_type" >
+		<option>Keep</option>
+		<option>Erase</option>
+	</select>
+	</span>
+	<span>Line Width
+	<input id="input_pen_width" type="range" min=1 max=8 step=2 value=2 />
+	</span>	
+	</span>  
+	
+	<br>
+	<button>Show Canvas</br>
+</div>
+</div>	
+
+	<span>|</span>
+<div class="dropdown">
+  <span>Note</span>
+  <div class="dropdown-content">
+
+	<div class="dropdown1">
+	  <button>Note Breakdown...</button>
+	  <div class="dropdown-content1">
+
+  	<button id="btn_apply_preset">Breakdown Selected Note(s) With Selected Preset</button>
+  	
+  	<br><br>
+
+	<span>Presets</span>
+	<br>
+	<span>
+	<button class="imp" id="btn_imp_0">Root Gen.</button>
+	<button class="imp" id="btn_imp_1">Bass Slow</button>
+	<button class="imp" id="btn_imp_2">Bass Fast</button>
+	<button class="imp" id="btn_imp_3">Rhythm 1</button>
+	<button class="imp" id="btn_imp_4">Rhythm 2</button><br>
+	<button class="imp" id="btn_imp_5">Melody 1</button>
+	<button class="imp" id="btn_imp_6">Melody 2</button>
+	<button class="imp" id="btn_imp_7">Melody 3</button>
+	<button class="imp" id="btn_imp_8">Arpeggio 1</button>
+	<button class="imp" id="btn_imp_9">Arpeggio 2</button><br>
+	</span>
+	<button id="btn_edit_preset">Edit</button>
+	<button id="btn_write_preset">Write</button>
+  
+  	<br><br>
+	<span>Rhythm (For Breakdown Only)</span>	
+	<br>
+	<input type="text" id="input_rhythm" placeholder="random" />
+<!-- 
+	<datalist id="rhythm_list">
+		<option>random</option>
+		<option>44</option>
+		<option>422</option>
+		<option>242</option>
+		<option>224</option>
+		<option>4211</option>
+		<option>4121</option>
+		<option>4112</option>
+		<option>4112</option>
+		<option>4112</option>
+		<option>4112</option>
+		<option>11111111</option>
+	</datalist>
+ -->
+	<button id="btn_learn_rythm">Random</button>
+	<button>Record For Current Measure</button>
+	<br><button id="btn_learn_rythm">Learn From Selection</button>
+	
+	<br><br>
+	<span>Suggester</span>	
+	<br>
+	<select id="select_suggester">
+		<option>Root+0: 0.50</option>
+		<option>Root+1: 0.50</option>
+		<option>Root-1: 0.50</option>
+		<option>Root+2: 0.50</option>
+		<option>Root-2: 0.50</option>
+		<option>Root+3: 0.50</option>
+		<option>Root-3: 0.50</option>
+		<option>Root+4: 0.50</option>
+		<option>Root-4: 0.50</option>
+		<option>Root+5: 0.50</option>
+		<option>Root-5: 0.50</option>
+		<option>Root+7: 0.50</option>
+		<option>Root-7: 0.50</option>
+	</select>
+	<input id="input_suggester_nob" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	<span>Stress</span><label id="label_comp">4.5</label>
+	<button id="btn_learn_rythm">Learn From Selection</button>
+	</span>	
+
+	<br><br>
+	<span>Filter<span><br>
+	
+	<label class="lab1">Max</label>
+	<span><button id="btn_max_0" style="width: 120px">Up & Down's</button>
+	<input id="input_max_0" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	<span><button id="btn_max_1" style="width: 120px">Key Span</button>
+	<input id="input_max_1" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+
+	<br>
+	
+	<label class="lab1">Min</label>
+	<span><button id="btn_min_0" style="width: 120px">Up & Down's</button>
+	<input id="input_min_0" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	<span><button id="btn_min_1" style="width: 120px">Key Span</button>
+	<input id="input_min_1" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+
+	<br>
+
+	<label class="lab1">Max</label>
+	<span><button id="btn_max_2" style="width: 120px">Harmony</button>
+	<input id="input_max_2" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	<span><button id="btn_max_3" style="width: 120px">Granularity</button>
+	<input id="input_max_3" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	
+	<br>
+	
+	<label class="lab1">Min</label>
+	<span><button id="btn_min_2" style="width: 120px">Harmony</button>
+	<input id="input_min_2" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	<span><button id="btn_min_3" style="width: 120px">Granularity</button>
+	<input id="input_min_3" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	
+	<br>
+
+	<label class="lab1">Max</label>
+	<span><button id="btn_max_4" style="width: 120px">Leading</button>
+	<input id="input_max_4" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	<span><button id="btn_max_5" style="width: 120px">Self Ref.</button>
+	<input id="input_max_5" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+
+	<br>
+	
+	<label class="lab1">Min</label>
+	<span><button id="btn_min_4" style="width: 120px">Leading</button>
+	<input id="input_min_4" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>
+	<span><button id="btn_min_5" style="width: 120px">Self Ref.</button>
+	<input id="input_min_5" class="nob1" type="range" min=0.0 max=1.00 step=0.05></input>
+	</span>  
+
+	</div>
+	</div>
+
+	<br><br>  
+  
+	<button id="btn_new_note">Add Note</button>
+	<select id="select_new_note_length">
+		<option value="32n">1/32 n</option>
+		<option value="16n">1/16 n</option>
+		<option value="8n">1/8 n</option>
+		<option value="4n">1/4 n</option>
+		<option value="2n">1/2 n</option>
+		<option value="1n">1 n</option>
+	</select>
+	<button id="btn_dot">Dotted</button>
+	<br><span>Use 1, 2, 3... 8 On Keyboard For<br>New Note From 1/16n Up To 8n</span>
+	<br><br>
+
+	<button id="btn_x2" title="E">Longer</button>
+	<button id="btn_/2" title="E">Shorter</button> <span>Or Use "[" or "]"</span>
+	<br><br>
+	
+	<button id="btn_trisect">Trisect</button>
+	<button id="btn_bisect">Bisect</button> <span>A Selected Note</span>
+	<br><span>Or Use "T" Or "B" On Keyboard</span>
+
+	<br><br><button id="btn_merge">Merge</button>
+	<span>Adjacent Same-Key Notes</span>
+	<br><span>Or Use "M" On Keyboard</span>
+
+	<br><br><span>Use Arrow Keys On Keyboard<br>To Move Selected Notes Around</span>
+	<br><br><span>Scroll Up Or Down To Change <br>Velocity Of Selected Notes</span>
+
+</div>
+</div>
+
+	<span>|</span>
+
+<div class="dropdown">
+  	<span>Chord</span>
+  	<div class="dropdown-content">
+		<button>Suggest Chord For Selected Measure(s)</button>	
+ 	</div>
+</div>
+
+	<span>|</span>
+
+<div class="dropdown">
+  	<span>Part</span>
+  	<div class="dropdown-content">
+
+		<span>Part Name
+		<input type="text" style="width:180px;" placeholder="New Verse" /></span>
+		<br><br>
+		<span>Part Color
+		<input type="color"/></span>	
+		<button id="btn_improvise_fold">Fold/Unfold</button>	
+		<button id="btn_improvise_auto">Auto</button>	
+  		
+ 	</div>
+</div>
+
+	<span>|</span>
+<div class="dropdown">
+  <span>Control</span>
+  <div class="dropdown-content">
+  	<span>Default Drag
+  	<span style="margin-left:50px">Temporary Drag
+  	<br>
+	<button id="btn_drag_0" style="width: 120px;">Pre-audi</button><span style="color:#eeeeee;display:inline-block; margin-left: 40px;">(Drag)</span>
+	<br>
+	<button id="btn_drag_1" style="width: 120px;">Pan/Scroll</button><span style="color:#eeeeee;display:inline-block; margin-left: 40px;">(Space+Drag)</span>
+	<br>
+	<button id="btn_drag_2" style="width: 120px;">Zoom</button><span style="color:#eeeeee;display:inline-block; margin-left: 40px;">(Shift+Drag)</span>
+	<br>
+	<button id="btn_drag_3" style="width: 120px;">Sel. Rect</button><span style="color:#eeeeee;display:inline-block; margin-left: 40px;">(Cmd/Win+Drag)</span>
+	<br>
+	<button id="btn_drag_4" style="width: 120px;">Sel. Span</button><span style="color:#eeeeee;display:inline-block; margin-left: 40px;">(Ctrl+Drag)</span>
+	<br>
+	<button id="btn_drag_5" style="width: 120px;">Sel. Meas</button><span style="color:#eeeeee;display:inline-block; margin-left: 40px;">(Opt/Alt+Drag)</span>
+
+	<br><br>	
+	<button id="btn_undo" title="Command+Z">Undo</button>
+	<button id="btn_redo" title="Command+Snift+N">Redo</button>
+	<span>|</span>
+	<button id="btn_esc" title="Escape">Escape</button>	
+	<br>
+	<button id="btn_cut" title="Command+X">Cut</button>
+	<button id="btn_copy" title="Command+C">Copy</button>
+	<button id="btn_paste" title="Command+V">Paste</button>
+	<button id="btn_paste" title="Command+V">Paste Insert</button>
+
+	<br><br>
+	<button id="btn_select_all">Select All</button>	
+	<button id="btn_select_invert">Select Inverse</button>	
+	<span>|</span>
+	<button >Delete</button>
+	<br>
+	<span>Hold Cmd/Win And Click On A Note To <br> Add To Or Subtract from Selection
+	<br><br>
+	<button id="btn_through">Through All Layers</button>		
+	<button id="btn_magnet">Snap To Measure</button>	
+	<br>
+	<span>Use Shift+Cmd/Win+A To Select Through
+	
+</div>
+</div>
+
+	<span>|</span>
+
+<div class="dropdown">
+  	<span>View</span>
+  	<div class="dropdown-content">
+		<span>ZOOM</span>
+		<button id="btn_fit_x">Fit X</button>	
+		<button id="btn_fit_y">Fit Y</button>	
+		<button id="btn_fit_xy">Fit XY</button>	
+		<br>
+		<span>Use X / Y for AutoZoom X / Y</span>
+		<br>
+		<br><button>Show Volume Automation</button>	
+		<br><button>Show Tempo Automation</button>	
+		<br>
+		<br><button>Show Rhythm Layer</button>
+		<br>
+		<br><button>Use Scaled Keyboard</button>			
+ 	</div>
+</div>
+
+	<span>|</span>
+
+<div class="dropdown">
+  <span>Playback</span>
+  <div class="dropdown-content">
+	<button id="btn_begin" title="Command+Left">Beginning</button>
+	<button id="btn_play" title="Enter">Play</button>
+	<button id="btn_stop" title="Esc">Stop</button>
+	<button id="btn_end" title="Command+Right">End</button>
+	<span>|</span>
+	<button id="btn_studio_layout" title="Studio Layout">Studio Layout</button>	
+	<br><br>
+	<span>Volume
+	<input id="input_master_volume" value=-10 min=-40 max=0 step=0.1 type="range" />
+	</span>
+	<span>Room Size
+	<input id="input_master_roomsize" value=2 min=0.1 max=6.0 step=0.1 type="range" />
+	</span>
+	<br><br>
+	<button id="btn_metronome" title="M">Metronome</button>
+	<input id="input_metro_volume" value=-10 min=-40 max=0 step=0.1 type="range" />
+	<span>Bpm
+		<input type="number" id="input_bpm" value=108 min=6 max=600/>
+	</span>
+	<span>
+	<br><br>	
+	<span>Humanizing <br>
+	Velocity
+	<input id="input_human_vel" value=0.1 min=0 max=1 step=0.01 type="range" />
+	Tempo
+	<input id="input_human_tem" value=0.1 min=0 max=1 step=0.01 type="range" />
+	</span>
+</div>
+</div>
+
+	<canvas id="canvas-meter" style="width:400px; height:8px; padding: 0; margin:0; margin-top:4px;"></canvas>
+
+</div>
+</div>
+
+<div id="canvas-nav-div">
+<canvas id="canvas-nav"></canvas></div>
+<div style="clear: both;"></div>
+
+<div id="canvas-main-div">
+<canvas id="canvas-main"></canvas></div>
+<canvas style="z-index:2; position: absolute; display:none;" id="canvas-canvas"></canvas>
+<div style="clear: both;"></div>
+
+<div id="div-root">
+</div>
+
+<div style="clear: both;"></div>
+
+<div id="mask"></div>
+<div id="splash_text" class="center-text">LOADING INSTRUMENTS</div>
+
+<button id="vbtn" style="display:none;"></button>
+</body>
+</html>
+
+<!-- <script src="./js/pako.min.js"></script> -->
+<script> 
+	SERVER = ".";
+//	SERVER = "http://localhost";
+</script>
+
+<script src="./src/js/tone.js"></script>
+<script src="./src/js1/mylib.js"></script>
+<script src="./src/js/tonal.min.js"></script>
+<script src="./src/js/mcommons.js"></script>
+<script src="./src/js/theory.js"></script>
+<script src="./src/js/chord.js"></script>
+<script src="./src/js/midifilereader.js"></script>
+<script src="./src/js/global.js"></script>
+<script src="./src/js/work.js"></script>
+<script src="./src/js/importer.js"></script>
+<script src="./src/js/composer.js"></script>
+<script src="./src/js1/improviser.js"></script>
+<script src="./src/js/pianoroll.js"></script>
+<script src="./src/js/canvas.js"></script>
+<script src="./src/js/navbar.js"></script>
+<script src="./src/js/instruments.js"></script>
+<script src="./src/js/vpiano.js"></script>
+<script src="./src/js/controls.js"></script>
+<script src="./src/js/mididriver.js"></script>
+<!-- <script src="./src/js/simplemidiinput.js"></script> -->
+<script src="./src/js/midicontroller.js"></script>
+<!-- <script src="./js/JSB/jsb-chorales-quarter.js"></script> -->
+<script src="./src/js/JSB/jsb-chorales-8th.js"></script>
+<!-- <script type="module"> -->
+<script>
+
+//console.clear();
+localStorage.clear();
+//{"x":0,"y":3,"d":64,"v":1,"l":0,"s":1,"t":0}
+
+Controls.showWaiting();
+pianoroll.init(); 
+
+function improvise(){
+	var et = pianoroll.endTick;
+	var v=new Improviser.Verse({bpMeas:4, root: 39});
+	v.improvise();
+	piece=v.log();
+//	console.log(piece);
+	var note=null;
+	for (var i=0; i<piece.length; i++) {
+		if (note==null && piece[i]<88)
+			note = {x: i*2 + et, y: piece[i], d: 2, s: 0, v: 1, l: 0, t: 1};
+		if (note!=null) if (note.y!=88 && piece[i]==88) 
+			note.d += 2;
+		else if (piece[i]!=note.y && piece[i]!=88) 
+		{
+			if (note!=null) pianoroll.addNote(note);			
+			if (piece[i]!=89) {
+				note = {x: i*2 + et, y: piece[i], d: 2, s: 0, v: 1, l: 0, t: 1};
+			} else
+				note=null;
+		}
+	}
+	if (note!=null) pianoroll.addNote(note);	
+}
+
+for (var i=0; i<1; i++) improvise();
+
+pianoroll.autoZoom("xy");
+
+// var work = JSB.train;
+// var header = 0;
+// for (var p=0; p<10; p++){
+// 	var rnd = Math.floor(Math.random()*work.length);
+// 	var piece = work[rnd];
+// 	console.log("Piece No.: "+rnd)
+// 	var prev_keys = [0,0,0,0];
+// 	var prev_notes = [];
+// 	for (var i=0; i<piece.length; i++) { 
+// 		for (var j=0; j<piece[i].length; j++) {
+// 			if (prev_keys[j]==piece[i][j]) {
+// 				prev_notes[j].d+=2;		
+// 			} else 
+// 			{
+// 				pianoroll.addNote({
+// 						x: header + 2 * i,
+// 						y: piece[i][j]-21,
+// 						d: 2, 
+// 						s: 0, 
+// 						v: 1, 
+// 						l: j % 2, //j,
+// 						t: 1 // type: 0: normal note; 1: just improvised			
+// 				});
+// 				prev_notes[j] = Work.global.seqXY[Work.global.seqXY.length-1];
+// 				prev_keys[j] = piece[i][j];
+// 			}
+// 		}
+// 	}
+// 	pianoroll.autoZoom("xy");
+// 	header = (pianoroll.endMeas + 2) * 16;
+// }
+
+
+
+
+// const last = ['C4', 'E4', 'G4', 'B4'];
+// console.log(Tonal);
+// Tonal.get('Dm7', ['F3', 'A4'], lefthand, topNoteDiff, last);
+
+// Compression:
+// let compressed_str = pako.gzip(str, {to: 'string'});
+// Decompression:
+// let original_str = pako.ungzip(compressed_str, { to: 'string' });
+// var compressed=zip("abcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg");
+// console.log(compressed);
+// console.log(unzip(compressed));
+
+</script>
