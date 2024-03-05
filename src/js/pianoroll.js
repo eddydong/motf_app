@@ -1588,11 +1588,13 @@ Pianoroll.prototype.playNext=function(t){
 	var tickPerMeas = Work.global.bpMeas * tickPerBeat;
 	if (Work.global.metronome){
 		var tt=(this.playTick % tickPerMeas);
- 		if (tt==0 && this.playTick<this.selEnd) Instruments.metronome[0].start();// Instruments.drum2.triggerAttackRelease(0.001, t, 0.1*Global.metroVolume);
+ 		if (tt==0 && this.playTick<this.selEnd) 
+			//Instruments.metronome[0].start();
+			Instruments.drum2.triggerAttackRelease(0.01, t, Global.metroVolume);
  		for (i=1; i<Work.global.bpMeas; i++)
 			if (tt == tickPerBeat * i) 
-				Instruments.metronome[1].start();
-				//Instruments.drum3.triggerAttackRelease(0.001, t, 0.06*Global.metroVolume);
+				//Instruments.metronome[1].start();
+				Instruments.drum3.triggerAttackRelease(0.01, t, Global.metroVolume);
 	};	
 
 	if (Work.global.seqIJ[currentTick] && Work.global.seqIJ[currentTick].notes.length>0) 

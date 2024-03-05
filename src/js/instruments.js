@@ -87,7 +87,7 @@ var samplerParams=[
 	{//0
 		name: "Piano Yamaha C5",
 		timeOffset: -0.1,
-    loadByDefault: true,
+    loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
 		urls: {
@@ -291,7 +291,7 @@ var samplerParams=[
 	{//4
 		name:"Steel Guitar",
 		timeOffset: -0.1,
-    loadByDefault: true,
+    loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
     urls: {
@@ -337,7 +337,7 @@ var samplerParams=[
 	},
 	{//5
 		name: "Nylon Guitar",
-    loadByDefault: true,
+    loadByDefault: false,
     timeOffset: -0.1,
     volumeCorrection: 0,
     vUrls: [],
@@ -458,6 +458,7 @@ var samplerParams=[
 	{//9
 		name: "Electric Guitar",
 		timeOffset: -0.1,
+    loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
 		urls: {
@@ -484,7 +485,7 @@ var samplerParams=[
 	{//10
 		name: "Contrabass",
 		timeOffset: -0.1,
-    loadByDefault: true,
+    loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
 		urls: {
@@ -507,7 +508,7 @@ var samplerParams=[
 	{//11
 		name: "Flute",
 		timeOffset: -0.1,
-    loadByDefault: true,
+    loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
 		urls: {
@@ -527,7 +528,7 @@ var samplerParams=[
 	{//12
 		name: "French Horn",
 		timeOffset: -0.1,
-    loadByDefault: true,
+    loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
 		urls: {
@@ -667,13 +668,19 @@ for (var i=0; i<samplerParams.length; i++){
   for (var j=0; j < Object.values(samplerParams[i].urls).length; j++)
   samplerParams[i].vUrls.push("");
 }
-for (var i=0; i<samplerParams.length; i++){
-  if (!samplerParams[i].loadByDefault) continue;
-  for (var j=0; j<Object.values(samplerParams[i].urls).length; j++){
-    getVirtualURL(samplerParams[i].baseUrl
-                  +Object.values(samplerParams[i].urls)[j], i, j);
-  }
-};
+
+var updateSample = function(){
+  for (var i=0; i<samplerParams.length; i++){
+    if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
+      continue;
+    for (var j=0; j<Object.values(samplerParams[i].urls).length; j++){
+      getVirtualURL(samplerParams[i].baseUrl
+                    +Object.values(samplerParams[i].urls)[j], i, j);
+    }
+  };  
+}
+updateSample();
+
 function getVirtualURL(url, instruId, noteId){
   fetch(new Request(url))
     .then((response) => {
@@ -686,6 +693,7 @@ function getVirtualURL(url, instruId, noteId){
       checkLoadStatus();
     });
 };
+
 function checkLoadStatus(){
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault) continue;
@@ -703,6 +711,17 @@ function checkLoadStatus(){
   } 
   Instruments.onDefaultLoaded();
 }
+
+Instruments.onDefaultLoaded=()=>{
+  for (var i=0; i<Work.layer.length; i++) {
+//			pianoroll.layer[i].instrument=Instruments.newSampler(Work.layer[i].instrument, i);
+    Instruments.assignInstrument(Work.layer[i].instrument, i);
+    pianoroll.layer[i].channel.volume.value=Work.layer[i].volume;
+    pianoroll.layer[i].channel.pan.value=Work.layer[i].pan;
+  };
+  Controls.hideWaiting();
+}
+
       // save the virtual lnk's somewhere!!!
       // var s = new Tone.Sampler(
       //   {
@@ -719,7 +738,7 @@ Instruments.metronome = [
   new Tone.Player(projectURL+"/sample/metronome/da.mp3").connect(pianoroll.master.metro_vol),
 ];
 
-const drum1 = new Tone.MembraneSynth().connect(pianoroll.master.rhythm_vol);
+const drum1 = new Tone.MembraneSynth().connect(pianoroll.master.metro_vol);
 
 const lowPass1 = new Tone.Filter({
   frequency: 14000,
@@ -819,16 +838,6 @@ Instruments.drum1=drum1;
 Instruments.drum2=snareDrum1;
 Instruments.drum3=snareDrum2;
 
-Instruments.onDefaultLoaded=()=>{
-  for (var i=0; i<Work.layer.length; i++) {
-//			pianoroll.layer[i].instrument=Instruments.newSampler(Work.layer[i].instrument, i);
-    Instruments.assignInstrument(Work.layer[i].instrument, i);
-    pianoroll.layer[i].channel.volume.value=Work.layer[i].volume;
-    pianoroll.layer[i].channel.pan.value=Work.layer[i].pan;
-  };
-  Controls.hideWaiting();
-  }
-
-
+Instruments.updateSample=updateSample;
 
 }())

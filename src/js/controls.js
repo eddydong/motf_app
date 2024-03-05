@@ -514,6 +514,7 @@ var Controls= {};
 			pianoroll.scroll("beginning");
 			Composer.init();
 			init();
+			Instruments.onDefaultLoaded();
 		};			
 	}
 	Controls.btn_open.onclick=()=>{
@@ -550,6 +551,7 @@ var Controls= {};
 		pianoroll.autoZoom();
 		Composer.init();
 		init();
+		Instruments.onDefaultLoaded();
 		pianoroll.historyPush("New");
 		Controls.saveTemp();
 	};
@@ -1177,7 +1179,8 @@ function init(){
 				//pianoroll.stop();
 				showWaiting();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
-				Instruments.onDefaultLoaded();
+				Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
+				Instruments.updateSample();
 				Controls.saveTemp();						
 			};
 		};

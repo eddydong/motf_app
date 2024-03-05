@@ -116,6 +116,7 @@ function parseFile(file) {
 		pianoroll.playhead=-1;	
 		Composer.init();
 		Controls.init();	
+		Instruments.onDefaultLoaded();
  	pianoroll.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
  	pianoroll.maxW= Work.global.bpMeas * 16 * (16 / Work.global.bpNote)+1;
 		pianoroll.autoZoom();
