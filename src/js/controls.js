@@ -1174,10 +1174,10 @@ function init(){
 				sis[i].appendChild(opt);
 			};			
 			sis[i].onchange=(e)=>{
-				pianoroll.stop();
+				//pianoroll.stop();
 				showWaiting();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
-				init();
+				Instruments.onDefaultLoaded();
 				Controls.saveTemp();						
 			};
 		};
@@ -1252,10 +1252,10 @@ function init(){
 		
 		// preload instrument for each layer
 		
-		if (Instruments.defaultLoaded){
-			showWaiting();
-			Instruments.onDefaultLoaded();
-		}
+		// if (Instruments.defaultLoaded){
+		// 	showWaiting();
+		// 	Instruments.onDefaultLoaded();
+		// }
 
 		for (var i=0; i<sis.length; i++) {
 			sis[i].selectedIndex=Work.layer[i].instrument;
