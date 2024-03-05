@@ -1076,6 +1076,7 @@ var Controls= {};
 
 	document.querySelector("#btn_add_layer").onclick=()=>{
 		Work.layer.push(copyObj(newWork.layer[0]));
+		Instruments.newSampler(newWork.layer[0].instrument, Work.layer.length-1);
 		init();
 		pianoroll.historyPush("Before Add Layer");
 
@@ -1121,7 +1122,7 @@ Controls.loadTemp=function(){
 
 function init(){
 	
-		Instruments.releaseAll();
+		// Instruments.releaseAll();
 			
 		Work.global.imp_pre=default_params;
 		
@@ -1151,7 +1152,7 @@ function init(){
 			
 			pianoroll.layer.push({
 				channel: new Tone.Channel(0,0).connect(pianoroll.master.reverb),
-				instrument:null
+				instrument: null
 			});
 		};	
 
@@ -1179,8 +1180,14 @@ function init(){
 				//pianoroll.stop();
 				showWaiting();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
-				Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
-				Instruments.updateSample();
+				if (Instruments.samplerParams[e.target.selectedIndex].baseUrl==""){
+					Instruments.newSampler(e.target.selectedIndex, e.target.dataset.i);
+					pianoroll.layer[e.target.dataset.i].channel.volume.value=Work.layer[e.target.dataset.i].volume;
+					pianoroll.layer[e.target.dataset.i].channel.pan.value=Work.layer[e.target.dataset.i].pan;
+				} else {
+					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
+					Instruments.updateSample();
+				};
 				Controls.saveTemp();						
 			};
 		};

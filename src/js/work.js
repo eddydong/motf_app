@@ -12,13 +12,15 @@ Work.global= {
 	
 	scale_id: 70,
 	
+	bpm: 120,
+	
 	bpMeas: 4,
 	
 	bpNote: 4,
 
 	volume: -10,
 	
-	roomsize: 2,
+	roomsize: 3,
 
 	metro_vol: -10, 	
 
@@ -29,8 +31,6 @@ Work.global= {
 	human_tem: 0.1,
 	
 	magnet: 0,
-	
-	bpm: 280,
 	
 	metronome: 1,
 

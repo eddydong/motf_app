@@ -715,11 +715,10 @@ function checkLoadStatus(){
 Instruments.onDefaultLoaded=()=>{
   for (var i=0; i<Work.layer.length; i++) {
 //			pianoroll.layer[i].instrument=Instruments.newSampler(Work.layer[i].instrument, i);
-    Instruments.assignInstrument(Work.layer[i].instrument, i);
+    Instruments.newSampler(Work.layer[i].instrument, i);
     pianoroll.layer[i].channel.volume.value=Work.layer[i].volume;
     pianoroll.layer[i].channel.pan.value=Work.layer[i].pan;
   };
-  Controls.hideWaiting();
 }
 
       // save the virtual lnk's somewhere!!!
@@ -776,50 +775,51 @@ const snareDrum2 = new Tone.NoiseSynth({
   },
 }).connect(lowPass2);
 
-Instruments.bank=[];
+// Instruments.bank=[];
 
-Instruments.releaseAll=()=>{
-	for (var i=0; i<Instruments.bank.length; i++)
-		for (var j=0; j<Instruments.bank[i].length; j++){
-			Instruments.bank[i][j].inuse=0;
-		};
-}
+// Instruments.releaseAll=()=>{
+// 	for (var i=0; i<Instruments.bank.length; i++)
+// 		for (var j=0; j<Instruments.bank[i].length; j++){
+// 			Instruments.bank[i][j].inuse=0;
+// 		};
+// }
 
 // ch: layer id; i: instrument (dropdown list) id
-Instruments.assignInstrument=(i, ch)=>{
-	var spot=null;
-	for (var j=0; j<Instruments.bank[i].length; j++) if (!Instruments.bank[i][j].inuse) { 
-		spot=Instruments.bank[i][j];
-		spot.inuse=1;
-		spot.connect(pianoroll.layer[ch].channel);
-		pianoroll.layer[ch].instrument=spot;
+// Instruments.assignInstrument=(i, ch)=>{
+// 	var spot=null;
+// 	for (var j=0; j<Instruments.bank[i].length; j++) if (!Instruments.bank[i][j].inuse) { 
+// 		spot=Instruments.bank[i][j];
+// 		spot.inuse=1;
+// 		spot.connect(pianoroll.layer[ch].channel);
+// 		pianoroll.layer[ch].instrument=spot;
 		
-		if (Work.layer[ch].name=="New Layer") 
-			document.getElementById("btn_layer_"+ch).innerHTML=samplerParams[i].name;
+// 		if (Work.layer[ch].name=="New Layer") 
+// 			document.getElementById("btn_layer_"+ch).innerHTML=samplerParams[i].name;
 
-		Work.layer[ch].instrument=i;
-		break; 
-	};
-	if (spot==null) {
-		Instruments.newSampler1(i, ch);
-	}
-}
+// 		Work.layer[ch].instrument=i;
+// 		break; 
+// 	};
+// 	if (spot==null) {
+// 		Instruments.newSampler1(i, ch);
+// 	}
+// }
 
 // load a new instrument #i, save it to bank, and assign to layer(channel) #ch
-Instruments.newSampler1=(i, ch)=>{
+Instruments.newSampler=(i, ch)=>{
 	var s=new Tone.Sampler(
 		samplerParams[i].urls,
 		function(){
-			s.inuse=1;
+			// s.inuse=1;
 			s.instrumentName=samplerParams[i].name;
 			s.timeOffset=samplerParams[i].timeOffset;
-			Instruments.bank[i].push(s);
+      s.volumeCorrection=samplerParams[i].volumeCorrection;
+      // Instruments.bank[i].push(s);
 
 			pianoroll.layer[ch].instrument=s;
 			pianoroll.layer[ch].instrument.connect(pianoroll.layer[ch].channel);
 
 //			if (Work.layer[ch].name=="New Layer") 
-			document.getElementById("btn_layer_"+ch).innerHTML=samplerParams[i].name;
+			//document.getElementById("btn_layer_"+ch).innerHTML=samplerParams[i].name;
 
 			Work.layer[ch].instrument=i;						
 		},
@@ -827,12 +827,12 @@ Instruments.newSampler1=(i, ch)=>{
 	);
 }
 
-Instruments.init=()=>{
-	for (var i=0; i< samplerParams.length; i++) 
-    Instruments.bank.push([]);
-}
+// Instruments.init=()=>{
+// 	for (var i=0; i< samplerParams.length; i++) 
+//     Instruments.bank.push([]);
+// }
 
-Instruments.init();
+// Instruments.init();
 
 Instruments.drum1=drum1;
 Instruments.drum2=snareDrum1;

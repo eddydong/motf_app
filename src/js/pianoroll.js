@@ -82,7 +82,7 @@ function Pianoroll(){
 					var ins=self.layer[Work.global.layer_sel].instrument;
 					if (ins) ins.triggerAttackRelease(
 						Global.chromatic_scale[Work.global.scaledKeyboard?Composer.scale[tickY]:tickY],
-						Tone.Time("8n").toSeconds(), Tone.now(), self.volumeScale
+						Tone.Time("4n").toSeconds(), Tone.now(), self.volumeScale
 					);					
 					self.lastKey=tickY;
 				};
@@ -223,7 +223,7 @@ function Pianoroll(){
 					var ins=self.layer[Work.global.layer_sel].instrument;
 					if (ins) ins.triggerAttackRelease(
 						Global.chromatic_scale[Work.global.scaledKeyboard?Composer.scale[tickY]:tickY],
-						Tone.Time("8n").toSeconds(), Tone.now(), 0.5 * self.volumeScale
+						0.5, Tone.now(), 0.5 * self.volumeScale
 					);					
 				};
 			}			
