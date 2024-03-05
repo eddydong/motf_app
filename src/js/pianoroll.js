@@ -49,7 +49,7 @@ function Pianoroll(){
 	this.lastPedal=0;	
 	this.recording=1;
 	this.vKeyboardOn=0;
-	this.volumeScale = 3;
+	this.volumeScale = 2;
  	
  	var self=this, ctx=this.ctx;
 
@@ -1503,7 +1503,8 @@ Pianoroll.prototype.stop=function(){
 				const recording = await pianoroll.recorder.stop(); 
 				const url = URL.createObjectURL(recording);
 				const anchor = document.createElement("a");
-				anchor.download = "recording.mp3"; // originally .webm; actually .mp4
+				// Chrome only support .webm; Safari support .mp3!
+				anchor.download = "recording.webm"; 
 				anchor.href = url;
 				anchor.click();
 			};

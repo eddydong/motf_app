@@ -17,7 +17,7 @@ navigator.requestMIDIAccess().then( onsuccesscallback, onerrorcallback );
 
 function onsuccesscallback(midi) {
 	smi.attach(midi);
-	console.log('success');
+	//console.log('success');
 };
 
 function onerrorcallback(err) {

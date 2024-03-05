@@ -80,7 +80,7 @@ function matrix12(){
 	
 var mat12 = matrix12();
 
-console.log(mat12);
+//console.log(mat12);
 
 function nextFromMat12(mat, note){
 	var y=Math.floor(Math.random()*12);
@@ -88,7 +88,7 @@ function nextFromMat12(mat, note){
 	return {x,y};
 }
 
-console.log(nextFromMat12(mat12, 4));
+//console.log(nextFromMat12(mat12, 4));
 
 // Export
 

@@ -41,47 +41,43 @@ const projectURL = SERVER+"/src";
 // ];
 
 // to be simplified - merge into the sampleParams
-Instruments.drumset = new Tone.Sampler(
-{
-  'C2': 'hihat.mp3',
-  'C#2': 'kick.mp3',
-  'D2': 'snare.mp3',
-  'D#2': 'tom1.mp3',
-  'E2': 'tom2.mp3',
-  'F2': 'tom3.mp3',
-  'F#2': 'extra1.mp3',
-  'G2': 'extra2.mp3',
+// Instruments.drumset = new Tone.Sampler(
+// {
+//   'C2': 'hihat.mp3',
+//   'C#2': 'kick.mp3',
+//   'D2': 'snare.mp3',
+//   'D#2': 'tom1.mp3',
+//   'E2': 'tom2.mp3',
+//   'F2': 'tom3.mp3',
+//   'F#2': 'extra1.mp3',
+//   'G2': 'extra2.mp3',
 
-  'G#2': 'hihat.mp3',
-  'A2': 'kick.mp3',
-  'A#2': 'snare.mp3',
-  'B2': 'tom1.mp3',
-  'C3': 'tom2.mp3',
-  'C#3': 'tom3.mp3',
-  'D3': 'extra1.mp3',
-  'D#3': 'extra2.mp3',
-}, function(){
-    console.log("drumset ready!");
+//   'G#2': 'hihat.mp3',
+//   'A2': 'kick.mp3',
+//   'A#2': 'snare.mp3',
+//   'B2': 'tom1.mp3',
+//   'C3': 'tom2.mp3',
+//   'C#3': 'tom3.mp3',
+//   'D3': 'extra1.mp3',
+//   'D#3': 'extra2.mp3',
+// }, function(){
+//     //console.log("drumset ready!");
 
-    // testing...
+//     // testing...
 
-    // Instruments.test = new Tone.Sampler(
-    //   {
-    //     'C2': URL.createObjectURL(Instruments.drumset._buffers._buffers[0],{type: 'application/zip'}),
-    //     'C#2': URL.createObjectURL(Instruments.drumset._buffers._buffers[1]),
-    //     'D2': URL.createObjectURL(Instruments.drumset._buffers._buffers[2]),
-    //   },
-    //     function(){Instruments.test.triggerAttack("C2");},
-    //     "");
-    // Instruments.test._buffers=Instruments.drumset._buffers;
-    // Instruments.text.triggerAttack("C3");        
+//     // Instruments.test = new Tone.Sampler(
+//     //   {
+//     //     'C2': URL.createObjectURL(Instruments.drumset._buffers._buffers[0],{type: 'application/zip'}),
+//     //     'C#2': URL.createObjectURL(Instruments.drumset._buffers._buffers[1]),
+//     //     'D2': URL.createObjectURL(Instruments.drumset._buffers._buffers[2]),
+//     //   },
+//     //     function(){Instruments.test.triggerAttack("C2");},
+//     //     "");
+//     // Instruments.test._buffers=Instruments.drumset._buffers;
+//     // Instruments.text.triggerAttack("C3");        
 
-}, projectURL+"/sample/acoustic-kit/").connect(pianoroll.master.rhythm_vol);
+// }, projectURL+"/sample/acoustic-kit/").connect(pianoroll.master.rhythm_vol);
 
-
-var a={x:1,y:2};
-a[Object.keys(a)[1]]=3;
-console.log(a);
 
 var samplerParams=[
 	{//0
@@ -714,6 +710,7 @@ function checkLoadStatus(){
 }
 
 Instruments.onDefaultLoaded=()=>{
+  Controls.hideWaiting();
   for (var i=0; i<Work.layer.length; i++) {
 //			pianoroll.layer[i].instrument=Instruments.newSampler(Work.layer[i].instrument, i);
     Instruments.newSampler(Work.layer[i].instrument, i);
