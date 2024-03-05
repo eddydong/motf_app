@@ -1185,7 +1185,6 @@ function init(){
 					pianoroll.layer[e.target.dataset.i].channel.volume.value=Work.layer[e.target.dataset.i].volume;
 					pianoroll.layer[e.target.dataset.i].channel.pan.value=Work.layer[e.target.dataset.i].pan;
 				} else {
-					showWaiting();
 					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
 					Instruments.updateSample();
 				};

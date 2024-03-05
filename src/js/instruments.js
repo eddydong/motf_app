@@ -673,6 +673,7 @@ var updateSample = function(){
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
+    console.log("loading remote "+i);
     for (var j=0; j<Object.values(samplerParams[i].urls).length; j++)
       getVirtualURL(samplerParams[i].baseUrl
                     +Object.values(samplerParams[i].urls)[j], i, j);
@@ -704,6 +705,7 @@ function checkLoadStatus(){
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault) continue;
     samplerParams[i].baseUrl="";
+
     for (var j=0; j<samplerParams[i].vUrls.length; j++) 
       samplerParams[i].urls[Object.keys(samplerParams[i].urls)[j]]
         =samplerParams[i].vUrls[j];
