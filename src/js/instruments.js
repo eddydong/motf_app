@@ -673,10 +673,9 @@ var updateSample = function(){
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
-    for (var j=0; j<Object.values(samplerParams[i].urls).length; j++){
+    for (var j=0; j<Object.values(samplerParams[i].urls).length; j++)
       getVirtualURL(samplerParams[i].baseUrl
                     +Object.values(samplerParams[i].urls)[j], i, j);
-    }
   };  
 }
 updateSample();
