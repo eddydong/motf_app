@@ -666,6 +666,19 @@ for (var i=0; i<samplerParams.length; i++){
 }
 
 var updateSample = function(){
+  var newInstru = false;
+  for (var i=0; i<Work.layer.length; i++)
+    if (Instruments.samplerParams[Work.layer[i].instrument].baseUrl!=""){
+      Instruments.samplerParams[Work.layer[i].instrument].loadByDefault=true;
+      newInstru = true;
+      break;
+    };
+    
+  if (!newInstru) {
+    Instruments.onDefaultLoaded();
+    return;
+  };
+
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
@@ -711,6 +724,7 @@ function checkLoadStatus(){
 
 Instruments.onDefaultLoaded=()=>{
   Controls.hideWaiting();
+  console.log("all loaded");
   for (var i=0; i<Work.layer.length; i++) {
 //			pianoroll.layer[i].instrument=Instruments.newSampler(Work.layer[i].instrument, i);
     Instruments.newSampler(Work.layer[i].instrument, i);

@@ -514,7 +514,8 @@ var Controls= {};
 			pianoroll.scroll("beginning");
 			Composer.init();
 			init();
-			Instruments.onDefaultLoaded();
+			showWaiting();
+			Instruments.updateSample();
 		};			
 	}
 	Controls.btn_open.onclick=()=>{
