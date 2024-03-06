@@ -723,14 +723,17 @@ function checkLoadStatus(){
 }
 
 Instruments.onDefaultLoaded=()=>{
+  for (var i=0; i<Work.layer.length; i++) 
+    if (pianoroll.layer[i].instrument ==null
+    || pianoroll.layer[i].instrument.instrumentName
+    !=Instruments.samplerParams[Work.layer[i].instrument].name) {
+      Instruments.newSampler(Work.layer[i].instrument, i);
+      pianoroll.layer[i].channel.volume.value=Work.layer[i].volume;
+      pianoroll.layer[i].channel.pan.value=Work.layer[i].pan;
+      console.log("updating layer "+i+" with instru "+Work.layer[i].instrument);
+    };
   Controls.hideWaiting();
   console.log("all loaded");
-  for (var i=0; i<Work.layer.length; i++) {
-//			pianoroll.layer[i].instrument=Instruments.newSampler(Work.layer[i].instrument, i);
-    Instruments.newSampler(Work.layer[i].instrument, i);
-    pianoroll.layer[i].channel.volume.value=Work.layer[i].volume;
-    pianoroll.layer[i].channel.pan.value=Work.layer[i].pan;
-  };
 }
 
       // save the virtual lnk's somewhere!!!

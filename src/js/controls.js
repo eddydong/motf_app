@@ -1182,9 +1182,7 @@ function init(){
 				showWaiting();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
 				if (Instruments.samplerParams[e.target.selectedIndex].baseUrl==""){
-					Instruments.newSampler(e.target.selectedIndex, e.target.dataset.i);
-					pianoroll.layer[e.target.dataset.i].channel.volume.value=Work.layer[e.target.dataset.i].volume;
-					pianoroll.layer[e.target.dataset.i].channel.pan.value=Work.layer[e.target.dataset.i].pan;
+					Instruments.onDefaultLoaded();
 				} else {
 					showWaiting();
 					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
