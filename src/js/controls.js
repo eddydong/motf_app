@@ -1077,8 +1077,8 @@ var Controls= {};
 
 	document.querySelector("#btn_add_layer").onclick=()=>{
 		Work.layer.push(copyObj(newWork.layer[0]));
-		Instruments.newSampler(newWork.layer[0].instrument, Work.layer.length-1);
 		init();
+		Instruments.onDefaultLoaded();
 		pianoroll.historyPush("Before Add Layer");
 
 		var ls = document.querySelectorAll(".layer-name");
@@ -1215,21 +1215,20 @@ function init(){
 			for (var j=0; j<Work.global.seqXY.length; j++)
 				if (Work.global.seqXY[j].l!=ii)
 					tempSeq.push(copyObj(Work.global.seqXY[j]));
-			Work.global.seqXY=tempSeq;
-					
+			Work.global.seqXY=tempSeq;				
 			for (var j=0; j<Work.global.seqXY.length; j++)
 				if (Work.global.seqXY[j].l>ii)
-					Work.global.seqXY[j].l--;
-					
+					Work.global.seqXY[j].l--;					
 			Work.layer.splice(ii, 1);
-			pianoroll.layer.splice(ii, 1);
 
-			if (Work.global.layer_sel>=Work.layer.length) Work.global.layer_sel=0;
+			init();
+			Instruments.onDefaultLoaded();
+
+			if (Work.global.layer_sel>=Work.layer.length) 
+				Work.global.layer_sel=Work.layer.length-1;
 
 			Global.XYtoIJ();
 			
-			init();
-
 			pianoroll.historyPush("Delete Layer");
 			Controls.saveTemp();			
 		};
