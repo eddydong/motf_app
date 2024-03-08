@@ -569,33 +569,33 @@ console.clear();
 Controls.showWaiting();
 pianoroll.init(); 
 
-function improvise(){
-	var et = pianoroll.endTick;
-	var v=new Improviser.Verse({bpMeas:4, root: 51});
-	v.improvise();
-	piece=v.log();
-//	console.log(piece);
-	var note=null;
-	for (var i=0; i<piece.length; i++) {
-		if (note==null && piece[i]<88)
-			note = {x: i*2 + et, y: piece[i], d: 2, s: 0, v: 1, l: 0, t: 1};
-		if (note!=null) if (note.y!=88 && piece[i]==88) 
-			note.d += 2;
-		else if (piece[i]!=note.y && piece[i]!=88) 
-		{
-			if (note!=null) pianoroll.addNote(note);			
-			if (piece[i]!=89) {
-				note = {x: i*2 + et, y: piece[i], d: 2, s: 0, v: 1, l: 0, t: 1};
-			} else
-				note=null;
-		}
-	}
-	if (note!=null) pianoroll.addNote(note);	
-}
+// function improvise(){
+// 	var et = pianoroll.endTick;
+// 	var v=new Improviser.Verse({bpMeas:4, root: 51});
+// 	v.improvise();
+// 	piece=v.log();
+// //	console.log(piece);
+// 	var note=null;
+// 	for (var i=0; i<piece.length; i++) {
+// 		if (note==null && piece[i]<88)
+// 			note = {x: i*2 + et, y: piece[i], d: 2, s: 0, v: 1, l: 0, t: 1};
+// 		if (note!=null) if (note.y!=88 && piece[i]==88) 
+// 			note.d += 2;
+// 		else if (piece[i]!=note.y && piece[i]!=88) 
+// 		{
+// 			if (note!=null) pianoroll.addNote(note);			
+// 			if (piece[i]!=89) {
+// 				note = {x: i*2 + et, y: piece[i], d: 2, s: 0, v: 1, l: 0, t: 1};
+// 			} else
+// 				note=null;
+// 		}
+// 	}
+// 	if (note!=null) pianoroll.addNote(note);	
+// }
 
-for (var i=0; i<1; i++) improvise();
+// for (var i=0; i<1; i++) improvise();
 
-pianoroll.autoZoom("xy");
+// pianoroll.autoZoom("xy");
 
 // var work = JSB.train;
 // var header = 0;
