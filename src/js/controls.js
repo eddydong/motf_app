@@ -1378,25 +1378,26 @@ pianoroll.canvas.addEventListener('wheel', (e) => {
 		posY -= e.deltaY * 2;
 		pianoroll.adjustVel(e.deltaY);
 	} else if (e.shiftKey) {  // zoom
+		let hstep = 2, wstep = 2;
 		pianoroll.viewportH = (pianoroll.viewportH 
-							- e.deltaY/(pianoroll.height/pianoroll.viewportH));
+							- e.deltaY*hstep/(pianoroll.height/pianoroll.viewportH));
 		var vH=Work.global.scaledKeyboard?Composer.scale.length:88;
 		if (pianoroll.viewportH > vH) pianoroll.viewportH= vH;
 		if (pianoroll.viewportB+pianoroll.viewportH>vH) pianoroll.viewportB=vH-pianoroll.viewportH;
 		if (pianoroll.viewportH < 24) pianoroll.viewportH=24;
 
 		pianoroll.viewportW = (pianoroll.viewportW 
-							+ e.deltaX/(pianoroll.width/pianoroll.viewportW));
+							+ e.deltaX*wstep/(pianoroll.width/pianoroll.viewportW));
 		if (pianoroll.viewportW >1024) pianoroll.viewportW=1024;
 		if (pianoroll.viewportW < 32) pianoroll.viewportW=32;
 	} else {  // pan
-		let hstep=0.05, vstep=0.05;
+		let hstep=0.0008, wstep=0.0008;
 		if (!pianoroll.autoScrolling) {
-			pianoroll.viewportL+=(e.deltaX * hstep);
+			pianoroll.viewportL+=(e.deltaX * pianoroll.viewportW * wstep);
 			if (pianoroll.viewportL<0) pianoroll.viewportL=0;
 			Navbar.updateLR();
 		};
-		pianoroll.viewportB-=(e.deltaY * vstep);
+		pianoroll.viewportB-=(e.deltaY * pianoroll.viewportH * hstep);
 		if (pianoroll.viewportB<0) pianoroll.viewportB=0;
 		let vH = Work.global.scaledKeyboard ? Composer.scale.length : 88;
 		if (pianoroll.viewportB+pianoroll.viewportH>vH) pianoroll.viewportB=vH-pianoroll.viewportH;
