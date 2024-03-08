@@ -136,7 +136,7 @@ var Controls= {};
 				var ls = document.querySelectorAll(".layer-name");
 				for (i=0; i<ls.length; i++) ls[i].style.background=Global.color.btn_inactive;
 				ls[Work.global.layer_sel].style.background=Global.color.btn_active;
-				pianoroll.autoZoom("y");
+				//pianoroll.autoZoom("y");
 				if (!Work.global.through) pianoroll.updateChords();
 			};
 			
