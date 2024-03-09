@@ -248,7 +248,7 @@ var Controls= {};
 			// T for through
 			if (e.keyCode == 84) { 
 				Work.global.through=1-Work.global.through; 
-				pianoroll.autoZoom("y");
+				//pianoroll.autoZoom("y");
 				pianoroll.updateChords();
 			};
 
@@ -1391,7 +1391,7 @@ pianoroll.canvas.addEventListener('wheel', (e) => {
 		if (pianoroll.viewportW >1024) pianoroll.viewportW=1024;
 		if (pianoroll.viewportW < 32) pianoroll.viewportW=32;
 	} else {  // pan
-		let hstep=0.0008, wstep=0.0008;
+		let hstep=0.0016, wstep=0.0008;
 		if (!pianoroll.autoScrolling) {
 			pianoroll.viewportL+=(e.deltaX * pianoroll.viewportW * wstep);
 			if (pianoroll.viewportL<0) pianoroll.viewportL=0;
@@ -1405,6 +1405,7 @@ pianoroll.canvas.addEventListener('wheel', (e) => {
 });	
 
 pianoroll.canvas.addEventListener("gesturestart", function (e) {
+	console.log("gesturestart");
 	e.preventDefault();
 // 	startX = e.pageX;
 // 	startY = e.pageY;
@@ -1412,6 +1413,7 @@ pianoroll.canvas.addEventListener("gesturestart", function (e) {
 });
 
 pianoroll.canvas.addEventListener("gesturechange", function (e) {
+	console.log("gesturechange");
 	e.preventDefault();
 //	console.log(e.rotation);
 	Controls.zoom = startScale / e.scale;
