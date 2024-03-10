@@ -50,6 +50,7 @@ function Pianoroll(){
 	this.recording=1;
 	this.vKeyboardOn=0;
 	this.volumeScale = 2;
+	this.outFocusNoteOpacity = 0.2;
  	
  	var self=this, ctx=this.ctx;
 
@@ -745,16 +746,16 @@ Pianoroll.prototype.drawPianoRoll=function(){
  		var sel=this.selCount();
 
 		if (Work.global.seqXY[i].t==1) {
-			colorF="rgba(120,255,255,0.3)";	
+			colorF="rgba(120,255,255,"+this.outFocusNoteOpacity+")";	
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
-				colorF="rgba(255,150,230,0.3)";	
+				colorF="rgba(255,150,230,"+this.outFocusNoteOpacity+")";	
 		} else {
-			colorF="rgba(130,255,160,0.3)";		
+			colorF="rgba(130,255,160,0"+this.outFocusNoteOpacity+")";		
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
-				colorF="rgba(255,240,170,0.3)";	
+				colorF="rgba(255,240,170,"+this.outFocusNoteOpacity+")";	
 		};
 		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
-			colorF = "rgba(200,180,230,0.3)";		
+			colorF = "rgba(240,170,190,"+this.outFocusNoteOpacity+")";		
 	
 
 		this.ctx.beginPath();
@@ -832,7 +833,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 				colorF="rgba(255,240,170,0.9)";	
 		};
 		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
-			colorF = "rgba(200,180,230,0.9)";		
+			colorF = "rgba(240,170,190,0.9)";		
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
@@ -1139,8 +1140,8 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 			top= this.height-(scaleY(Work.global.seqXY[i].y).key-this.viewportB)*h-h,
 			width= w * Work.global.seqXY[i].d,
 			height= h,
-			colorF="rgba(130,255,160,0.3)";		
-			if (Work.global.seqXY[i].t==1) colorF="rgba(120,255,255,0.3)";	
+			colorF="rgba(130,255,160,"+this.outFocusNoteOpacity+")";		
+			if (Work.global.seqXY[i].t==1) colorF="rgba(120,255,255,"+this.outFocusNoteOpacity+")";	
 		} else {
 		// off scale notes	
 		var left = (Work.global.seqXY[i].x -this.viewportL)*w, 
@@ -1150,8 +1151,8 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 				- this.viewportB)*h-h,
 			width= w * Work.global.seqXY[i].d,
 			height= h*0.2,
-			colorF="rgba(255,240,170,0.3)";	
-			if (Work.global.seqXY[i].t==1) colorF="rgba(255,150,230,0.3)";
+			colorF="rgba(255,240,170,"+this.outFocusNoteOpacity+")";	
+			if (Work.global.seqXY[i].t==1) colorF="rgba(255,150,230,"+this.outFocusNoteOpacity+")";
 		};	
 									
  		var sel=this.selCount();
