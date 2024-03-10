@@ -3,44 +3,26 @@ var Work = {};
 (function(){
 
 Work.global= {
-
 	workname: "Another Piece of Shit",
-	
 	author: "noname",
-
 	key: 0, // 0-11 / offset from C, in chromatic scale
-	
-	scale_id: 70,
-	
-	bpm: 120,
-	
+	scale_id: 5,
+	mode: 2,
+	bpm: 180,
 	bpMeas: 4,
-	
 	bpNote: 4,
-
 	volume: -10,
-	
 	roomsize: 3,
-
 	metro_vol: -10, 	
-
 	rhythm_vol: -10, 	
-	
 	human_vel: 0.1,
-	
 	human_tem: 0.1,
-	
 	magnet: 0,
-	
-	metronome: 1,
-
+	metronome: 0,
 	tempo_auto:[ // 0..seq.length/16 (resolution: 1 measure)
 	],
-	
 	layer_sel: 0,
-	
 	imp_pre_sel: 0,
-	
 	// 1..10
 	imp_pre: [ 
 		{
@@ -344,64 +326,50 @@ Work.global= {
 			]
 		}
 	],
-	
 	seqIJ: [],
-	
 	// x unit: tick; y unit: key
 	seqXY: [],
 // 	{"x":0,"y":3,"d":64,"v":1,"l":0,"s":1,"t":0},
 // 	],
-	
 	stroke: [],
-
 	// 6543
 //	chord: [[24, 27, 31],[22, 26, 29],[20, 24, 27],[19, 23, 26, 29]],
-
 	chord: [
 // 	{name:"CM",mask:"100010000100"},
 // 	{name:"CM",mask:"001000010001"},
 // 	{name:"CM",mask:"100001000100"},
 // 	{name:"CM",mask:"000010001001"}
 	],
-	
 	autoChord: [],
-	
 // [layer, tick, 1/0 pedal down / up]
 // 	pedal: [[0,0,1],[0,15,0],
 // 			[0,16,1],[0,31,0],
 // 			[0,32,1],[0,47,0],
 // 			[0,48,1],[0,63,0]],
 	pedal: [],
-	
 	// 1645
 //	chord: [[31, 34, 39],[27, 31, 36],[27, 32, 36],[29, 34, 38]],
 
 	// 15634145
 // 	chord: [[22, 27, 31],[22, 26, 29],[24, 27, 31],[22, 26, 31],
 // 			[20, 24, 27],[22, 27, 31],[20, 24, 27],[22, 26, 29]],
-
 	//Jazz 1
 //	chord: [[2,5,9,0],[2,7,11,5],[0,4,7,11],[0,4,7,9]],
 	
 //	chord: [[0+3+24,3+3+24,7+3+24,10+3+24]],
-	
-	selectedMeas: [],	
-			
+	selectedMeas: [],			
 	showRhythm: 0,
-	
 	showCanvas: 0,
-
 	scaledKeyboard: 0,
-	
 	through: 1,
-	
 	printTo: "16" // "rhythm", "32", "16", "8", "4"(n) 
 };
 
 Work.layer= [  // T01..T10
 	{
 		name: "Melody",
-		instrument: 6,
+		type: "melody",
+		instrument: 11,
 		mute: 0,
 		solo: 0,
 		volume: 0,
@@ -420,6 +388,7 @@ Work.layer= [  // T01..T10
 	},
 	{
 		name: "Chord",
+		type: "chord",
 		instrument: 1,
 		mute: 0,		
 		solo: 0,
@@ -439,10 +408,11 @@ Work.layer= [  // T01..T10
 	},
 	{
 		name: "Bass",
+		type: "bass",
 		instrument: 16,
 		mute: 0,		
 		solo: 0,
-		volume: 0,
+		volume: 4,
 		pan: 0,
 		seq: [],
 		rhythm: [
@@ -458,6 +428,7 @@ Work.layer= [  // T01..T10
 	},
 	{
 		name: "Percussion",
+		type: "percussion",
 		instrument: 17,
 		mute: 0,		
 		solo: 0,

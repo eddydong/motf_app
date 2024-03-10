@@ -546,8 +546,10 @@
 <script src="./src/js/global.js"></script>
 <script src="./src/js/work.js"></script>
 <script src="./src/js/importer.js"></script>
+<script src="./src/js1/motf.js"></script>
 <script src="./src/js/composer.js"></script>
 <script src="./src/js1/improviser.js"></script>
+<script src="./src/js1/improviser1.js"></script>
 <script src="./src/js/pianoroll.js"></script>
 <script src="./src/js/canvas.js"></script>
 <script src="./src/js/navbar.js"></script>
@@ -559,15 +561,113 @@
 <script src="./src/js/midicontroller.js"></script>
 <!-- <script src="./js/JSB/jsb-chorales-quarter.js"></script> -->
 <script src="./src/js/JSB/jsb-chorales-8th.js"></script>
-<!-- <script type="module"> -->
 <script>
 
-console.clear();
-//localStorage.clear();
+//console.clear();
 //{"x":0,"y":3,"d":64,"v":1,"l":0,"s":1,"t":0}
 
+localStorage.clear();
 Controls.showWaiting();
 pianoroll.init(); 
+
+function Imp(){
+var pos = 0;
+// for (var i=0; i<Improviser1.verse.pick.length; i++){
+// 	pianoroll.addNote({
+// 			x: pos,
+// 			y: Improviser1.verse.pick[i].note - 21 - 24,
+// 			d: Improviser1.verse.pick[i].len * 2, 
+// 			s: 0, 
+// 			v: 1, 
+// 			l: 0, //j,
+// 			t: 0 // type: 0: normal note; 1: just improvised			
+// 	});
+// 	pos += Improviser1.verse.pick[i].len * 2;
+// };
+pos = 0;
+for (var i=0; i<Improviser1.bass.length; i++)
+for (var j=0; j<Improviser1.bass[i].pick.length; j++){	
+	pianoroll.addNote({
+			x: pos,
+			y: Improviser1.bass[i].pick[j].note - 21 - 12,
+			d: Improviser1.bass[i].pick[j].len * 2, 
+			s: 1, 
+			v: 1, 
+			l: 2, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+	pos += Improviser1.bass[i].pick[j].len * 2;
+}
+
+pos = 0;
+for (var i=0; i<Improviser1.melody.length; i++)
+for (var j=0; j<Improviser1.melody[i].pick.length; j++)
+if (Improviser1.melody[i].pick[j]) {
+//	console.log(Motf.melody[i].pick[j]);
+	pianoroll.addNote({
+			x: pos,
+			y: Improviser1.melody[i].pick[j].note - 21 + 12,
+			d: Improviser1.melody[i].pick[j].len * 2, 
+			s: 0, 
+			v: 1, 
+			l: 0, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+	pos += Improviser1.melody[i].pick[j].len * 2;
+};
+};
+
+Improviser1.rebuild();
+
+pianoroll.autoSimpleChordByKey();
+
+for (var i=0; i<128; i++) {
+	if (i % 4 == 0)
+	pianoroll.addNote({
+			x: i,
+			y: 36 - 21,
+			d: 1, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+	if (i % 64 == 0)
+	pianoroll.addNote({
+			x: i,
+			y: 43 - 21,
+			d: 8, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});	
+	if (i % 32 == 22)
+	pianoroll.addNote({
+			x: i,
+			y: 37 - 21,
+			d: 1, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+	if (i % 16 == 8)
+	pianoroll.addNote({
+			x: i,
+			y: 38 - 21,
+			d: 1, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+}
+
+pianoroll.autoZoom("xy");
+
+pianoroll.deSelectAll();
+
 
 // function improvise(){
 // 	var et = pianoroll.endTick;

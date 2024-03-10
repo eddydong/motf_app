@@ -102,11 +102,12 @@ var Context={
         context.mode = mode;
         context.bpMeas = bpMeas;
         context.bpNote = bpNote;
-        context.bpm = bpm;        
+        context.bpm = bpm;      
+        context.root = 60 + key; 
         context.modeLen = Theory.scaleDict[scaleId].len;
         context.chords = Context.getChords(key, scaleId, mode);
         context.inScale = (note) => Context.inScale(context, note);
-        context.getNoteByMoveByScale = (note, move) => Context.getNoteByMoveByScale(context, note, move);
+        context.getNoteByScaleMove = (note, move) => Context.getNoteByScaleMove(context, note, move);
         return context;
     },
     // To get default chords for current context
@@ -119,7 +120,7 @@ var Context={
         return Theory.scaleDict[ctx.scaleId].modes[ctx.mode][n % 12]==1;
     },
     // n: current note; m: steps to move up(+) or down(-)
-    getNoteByMoveByScale: function(ctx, n, m){
+    getNoteByScaleMove: function(ctx, n, m){
         if (!Context.inScale(ctx, n)) throw "Theory.moveByScale: note not in scale.";
         var off = 0, pos = n;
         while (off != m){
@@ -219,10 +220,12 @@ var m1=Measure.new(c1);
 
 m1.notes.push(n1);
 
-console.log(m1);
+//console.log(m1);
 
 // var m1=Measure.new(null, c1, []);
 // var n1=Note.new(m1, null, 60, 1, 1, 1); 
 // console.log(n1);
 
-debugger
+module.exports = { Context, Automation };
+
+//debugger

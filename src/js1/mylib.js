@@ -107,4 +107,3 @@ myLib.getUuid = getUuid;
 myLib.arrayDel = arrayDel;
 
 })();
-

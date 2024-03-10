@@ -1429,10 +1429,10 @@ pianoroll.canvas.addEventListener("gestureend", function (e) {
 
 function initFixedUI(){
 	var s;
-	for (var i=0; i<Theory.scaleDict.length; i++){
+	for (var i=0; i<Motf.scaleDict.length; i++){
 		s=document.getElementById("select_scale");
 		var o=document.createElement("option");
-		o.innerHTML="#"+i+" - "+Theory.scaleDict[i].name;
+		o.innerHTML="#"+i+" - "+Motf.scaleDict[i].name;
 		s.appendChild(o);
 	};
 //	s.options.selectedIndex=70;

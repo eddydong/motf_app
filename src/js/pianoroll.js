@@ -753,6 +753,9 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
 				colorF="rgba(255,240,170,0.3)";	
 		};
+		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
+			colorF = "rgba(200,180,230,0.3)";		
+	
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
@@ -828,6 +831,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
 				colorF="rgba(255,240,170,0.9)";	
 		};
+		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
+			colorF = "rgba(200,180,230,0.9)";		
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
@@ -848,7 +853,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			colorF = "rgba(220,255,220,";
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0){
 				colorF = "rgba(255,220,220,";	
-			};
+			};	
 
  			var velH=h*max_vel_height*Work.global.seqXY[i].v/3;
 // 			if (this.isPlaying)
@@ -1894,7 +1899,7 @@ Pianoroll.prototype.improviseX2=function(){
 					{"d":-2,"p":0},{"d":3,"p":0},{"d":-3,"p":0},{"d":4,"p":0},
 					{"d":-4,"p":0},{"d":5,"p":0},{"d":-5,"p":0},{"d":7,"p":0},{"d":-7,"p":0}],
 		"iparams":[["0","1"],["0","1"],["0","1"],["0","1"],["0","1"],["0","1"]],
-		"chordOrScale": 0.5,  // 1 chord - 0 scale
+		"chordOrScale": 0,  // 1 chord - 0 scale
 		"melodayVariation": 0
 	});
 
@@ -1906,7 +1911,7 @@ Pianoroll.prototype.improviseX2=function(){
 					{"d":-2,"p":0.5},{"d":3,"p":0},{"d":-3,"p":0},{"d":4,"p":0},
 					{"d":-4,"p":0},{"d":5,"p":0},{"d":-5,"p":0},{"d":7,"p":0},{"d":-7,"p":0}],
 		"iparams":[["0","1"],["0","1"],["0","1"],["0","1"],["0","1"],["0","1"]],
-		"chordOrScale": 0.5,   // 1 chord - 0 scale
+		"chordOrScale": 0.9,   // 1 chord - 0 scale
 		"melodayVariation": 0
 	});
 
@@ -1914,10 +1919,10 @@ Pianoroll.prototype.improviseX2=function(){
 	this.deSelectAll();	
 	this.improvise({
 		"rhythm":"random",
-		"suggester":[{"d":0,"p":0.2},{"d":1,"p":1},{"d":-1,"p":1},{"d":2,"p":0.5},
-					{"d":-2,"p":0.5},{"d":3,"p":0},{"d":-3,"p":0.5},{"d":4,"p":0},
+		"suggester":[{"d":0,"p":1},{"d":1,"p":1},{"d":-1,"p":1},{"d":2,"p":1},
+					{"d":-2,"p":1},{"d":3,"p":0.5},{"d":-3,"p":0.5},{"d":4,"p":0},
 					{"d":-4,"p":0},{"d":5,"p":0},{"d":-5,"p":0},{"d":7,"p":0},{"d":-7,"p":0}],
-		"iparams":[["0","1"],["0","1"],["0","1"],["0","1"],["0","1"],["0","1"]],
+		"iparams":[["0","1"],["0","0.1"],["0","1"],["0","1"],["0","1"],["0","1"]],
 		"chordOrScale": 0.3,   // 1 chord - 0 scale
 		"melodayVariation": 1
 	});
@@ -2100,16 +2105,26 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 	Work.global.autoChord=[];
 	for (var i=0; i<chords.length; i++) if (chords[i]){
 		Work.global.autoChord.push(chords[i]);
-		for (var k=0; k<12; k++) if (chords[i].mask[k]==1)
-		this.addNote({
+		for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
+			this.addNote({
+				x: Work.global.bpMeas / Work.global.bpNote * 16 * i,
+				y: 27 + k + 12,
+				d: Work.global.bpMeas / Work.global.bpNote * 16, 
+				s: 1, 
+				v: 1, 
+				l: 1, //Work.global.layer_sel,
+				t: 1 // type: 0: normal note; 1: just improvised			
+			});
+			this.addNote({
 				x: Work.global.bpMeas / Work.global.bpNote * 16 * i,
 				y: 27 + k,
 				d: Work.global.bpMeas / Work.global.bpNote * 16, 
 				s: 1, 
 				v: 1, 
-				l: Work.global.layer_sel,
+				l: 1, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
-		});
+			});
+		}
 	};
 	this.autoZoom("y");
 	this.updateChords();

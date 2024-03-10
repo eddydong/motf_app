@@ -623,7 +623,7 @@ var samplerParams=[
         'E3': 'E3.wav',
         'A3': 'A3.wav',
         'C4': 'C4.wav',
-        'F4': 'F4.wav',
+        'F5': 'F4.wav',
 		},
 		baseUrl: projectURL+"/sample/upright_bass/"
 	},
@@ -682,7 +682,7 @@ var updateSample = function(){
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
-    console.log("loading remote "+i);
+//    console.log("loading remote "+i);
     for (var j=0; j<Object.values(samplerParams[i].urls).length; j++)
       getVirtualURL(samplerParams[i].baseUrl
                     +Object.values(samplerParams[i].urls)[j], i, j);
@@ -730,7 +730,7 @@ Instruments.onDefaultLoaded=()=>{
       Instruments.newSampler(Work.layer[i].instrument, i);
       pianoroll.layer[i].channel.volume.value=Work.layer[i].volume;
       pianoroll.layer[i].channel.pan.value=Work.layer[i].pan;
-      console.log("updating layer "+i+" with instru "+Work.layer[i].instrument);
+//      console.log("updating layer "+i+" with instru "+Work.layer[i].instrument);
     };
   Controls.hideWaiting();
   console.log("all loaded");

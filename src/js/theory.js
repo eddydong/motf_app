@@ -26,12 +26,12 @@ var Theory= {};
 // a.click();
 // document.body.removeChild(a);
 
-const chordDict=[{"id":0,"symbol":"5","mask":"100000010000","len":2},{"id":1,"symbol":"M7#5sus4","mask":"100001001001","len":4},{"id":2,"symbol":"7#5sus4","mask":"100001001010","len":4},{"id":3,"symbol":"sus4","mask":"100001010000","len":3},{"id":4,"symbol":"M7sus4","mask":"100001010001","len":4},{"id":5,"symbol":"7sus4","mask":"100001010010","len":4},{"id":6,"symbol":"7no5","mask":"100010000010","len":3},{"id":7,"symbol":"aug","mask":"100010001000","len":3},{"id":8,"symbol":"M7b6","mask":"100010001001","len":4},{"id":9,"symbol":"maj7#5","mask":"100010001001","len":4},{"id":10,"symbol":"7#5","mask":"100010001010","len":4},{"id":11,"symbol":"7b13","mask":"100010001010","len":4},{"id":12,"symbol":"M","mask":"100010010000","len":3},{"id":13,"symbol":"maj7","mask":"100010010001","len":4},{"id":14,"symbol":"7","mask":"100010010010","len":4},{"id":15,"symbol":"6","mask":"100010010100","len":4},{"id":16,"symbol":"7add6","mask":"100010010110","len":5},{"id":17,"symbol":"7b6","mask":"100010011010","len":5},{"id":18,"symbol":"Mb5","mask":"100010100000","len":3},{"id":19,"symbol":"M7b5","mask":"100010100001","len":4},{"id":20,"symbol":"7b5","mask":"100010100010","len":4},{"id":21,"symbol":"maj#4","mask":"100010110001","len":5},{"id":22,"symbol":"7#11","mask":"100010110010","len":5},{"id":23,"symbol":"M6#11","mask":"100010110100","len":5},{"id":24,"symbol":"7#11b13","mask":"100010111010","len":6},{"id":25,"symbol":"m#5","mask":"100100001000","len":3},{"id":26,"symbol":"mb6M7","mask":"100100001001","len":4},{"id":27,"symbol":"m7#5","mask":"100100001010","len":4},{"id":28,"symbol":"m","mask":"100100010000","len":3},{"id":29,"symbol":"m/ma7","mask":"100100010001","len":4},{"id":30,"symbol":"m7","mask":"100100010010","len":4},{"id":31,"symbol":"m6","mask":"100100010100","len":4},{"id":32,"symbol":"mMaj7b6","mask":"100100011001","len":5},{"id":33,"symbol":"dim","mask":"100100100000","len":3},{"id":34,"symbol":"oM7","mask":"100100100001","len":4},{"id":35,"symbol":"m7b5","mask":"100100100010","len":4},{"id":36,"symbol":"dim7","mask":"100100100100","len":4},{"id":37,"symbol":"o7M7","mask":"100100100101","len":5},{"id":38,"symbol":"4","mask":"100101000010","len":4},{"id":39,"symbol":"madd4","mask":"100101010000","len":4},{"id":40,"symbol":"m7add11","mask":"100101010010","len":5},{"id":41,"symbol":"+add#9","mask":"100110001000","len":4},{"id":42,"symbol":"7#5#9","mask":"100110001010","len":5},{"id":43,"symbol":"7#9","mask":"100110010010","len":5},{"id":44,"symbol":"13#9","mask":"100110010110","len":6},{"id":45,"symbol":"7#9b13","mask":"100110011010","len":6},{"id":46,"symbol":"maj7#9#11","mask":"100110110001","len":6},{"id":47,"symbol":"7#9#11","mask":"100110110010","len":6},{"id":48,"symbol":"13#9#11","mask":"100110110110","len":7},{"id":49,"symbol":"7#9#11b13","mask":"100110111010","len":7},{"id":50,"symbol":"sus2","mask":"101000010000","len":3},{"id":51,"symbol":"M9#5sus4","mask":"101001001001","len":5},{"id":52,"symbol":"sus24","mask":"101001010000","len":4},{"id":53,"symbol":"M9sus4","mask":"101001010001","len":5},{"id":54,"symbol":"11","mask":"101001010010","len":5},{"id":55,"symbol":"9sus4","mask":"101001010010","len":5},{"id":56,"symbol":"13sus4","mask":"101001010110","len":6},{"id":57,"symbol":"9no5","mask":"101010000010","len":4},{"id":58,"symbol":"13no5","mask":"101010000110","len":5},{"id":59,"symbol":"M#5add9","mask":"101010001000","len":4},{"id":60,"symbol":"maj9#5","mask":"101010001001","len":5},{"id":61,"symbol":"9#5","mask":"101010001010","len":5},{"id":62,"symbol":"9b13","mask":"101010001010","len":5},{"id":63,"symbol":"Madd9","mask":"101010010000","len":4},{"id":64,"symbol":"maj9","mask":"101010010001","len":5},{"id":65,"symbol":"9","mask":"101010010010","len":5},{"id":66,"symbol":"6/9","mask":"101010010100","len":5},{"id":67,"symbol":"maj13","mask":"101010010101","len":6},{"id":68,"symbol":"M7add13","mask":"101010010101","len":6},{"id":69,"symbol":"13","mask":"101010010110","len":6},{"id":70,"symbol":"M9b5","mask":"101010100001","len":5},{"id":71,"symbol":"9b5","mask":"101010100010","len":5},{"id":72,"symbol":"13b5","mask":"101010100110","len":6},{"id":73,"symbol":"9#5#11","mask":"101010101010","len":6},{"id":74,"symbol":"maj9#11","mask":"101010110001","len":6},{"id":75,"symbol":"9#11","mask":"101010110010","len":6},{"id":76,"symbol":"69#11","mask":"101010110100","len":6},{"id":77,"symbol":"M13#11","mask":"101010110101","len":7},{"id":78,"symbol":"13#11","mask":"101010110110","len":7},{"id":79,"symbol":"9#11b13","mask":"101010111010","len":7},{"id":80,"symbol":"m9#5","mask":"101100001010","len":5},{"id":81,"symbol":"madd9","mask":"101100010000","len":4},{"id":82,"symbol":"mM9","mask":"101100010001","len":5},{"id":83,"symbol":"m9","mask":"101100010010","len":5},{"id":84,"symbol":"m69","mask":"101100010100","len":5},{"id":85,"symbol":"m13","mask":"101100010110","len":6},{"id":86,"symbol":"mMaj9b6","mask":"101100011001","len":6},{"id":87,"symbol":"m9b5","mask":"101100100010","len":5},{"id":88,"symbol":"m11A","mask":"101101001010","len":6},{"id":89,"symbol":"m11","mask":"101101010010","len":6},{"id":90,"symbol":"b9sus","mask":"110001010010","len":5},{"id":91,"symbol":"11b9","mask":"110001010010","len":5},{"id":92,"symbol":"7sus4b9b13","mask":"110001011010","len":6},{"id":93,"symbol":"alt7","mask":"110010000010","len":4},{"id":94,"symbol":"7#5b9","mask":"110010001010","len":5},{"id":95,"symbol":"Maddb9","mask":"110010010000","len":4},{"id":96,"symbol":"M7b9","mask":"110010010001","len":5},{"id":97,"symbol":"7b9","mask":"110010010010","len":5},{"id":98,"symbol":"13b9","mask":"110010010110","len":6},{"id":99,"symbol":"7b9b13","mask":"110010011010","len":6},{"id":100,"symbol":"7#5b9#11","mask":"110010101010","len":6},{"id":101,"symbol":"7b9#11","mask":"110010110010","len":6},{"id":102,"symbol":"13b9#11","mask":"110010110110","len":7},{"id":103,"symbol":"7b9b13#11","mask":"110010111010","len":7},{"id":104,"symbol":"mb6b9","mask":"110100001000","len":4},{"id":105,"symbol":"7b9#9","mask":"110110010010","len":6}];
+// const chordDict=[{"id":0,"symbol":"5","mask":"100000010000","len":2},{"id":1,"symbol":"M7#5sus4","mask":"100001001001","len":4},{"id":2,"symbol":"7#5sus4","mask":"100001001010","len":4},{"id":3,"symbol":"sus4","mask":"100001010000","len":3},{"id":4,"symbol":"M7sus4","mask":"100001010001","len":4},{"id":5,"symbol":"7sus4","mask":"100001010010","len":4},{"id":6,"symbol":"7no5","mask":"100010000010","len":3},{"id":7,"symbol":"aug","mask":"100010001000","len":3},{"id":8,"symbol":"M7b6","mask":"100010001001","len":4},{"id":9,"symbol":"maj7#5","mask":"100010001001","len":4},{"id":10,"symbol":"7#5","mask":"100010001010","len":4},{"id":11,"symbol":"7b13","mask":"100010001010","len":4},{"id":12,"symbol":"M","mask":"100010010000","len":3},{"id":13,"symbol":"maj7","mask":"100010010001","len":4},{"id":14,"symbol":"7","mask":"100010010010","len":4},{"id":15,"symbol":"6","mask":"100010010100","len":4},{"id":16,"symbol":"7add6","mask":"100010010110","len":5},{"id":17,"symbol":"7b6","mask":"100010011010","len":5},{"id":18,"symbol":"Mb5","mask":"100010100000","len":3},{"id":19,"symbol":"M7b5","mask":"100010100001","len":4},{"id":20,"symbol":"7b5","mask":"100010100010","len":4},{"id":21,"symbol":"maj#4","mask":"100010110001","len":5},{"id":22,"symbol":"7#11","mask":"100010110010","len":5},{"id":23,"symbol":"M6#11","mask":"100010110100","len":5},{"id":24,"symbol":"7#11b13","mask":"100010111010","len":6},{"id":25,"symbol":"m#5","mask":"100100001000","len":3},{"id":26,"symbol":"mb6M7","mask":"100100001001","len":4},{"id":27,"symbol":"m7#5","mask":"100100001010","len":4},{"id":28,"symbol":"m","mask":"100100010000","len":3},{"id":29,"symbol":"m/ma7","mask":"100100010001","len":4},{"id":30,"symbol":"m7","mask":"100100010010","len":4},{"id":31,"symbol":"m6","mask":"100100010100","len":4},{"id":32,"symbol":"mMaj7b6","mask":"100100011001","len":5},{"id":33,"symbol":"dim","mask":"100100100000","len":3},{"id":34,"symbol":"oM7","mask":"100100100001","len":4},{"id":35,"symbol":"m7b5","mask":"100100100010","len":4},{"id":36,"symbol":"dim7","mask":"100100100100","len":4},{"id":37,"symbol":"o7M7","mask":"100100100101","len":5},{"id":38,"symbol":"4","mask":"100101000010","len":4},{"id":39,"symbol":"madd4","mask":"100101010000","len":4},{"id":40,"symbol":"m7add11","mask":"100101010010","len":5},{"id":41,"symbol":"+add#9","mask":"100110001000","len":4},{"id":42,"symbol":"7#5#9","mask":"100110001010","len":5},{"id":43,"symbol":"7#9","mask":"100110010010","len":5},{"id":44,"symbol":"13#9","mask":"100110010110","len":6},{"id":45,"symbol":"7#9b13","mask":"100110011010","len":6},{"id":46,"symbol":"maj7#9#11","mask":"100110110001","len":6},{"id":47,"symbol":"7#9#11","mask":"100110110010","len":6},{"id":48,"symbol":"13#9#11","mask":"100110110110","len":7},{"id":49,"symbol":"7#9#11b13","mask":"100110111010","len":7},{"id":50,"symbol":"sus2","mask":"101000010000","len":3},{"id":51,"symbol":"M9#5sus4","mask":"101001001001","len":5},{"id":52,"symbol":"sus24","mask":"101001010000","len":4},{"id":53,"symbol":"M9sus4","mask":"101001010001","len":5},{"id":54,"symbol":"11","mask":"101001010010","len":5},{"id":55,"symbol":"9sus4","mask":"101001010010","len":5},{"id":56,"symbol":"13sus4","mask":"101001010110","len":6},{"id":57,"symbol":"9no5","mask":"101010000010","len":4},{"id":58,"symbol":"13no5","mask":"101010000110","len":5},{"id":59,"symbol":"M#5add9","mask":"101010001000","len":4},{"id":60,"symbol":"maj9#5","mask":"101010001001","len":5},{"id":61,"symbol":"9#5","mask":"101010001010","len":5},{"id":62,"symbol":"9b13","mask":"101010001010","len":5},{"id":63,"symbol":"Madd9","mask":"101010010000","len":4},{"id":64,"symbol":"maj9","mask":"101010010001","len":5},{"id":65,"symbol":"9","mask":"101010010010","len":5},{"id":66,"symbol":"6/9","mask":"101010010100","len":5},{"id":67,"symbol":"maj13","mask":"101010010101","len":6},{"id":68,"symbol":"M7add13","mask":"101010010101","len":6},{"id":69,"symbol":"13","mask":"101010010110","len":6},{"id":70,"symbol":"M9b5","mask":"101010100001","len":5},{"id":71,"symbol":"9b5","mask":"101010100010","len":5},{"id":72,"symbol":"13b5","mask":"101010100110","len":6},{"id":73,"symbol":"9#5#11","mask":"101010101010","len":6},{"id":74,"symbol":"maj9#11","mask":"101010110001","len":6},{"id":75,"symbol":"9#11","mask":"101010110010","len":6},{"id":76,"symbol":"69#11","mask":"101010110100","len":6},{"id":77,"symbol":"M13#11","mask":"101010110101","len":7},{"id":78,"symbol":"13#11","mask":"101010110110","len":7},{"id":79,"symbol":"9#11b13","mask":"101010111010","len":7},{"id":80,"symbol":"m9#5","mask":"101100001010","len":5},{"id":81,"symbol":"madd9","mask":"101100010000","len":4},{"id":82,"symbol":"mM9","mask":"101100010001","len":5},{"id":83,"symbol":"m9","mask":"101100010010","len":5},{"id":84,"symbol":"m69","mask":"101100010100","len":5},{"id":85,"symbol":"m13","mask":"101100010110","len":6},{"id":86,"symbol":"mMaj9b6","mask":"101100011001","len":6},{"id":87,"symbol":"m9b5","mask":"101100100010","len":5},{"id":88,"symbol":"m11A","mask":"101101001010","len":6},{"id":89,"symbol":"m11","mask":"101101010010","len":6},{"id":90,"symbol":"b9sus","mask":"110001010010","len":5},{"id":91,"symbol":"11b9","mask":"110001010010","len":5},{"id":92,"symbol":"7sus4b9b13","mask":"110001011010","len":6},{"id":93,"symbol":"alt7","mask":"110010000010","len":4},{"id":94,"symbol":"7#5b9","mask":"110010001010","len":5},{"id":95,"symbol":"Maddb9","mask":"110010010000","len":4},{"id":96,"symbol":"M7b9","mask":"110010010001","len":5},{"id":97,"symbol":"7b9","mask":"110010010010","len":5},{"id":98,"symbol":"13b9","mask":"110010010110","len":6},{"id":99,"symbol":"7b9b13","mask":"110010011010","len":6},{"id":100,"symbol":"7#5b9#11","mask":"110010101010","len":6},{"id":101,"symbol":"7b9#11","mask":"110010110010","len":6},{"id":102,"symbol":"13b9#11","mask":"110010110110","len":7},{"id":103,"symbol":"7b9b13#11","mask":"110010111010","len":7},{"id":104,"symbol":"mb6b9","mask":"110100001000","len":4},{"id":105,"symbol":"7b9#9","mask":"110110010010","len":6}];
 
-const scaleDict=[{"id":0,"name":"major pentatonic","mask":"101010010100","len":5},{"id":1,"name":"ionian pentatonic","mask":"100011010001","len":5},{"id":2,"name":"mixolydian pentatonic","mask":"100011010010","len":5},{"id":3,"name":"ritusen","mask":"101001010100","len":5},{"id":4,"name":"egyptian","mask":"101001010010","len":5},{"id":5,"name":"neopolitan major pentatonic","mask":"100011100010","len":5},{"id":6,"name":"vietnamese 1","mask":"100101011000","len":5},{"id":7,"name":"pelog","mask":"110100011000","len":5},{"id":8,"name":"kumoijoshi","mask":"110001011000","len":5},{"id":9,"name":"hirajoshi","mask":"101100011000","len":5},{"id":10,"name":"iwato","mask":"110001100010","len":5},{"id":11,"name":"in-sen","mask":"110001010010","len":5},{"id":12,"name":"lydian pentatonic","mask":"100010110001","len":5},{"id":13,"name":"malkos raga","mask":"100101001010","len":5},{"id":14,"name":"locrian pentatonic","mask":"100101100010","len":5},{"id":15,"name":"minor pentatonic","mask":"100101010010","len":5},{"id":16,"name":"minor six pentatonic","mask":"100101010100","len":5},{"id":17,"name":"flat three pentatonic","mask":"101100010100","len":5},{"id":18,"name":"flat six pentatonic","mask":"101010011000","len":5},{"id":19,"name":"scriabin","mask":"110010010100","len":5},{"id":20,"name":"whole tone pentatonic","mask":"100010101010","len":5},{"id":21,"name":"lydian #5P pentatonic","mask":"100010101001","len":5},{"id":22,"name":"lydian dominant pentatonic","mask":"100010110010","len":5},{"id":23,"name":"minor #7M pentatonic","mask":"100101010001","len":5},{"id":24,"name":"super locrian pentatonic","mask":"100110100010","len":5},{"id":25,"name":"minor hexatonic","mask":"101101010001","len":6},{"id":26,"name":"augmented","mask":"100110011001","len":6},{"id":27,"name":"major blues","mask":"101110010100","len":6},{"id":28,"name":"piongio","mask":"101001010110","len":6},{"id":29,"name":"prometheus neopolitan","mask":"110010100110","len":6},{"id":30,"name":"prometheus","mask":"101010100110","len":6},{"id":31,"name":"mystery #1","mask":"110010101010","len":6},{"id":32,"name":"six tone symmetric","mask":"110011001100","len":6},{"id":33,"name":"whole tone","mask":"101010101010","len":6},{"id":34,"name":"messiaen's mode #5","mask":"110001110001","len":6},{"id":35,"name":"minor blues","mask":"100101110010","len":6},{"id":36,"name":"locrian major","mask":"101011101010","len":7},{"id":37,"name":"double harmonic lydian","mask":"110010111001","len":7},{"id":38,"name":"harmonic minor","mask":"101101011001","len":7},{"id":39,"name":"altered","mask":"110110101010","len":7},{"id":40,"name":"locrian #2","mask":"101101101010","len":7},{"id":41,"name":"mixolydian b6","mask":"101011011010","len":7},{"id":42,"name":"lydian dominant","mask":"101010110110","len":7},{"id":43,"name":"lydian","mask":"101010110101","len":7},{"id":44,"name":"lydian augmented","mask":"101010101101","len":7},{"id":45,"name":"dorian b2","mask":"110101010110","len":7},{"id":46,"name":"melodic minor","mask":"101101010101","len":7},{"id":47,"name":"locrian","mask":"110101101010","len":7},{"id":48,"name":"ultralocrian","mask":"110110101100","len":7},{"id":49,"name":"locrian 6","mask":"110101100110","len":7},{"id":50,"name":"augmented heptatonic","mask":"100111011001","len":7},{"id":51,"name":"dorian #4","mask":"101100110110","len":7},{"id":52,"name":"lydian diminished","mask":"101100110101","len":7},{"id":53,"name":"phrygian","mask":"110101011010","len":7},{"id":54,"name":"leading whole tone","mask":"101010101011","len":7},{"id":55,"name":"lydian minor","mask":"101010111010","len":7},{"id":56,"name":"phrygian dominant","mask":"110011011010","len":7},{"id":57,"name":"balinese","mask":"110101011001","len":7},{"id":58,"name":"neopolitan major","mask":"110101010101","len":7},{"id":59,"name":"aeolian (minor)","mask":"101101011010","len":7},{"id":60,"name":"harmonic major","mask":"101011011001","len":7},{"id":61,"name":"double harmonic major","mask":"110011011001","len":7},{"id":62,"name":"dorian","mask":"101101010110","len":7},{"id":63,"name":"hungarian minor","mask":"101100111001","len":7},{"id":64,"name":"hungarian major","mask":"100110110110","len":7},{"id":65,"name":"oriental","mask":"110011100110","len":7},{"id":66,"name":"flamenco","mask":"110110110010","len":7},{"id":67,"name":"todi raga","mask":"110100111001","len":7},{"id":68,"name":"mixolydian","mask":"101011010110","len":7},{"id":69,"name":"persian","mask":"110011101001","len":7},{"id":70,"name":"ionian (major)","mask":"101011010101","len":7},{"id":71,"name":"enigmatic","mask":"110010101011","len":7},{"id":72,"name":"major augmented","mask":"101011001101","len":7},{"id":73,"name":"lydian #9","mask":"100110110101","len":7},{"id":74,"name":"messiaen's mode #4","mask":"111001111001","len":8},{"id":75,"name":"purvi raga","mask":"110011111001","len":8},{"id":76,"name":"spanish heptatonic","mask":"110111011010","len":8},{"id":77,"name":"bebop","mask":"101011010111","len":8},{"id":78,"name":"bebop minor","mask":"101111010110","len":8},{"id":79,"name":"bebop major","mask":"101011011101","len":8},{"id":80,"name":"bebop locrian","mask":"110101111010","len":8},{"id":81,"name":"minor bebop","mask":"101101011011","len":8},{"id":82,"name":"diminished","mask":"101101101101","len":8},{"id":83,"name":"ichikosucho","mask":"101011110101","len":8},{"id":84,"name":"minor six diminished","mask":"101101011101","len":8},{"id":85,"name":"half-whole diminished","mask":"110110110110","len":8},{"id":86,"name":"kafi raga","mask":"100111010111","len":8},{"id":87,"name":"messiaen's mode #6","mask":"101011101011","len":8},{"id":88,"name":"composite blues","mask":"101111110110","len":9},{"id":89,"name":"messiaen's mode #3","mask":"101110111011","len":9},{"id":90,"name":"messiaen's mode #7","mask":"111101111101","len":10},{"id":91,"name":"chromatic","mask":"111111111111","len":12}];
+// const scaleDict=[{"id":0,"name":"major pentatonic","mask":"101010010100","len":5},{"id":1,"name":"ionian pentatonic","mask":"100011010001","len":5},{"id":2,"name":"mixolydian pentatonic","mask":"100011010010","len":5},{"id":3,"name":"ritusen","mask":"101001010100","len":5},{"id":4,"name":"egyptian","mask":"101001010010","len":5},{"id":5,"name":"neopolitan major pentatonic","mask":"100011100010","len":5},{"id":6,"name":"vietnamese 1","mask":"100101011000","len":5},{"id":7,"name":"pelog","mask":"110100011000","len":5},{"id":8,"name":"kumoijoshi","mask":"110001011000","len":5},{"id":9,"name":"hirajoshi","mask":"101100011000","len":5},{"id":10,"name":"iwato","mask":"110001100010","len":5},{"id":11,"name":"in-sen","mask":"110001010010","len":5},{"id":12,"name":"lydian pentatonic","mask":"100010110001","len":5},{"id":13,"name":"malkos raga","mask":"100101001010","len":5},{"id":14,"name":"locrian pentatonic","mask":"100101100010","len":5},{"id":15,"name":"minor pentatonic","mask":"100101010010","len":5},{"id":16,"name":"minor six pentatonic","mask":"100101010100","len":5},{"id":17,"name":"flat three pentatonic","mask":"101100010100","len":5},{"id":18,"name":"flat six pentatonic","mask":"101010011000","len":5},{"id":19,"name":"scriabin","mask":"110010010100","len":5},{"id":20,"name":"whole tone pentatonic","mask":"100010101010","len":5},{"id":21,"name":"lydian #5P pentatonic","mask":"100010101001","len":5},{"id":22,"name":"lydian dominant pentatonic","mask":"100010110010","len":5},{"id":23,"name":"minor #7M pentatonic","mask":"100101010001","len":5},{"id":24,"name":"super locrian pentatonic","mask":"100110100010","len":5},{"id":25,"name":"minor hexatonic","mask":"101101010001","len":6},{"id":26,"name":"augmented","mask":"100110011001","len":6},{"id":27,"name":"major blues","mask":"101110010100","len":6},{"id":28,"name":"piongio","mask":"101001010110","len":6},{"id":29,"name":"prometheus neopolitan","mask":"110010100110","len":6},{"id":30,"name":"prometheus","mask":"101010100110","len":6},{"id":31,"name":"mystery #1","mask":"110010101010","len":6},{"id":32,"name":"six tone symmetric","mask":"110011001100","len":6},{"id":33,"name":"whole tone","mask":"101010101010","len":6},{"id":34,"name":"messiaen's mode #5","mask":"110001110001","len":6},{"id":35,"name":"minor blues","mask":"100101110010","len":6},{"id":36,"name":"locrian major","mask":"101011101010","len":7},{"id":37,"name":"double harmonic lydian","mask":"110010111001","len":7},{"id":38,"name":"harmonic minor","mask":"101101011001","len":7},{"id":39,"name":"altered","mask":"110110101010","len":7},{"id":40,"name":"locrian #2","mask":"101101101010","len":7},{"id":41,"name":"mixolydian b6","mask":"101011011010","len":7},{"id":42,"name":"lydian dominant","mask":"101010110110","len":7},{"id":43,"name":"lydian","mask":"101010110101","len":7},{"id":44,"name":"lydian augmented","mask":"101010101101","len":7},{"id":45,"name":"dorian b2","mask":"110101010110","len":7},{"id":46,"name":"melodic minor","mask":"101101010101","len":7},{"id":47,"name":"locrian","mask":"110101101010","len":7},{"id":48,"name":"ultralocrian","mask":"110110101100","len":7},{"id":49,"name":"locrian 6","mask":"110101100110","len":7},{"id":50,"name":"augmented heptatonic","mask":"100111011001","len":7},{"id":51,"name":"dorian #4","mask":"101100110110","len":7},{"id":52,"name":"lydian diminished","mask":"101100110101","len":7},{"id":53,"name":"phrygian","mask":"110101011010","len":7},{"id":54,"name":"leading whole tone","mask":"101010101011","len":7},{"id":55,"name":"lydian minor","mask":"101010111010","len":7},{"id":56,"name":"phrygian dominant","mask":"110011011010","len":7},{"id":57,"name":"balinese","mask":"110101011001","len":7},{"id":58,"name":"neopolitan major","mask":"110101010101","len":7},{"id":59,"name":"aeolian (minor)","mask":"101101011010","len":7},{"id":60,"name":"harmonic major","mask":"101011011001","len":7},{"id":61,"name":"double harmonic major","mask":"110011011001","len":7},{"id":62,"name":"dorian","mask":"101101010110","len":7},{"id":63,"name":"hungarian minor","mask":"101100111001","len":7},{"id":64,"name":"hungarian major","mask":"100110110110","len":7},{"id":65,"name":"oriental","mask":"110011100110","len":7},{"id":66,"name":"flamenco","mask":"110110110010","len":7},{"id":67,"name":"todi raga","mask":"110100111001","len":7},{"id":68,"name":"mixolydian","mask":"101011010110","len":7},{"id":69,"name":"persian","mask":"110011101001","len":7},{"id":70,"name":"ionian (major)","mask":"101011010101","len":7},{"id":71,"name":"enigmatic","mask":"110010101011","len":7},{"id":72,"name":"major augmented","mask":"101011001101","len":7},{"id":73,"name":"lydian #9","mask":"100110110101","len":7},{"id":74,"name":"messiaen's mode #4","mask":"111001111001","len":8},{"id":75,"name":"purvi raga","mask":"110011111001","len":8},{"id":76,"name":"spanish heptatonic","mask":"110111011010","len":8},{"id":77,"name":"bebop","mask":"101011010111","len":8},{"id":78,"name":"bebop minor","mask":"101111010110","len":8},{"id":79,"name":"bebop major","mask":"101011011101","len":8},{"id":80,"name":"bebop locrian","mask":"110101111010","len":8},{"id":81,"name":"minor bebop","mask":"101101011011","len":8},{"id":82,"name":"diminished","mask":"101101101101","len":8},{"id":83,"name":"ichikosucho","mask":"101011110101","len":8},{"id":84,"name":"minor six diminished","mask":"101101011101","len":8},{"id":85,"name":"half-whole diminished","mask":"110110110110","len":8},{"id":86,"name":"kafi raga","mask":"100111010111","len":8},{"id":87,"name":"messiaen's mode #6","mask":"101011101011","len":8},{"id":88,"name":"composite blues","mask":"101111110110","len":9},{"id":89,"name":"messiaen's mode #3","mask":"101110111011","len":9},{"id":90,"name":"messiaen's mode #7","mask":"111101111101","len":10},{"id":91,"name":"chromatic","mask":"111111111111","len":12}];
 	
 
-const keyNames=["C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B"];
+// const keyNames=["C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B"];
 
 // notes: in format of Work.global.seqXY
 // function keyScaleFit1(notes) {
@@ -209,7 +209,7 @@ function getMaxIndex(arr){
 
 function getWeightedKeys(){
 	var map=getWeightedMaps(), res=[];
-//	console.log("weight map", map);
+	//console.log("weight map", map);
 	for (var m=0; m<map.length; m++)
 		res.push(getMaxIndex(map[m]));
 	return res;
@@ -240,7 +240,8 @@ function getWeightedMaps(){
 		// grab notes from measure #meas
 		let notes=[];
 		for (var i=0; i<Work.global.seqXY.length; i++)
-		if (Work.global.seqXY[i].l==Work.global.layer_sel)
+		if (//Work.global.seqXY[i].l==Work.global.layer_sel && 
+		Work.global.seqXY[i].s==1)
 //		&& Work.global.seqXY[i].t!=1)
 		{
 			if (Work.global.seqXY[i].x >= measW * meas
@@ -252,8 +253,9 @@ function getWeightedMaps(){
 								/ (16 / Work.global.bpNote))
 							] 
 				});
-			else if (Work.global.seqXY[i].x <= measW * meas
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measW * meas)
+			else if (Work.global.seqXY[i].x < measW * meas 
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * meas
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d <= measW * (meas+1))
 				notes.push({
 					note: {
 						x: measW * meas,
@@ -266,8 +268,9 @@ function getWeightedMaps(){
 					},
 					weight: weight[0] 
 				});
-			else if (Work.global.seqXY[i].x <= measW * (meas+1)
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measW * (meas+1))
+			else if (Work.global.seqXY[i].x >= measW * meas 
+				  && Work.global.seqXY[i].x < measW * (meas+1)
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * (meas+1))
 				notes.push({
 					note: {
 						x: Work.global.seqXY[i].x,
@@ -299,6 +302,8 @@ function getWeightedMaps(){
 				});
 		};
 
+		//console.log(notes);
+
 		// map the notes into the 12 keys with note duration * weight
 		var map=[];
 		for (var k=0; k<12; k++){
@@ -311,9 +316,8 @@ function getWeightedMaps(){
 		
 		// push the weighted mapping of measure #meas into the result
 		res.push(map);
-	
 	};
-	
+
 	return res;
 }
 
@@ -462,13 +466,13 @@ function voiceLeadingScore(c1, c2){
 function getScaleIndexFromMaskIndex(s, k, n){
 	var si=0;
 	for (var i=k; i<12; i++) {
-		if (scaleDict[s].mask[(i+12-k) % 12]==1) {
+		if (Motf.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
 	};
 	for (var i=0; i<k; i++) {
-		if (scaleDict[s].mask[(i+12-k) % 12]==1) {
+		if (Motf.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
@@ -478,14 +482,14 @@ function getScaleIndexFromMaskIndex(s, k, n){
 
 // get the I, ii, iii, IV, V... triad chords by given key_id & scale_id
 function getDiatonicChordsByKeyScale(key_id, scale_id){
-	var scale = scaleDict[scale_id];
+	var scale = Motf.scaleDict[scale_id];
 	var mk;
 	for (var k=0; k<12; k++) 
-	if (scale.mask[k]==1) mk=k;
+	if (scale.modes[Work.global.mode][k]==1) mk=k;
 	var res=[];	
 	var kc=0;
 	for (var k=0; k<12; k++) 
-	if (scale.mask[k]==1){
+	if (scale.modes[Work.global.mode][k]==1){
 		kc++;
 		if (k==mk) // if the last diatonic chord, add the dominent key (e.g.: for the 7th diatonic chord for C Major, Bo, we add in the key G, and Bo+G => G7)
 		res.push({name:"No. "+kc, mask:getTriadFromScaleKey(scale, k, 1),});
@@ -679,7 +683,7 @@ function getScaleKeyFromChromaticKey(s, n){
 function findClosest(scale, i){
 	var min=Infinity, minI; 
 	for (var k=0; k<24; k++)
-		if (scale.mask[k % 12]==1)
+		if (scale.modes[Work.global.mode][k % 12]==1)
 			if (min>Math.abs(k-i) && Math.abs(k-i)<5){
 				min=Math.abs(k-i);
 				minI=k % 12;
@@ -691,7 +695,7 @@ function getTriadFromScaleKey(scale, key, add5){
 	var res=Array(12).fill(0);
 	var harmony;
 	harmony=[(0+key)%12,(4+key)%12,(7+key)%12];
-	if (add5 && scale.mask[7]==1) harmony.push(7);
+	if (add5 && scale.modes[Work.global.mode][7]==1) harmony.push(7);
 	for (var h=0; h<harmony.length; h++) 
 //		if (h!=2 || scale.mask[harmony[h]]==1)	// for the dominant note we don't compromise!
 			res[findClosest(scale, harmony[h])]=1; 
@@ -793,10 +797,10 @@ Theory.getChordsByMelodyKeyScale=getChordsByMelodyKeyScale;
 //Theory.getChordsByMelodyKeySimple=getChordsByMelodyKeySimple;
 
 // [{name, mask}], in Key C
-Theory.scaleDict=scaleDict;
+//Theory.scaleDict=scaleDict;
 
 // [{symbol, mask}], in Key C
-Theory.chordDict=chordDict; 
+//Theory.chordDict=chordDict; 
 
 Theory.transpose=transpose;
 
