@@ -3,8 +3,8 @@ var Improviser1={};
     var rhythm4 = [[1,1,1,1],[2,1,1],[1,2,1],[1,1,2],[3,1],[1,3],[2,2],[4]]
     var suggester = {values: [0,  -1,  1,   -2,   2,  -3,   3,  -4,   4,  -5,  5], 
                     chances: [1,   1,  1,  0.2, 0.1, 0.1, 0.3,   0,   0,   0,  0]};
-    var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
-    var root = {note: ctx.root, len: 64}; 
+    var ctx;
+    var root;
     
     class Motif {
         constructor(parent=root, home=ctx.root, rhythm=0, then=()=>{}){
@@ -67,6 +67,10 @@ var Improviser1={};
     
     var buildCount = 0;
     function rebuild(){
+
+        ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
+        root= {note: ctx.root, len: 64}; 
+
         buildCount++;
         Improviser1.success = true;
         var verse = new Motif();
@@ -107,10 +111,12 @@ var Improviser1={};
         Improviser1.bass = phrase;
         Improviser1.melody = note;
         console.log("Improvision succeeded after "+buildCount+" iterations.");
+        
         Imp();
     };
 
     Improviser1.rebuild = () => { buildCount=0; rebuild() };
+    Improviser1.ctx=ctx;
     
     //debugger
 })()

@@ -1030,7 +1030,6 @@ function scaleY(y){
 
 // console.log(scaleY(1));
 // console.log(scaleY(85));
-
 Pianoroll.prototype.drawScaledPianoRoll=function(){
 // pink 255,100,255
 
@@ -1040,7 +1039,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 	
 	var tickPerMeas = Work.global.bpMeas * (16/Work.global.bpNote)	
 	
-	var scale_n = Theory.scaleDict[Work.global.scale_id].len;
+	var scale_n = Motf.scaleDict[Work.global.scale_id].len;
 	
 	// draw Rhythm
 	if (Work.global.showRhythm) {

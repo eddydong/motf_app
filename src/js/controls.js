@@ -109,14 +109,12 @@ var Controls= {};
 			// Cmd + S: save seq to local motf	
 			if (e.keyCode == 83) pianoroll.saveToLocal();
 
-			// Cmd + i for improvising (iSplit)
+			// Cmd + i for improvising
 			if (e.keyCode==73) {
-				pianoroll.rootSeeds=[];
-				pianoroll.improviseX2("preset", 0);
-				pianoroll.scroll("beginning");
-				pianoroll.play();
+
 			};
 			
+			// Cmd + N for new project
 			if (e.keyCode==78) document.getElementById("btn_new").onclick();
 			
 		} else if (e.altKey){		
@@ -289,16 +287,32 @@ var Controls= {};
 			
 			// I for improvising (one layer only)
 			if (e.keyCode==73) {
-				pianoroll.rootSeeds=[];
-				pianoroll.improvise({
-					"rhythm":"11111111",
-					"suggester":[{"d":0,"p":0},{"d":1,"p":1},{"d":-1,"p":1},{"d":2,"p":0},
-								{"d":-2,"p":0},{"d":3,"p":0},{"d":-3,"p":0},{"d":4,"p":0},
-								{"d":-4,"p":0},{"d":5,"p":0},{"d":-5,"p":0},{"d":7,"p":0},{"d":-7,"p":0}],
-					"iparams":[["0","1"],["0","1"],["0","1"],["0","1"],["0","1"],["0","1"]],
-					"chordOrScale": 0.5,  // 1 chord - 0 scale
-					"melodayVariation": 0
-				});				
+				pianoroll.stop();
+				// pianoroll.rootSeeds=[];
+				// pianoroll.improviseX2("preset", 0);
+				Work.global.key = Math.floor(Math.random()*12);
+				Work.global.scale_id = Math.floor(Math.random()*Motf.scaleDict.length);
+				Work.global.mode = Math.floor(Math.random()*Motf.scaleDict[Work.global.scale_id].modes.length);
+				document.getElementById("select_key").selectedIndex=Work.global.key;
+				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
+				
+				console.log("k"+Work.global.key+" s"+Work.global.scale_id+" m"+Work.global.mode);
+				Composer.init();
+
+				Improviser1.rebuild();
+				pianoroll.scroll("beginning");
+				pianoroll.play();
+								
+				// pianoroll.rootSeeds=[];
+				// pianoroll.improvise({
+				// 	"rhythm":"11111111",
+				// 	"suggester":[{"d":0,"p":0},{"d":1,"p":1},{"d":-1,"p":1},{"d":2,"p":0},
+				// 				{"d":-2,"p":0},{"d":3,"p":0},{"d":-3,"p":0},{"d":4,"p":0},
+				// 				{"d":-4,"p":0},{"d":5,"p":0},{"d":-5,"p":0},{"d":7,"p":0},{"d":-7,"p":0}],
+				// 	"iparams":[["0","1"],["0","1"],["0","1"],["0","1"],["0","1"],["0","1"]],
+				// 	"chordOrScale": 0.5,  // 1 chord - 0 scale
+				// 	"melodayVariation": 0
+				// });				
 // 				pianoroll.scroll("beginning");
 // 				pianoroll.play();
 			};			
@@ -1432,7 +1446,7 @@ function initFixedUI(){
 	for (var i=0; i<Motf.scaleDict.length; i++){
 		s=document.getElementById("select_scale");
 		var o=document.createElement("option");
-		o.innerHTML="#"+i+" - "+Motf.scaleDict[i].name;
+		o.innerHTML="#"+i+" - "+Motf.scaleDict[i].name + " len:"+Motf.scaleDict[i].len;
 		s.appendChild(o);
 	};
 //	s.options.selectedIndex=70;

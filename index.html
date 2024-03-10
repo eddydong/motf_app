@@ -570,7 +570,55 @@ localStorage.clear();
 Controls.showWaiting();
 pianoroll.init(); 
 
+function fillDrum(bars){
+for (var i=0; i< 16 * bars; i++) {
+	if (i % 4 == 0)
+	pianoroll.addNote({
+			x: i,
+			y: 36 - 21,
+			d: 1, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+	if (i % 64 == 0)
+	pianoroll.addNote({
+			x: i,
+			y: 43 - 21,
+			d: 8, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});	
+	if (i % 32 == 22)
+	pianoroll.addNote({
+			x: i,
+			y: 37 - 21,
+			d: 1, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+	if (i % 16 == 8)
+	pianoroll.addNote({
+			x: i,
+			y: 38 - 21,
+			d: 1, 
+			s: 0, 
+			v: 1, 
+			l: 3, //j,
+			t: 0 // type: 0: normal note; 1: just improvised			
+	});
+}
+}
+
 function Imp(){
+
+Work.global.seqXY=[];
+
 var pos = 0;
 // for (var i=0; i<Improviser1.verse.pick.length; i++){
 // 	pianoroll.addNote({
@@ -615,58 +663,13 @@ if (Improviser1.melody[i].pick[j]) {
 	});
 	pos += Improviser1.melody[i].pick[j].len * 2;
 };
-};
-
-Improviser1.rebuild();
 
 pianoroll.autoSimpleChordByKey();
-
-for (var i=0; i<128; i++) {
-	if (i % 4 == 0)
-	pianoroll.addNote({
-			x: i,
-			y: 36 - 21,
-			d: 1, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-	if (i % 64 == 0)
-	pianoroll.addNote({
-			x: i,
-			y: 43 - 21,
-			d: 8, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});	
-	if (i % 32 == 22)
-	pianoroll.addNote({
-			x: i,
-			y: 37 - 21,
-			d: 1, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-	if (i % 16 == 8)
-	pianoroll.addNote({
-			x: i,
-			y: 38 - 21,
-			d: 1, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-}
-
-pianoroll.autoZoom("xy");
-
 pianoroll.deSelectAll();
+fillDrum(8);
+pianoroll.autoZoom("xy");
+};
+
 
 
 // function improvise(){

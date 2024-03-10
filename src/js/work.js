@@ -5,9 +5,9 @@ var Work = {};
 Work.global= {
 	workname: "Another Piece of Shit",
 	author: "noname",
-	key: 9, // 0-11 / offset from C, in chromatic scale
+	key: 2, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
-	mode: 5,
+	mode: 0,
 	bpm: 180,
 	bpMeas: 4,
 	bpNote: 4,

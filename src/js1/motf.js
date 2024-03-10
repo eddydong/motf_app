@@ -105,4 +105,6 @@ Motf.keyNames = keyNames;
 Motf.transpose = transpose;
 Motf.getDiatonicChordsByKeyScaleMode = getDiatonicChordsByKeyScaleMode;
 
+//console.log(transpose(scaleDict[23].modes[0], 2)[n % 12] == 1);
+
 })()
