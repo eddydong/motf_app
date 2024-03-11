@@ -102,7 +102,7 @@ var Improviser1={};
             );
         };
         if (!Improviser1.success) {
-            if (buildCount>5000) {
+            if (buildCount>3000) {
                 console.log("Max search reached. Improvision failed.")
                 return;
             }
