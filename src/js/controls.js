@@ -295,10 +295,7 @@ var Controls= {};
 				Work.global.mode = Math.floor(Math.random()*Motf.scaleDict[Work.global.scale_id].modes.length);
 				document.getElementById("select_key").selectedIndex=Work.global.key;
 				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
-				
-				console.log("k"+Work.global.key+" s"+Work.global.scale_id+" m"+Work.global.mode);
 				Composer.init();
-
 				Improviser1.rebuild();
 				pianoroll.scroll("beginning");
 				pianoroll.play();

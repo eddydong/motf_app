@@ -36,8 +36,10 @@ var Improviser1={};
                     this.variant.push(myLib.deepCopy(this.draft));
                 }
             } else for (var i=0; i<suggester.values.length; i++) if (Math.random()<suggester.chances[i]) {
-                this.draft.push({note: ctx.getNoteByScaleMove(this.draft[n-1].note, suggester.values[i]),
-                    len: rhythm4[this.rhythm][n] / 4 * this.parent.len});
+                var targetY = ctx.getNoteByScaleMove(this.draft[n-1].note, suggester.values[i]);
+                if (targetY > ctx.root + 18) { while (targetY > ctx.root + 18) targetY -= 12;};
+                if (targetY < ctx.root - 18) { while (targetY < ctx.root - 18) targetY += 12;};
+                this.draft.push({note: targetY, len: rhythm4[this.rhythm][n] / 4 * this.parent.len});
                 this.search(n+1);
                 this.draft.pop();
             };
@@ -110,7 +112,8 @@ var Improviser1={};
         Improviser1.verse = verse;
         Improviser1.bass = phrase;
         Improviser1.melody = note;
-        console.log("Improvision succeeded after "+buildCount+" iterations.");
+        console.log("Improvision k"+ ctx.key + " s" + ctx.scaleId + " m" + ctx.mode + 
+            " succeeded after "+buildCount+" iterations.");
         
         Imp();
     };

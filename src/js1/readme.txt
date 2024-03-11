@@ -1,3 +1,6 @@
+To do:
+1. Find distinct modes for each Scale
+
 Key Functions:
 
 Improvise Motif
@@ -9,7 +12,6 @@ From Chords to improvise Melody
 Continue a Melody / From Motif to Melody
 Continue a Chords progression
 Continue a Bassline
-
 
 Decide Overall Key (can use C and transpose when done), Time Signature,  the Melody Scale (of any), and Rhythm Templates (or by random).
 Generate Bass Line with the Chord Scale (either Major & Minor)
