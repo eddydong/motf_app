@@ -46,7 +46,8 @@ var Improviser1={};
         }
         // get a new pick from the varian(s)
         repick(){
-            this.pick = this.variant[Math.floor(Math.random()*this.variant.length)];
+            //this.pick = this.variant[Math.floor(Math.random()*this.variant.length)];
+            this.pick = this.variant[this.variant.length-1];
         }
         // mutate a pick by random note pitch modifications 
         mutate(){
