@@ -287,8 +287,8 @@ function getWeightedMaps(){
 							] 
 				});
 			else 
-			// if (Work.global.seqXY[i].x < measW * meas
-			// && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measW * (meas+1))
+			 if (Work.global.seqXY[i].x < measW * meas
+			 && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measW * (meas+1))
 				notes.push({
 					note: {
 						x: measW * meas,
@@ -464,16 +464,16 @@ function voiceLeadingScore(c1, c2){
 // note: For both mask & scale index, 0 is always the Tonic/Root pitch, since we have transposed back to key of C by the param "k"
 // Example: input (70, 2, 4), or the E in D Major, and output will be 2, or the second diatonic pitch in D Major
 // Jan 8, 2024
-function getScaleIndexFromMaskIndex(s, k, n){
+function getScaleIndexFromMaskIndex(s, k, m, n){
 	var si=0;
 	for (var i=k; i<12; i++) {
-		if (Motf.theory.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
+		if (Motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
 	};
 	for (var i=0; i<k; i++) {
-		if (Motf.theory.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
+		if (Motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
@@ -482,15 +482,15 @@ function getScaleIndexFromMaskIndex(s, k, n){
 }
 
 // get the I, ii, iii, IV, V... triad chords by given key_id & scale_id
-function getDiatonicChordsByKeyScale(key_id, scale_id){
+function getDiatonicChordsByKeyScale(key_id, scale_id, mode){
 	var scale = Motf.theory.scaleDict[scale_id];
 	var mk;
 	for (var k=0; k<12; k++) 
-	if (scale.modes[Work.global.mode][k]==1) mk=k;
+	if (scale.modes[mode][k]==1) mk=k;
 	var res=[];	
 	var kc=0;
 	for (var k=0; k<12; k++) 
-	if (scale.modes[Work.global.mode][k]==1){
+	if (scale.modes[mode][k]==1){
 		kc++;
 		if (k==mk) // if the last diatonic chord, add the dominent key (e.g.: for the 7th diatonic chord for C Major, Bo, we add in the key G, and Bo+G => G7)
 		res.push({name:"No. "+kc, mask:getTriadFromScaleKey(scale, k, 1),});
@@ -502,94 +502,95 @@ function getDiatonicChordsByKeyScale(key_id, scale_id){
 
 // Simply use the "k"th diatonic chord to accompany the "k"th diatonic key in the scale
 // Example: For D Major, "k" of E, or the 2nd diatonic key in D Major, will be accompanied with the 2nd diatonic chord, or Em
-function getChordsByMelodyKeyScale(key_id, scale_id, firstMeas, lastMeas){
+function getChordsByMelodyKeyScale(key_id, scale_id, mode, firstMeas, lastMeas){
 
-	let chords=getDiatonicChordsByKeyScale(key_id, scale_id);
+	let chords=getDiatonicChordsByKeyScale(key_id, scale_id, mode);
 //	console.log("chords",chords);
 
 	let weightKeys=getWeightedKeys(); 
 //	console.log("weightKeys",weightKeys);
 
 	let res=[];
-	for (var i=0; i<weightKeys.length; i++) res.push(chords[getScaleIndexFromMaskIndex(scale_id, key_id, weightKeys[i][0])-1]);
+	for (var i=0; i<weightKeys.length; i++) res.push(
+		chords[getScaleIndexFromMaskIndex(scale_id, key_id, mode, weightKeys[i][0])-1]);
 	
 	return res;
 }
 
-function getChordsByMelodyKeyScale0(key_id, scale_id, firstMeas, lastMeas){
-	//console.log("key_id, scale_id, firstMeas, lastMeas",key_id, scale_id, firstMeas, lastMeas);
+// function getChordsByMelodyKeyScale0(key_id, scale_id, firstMeas, lastMeas){
+// 	//console.log("key_id, scale_id, firstMeas, lastMeas",key_id, scale_id, firstMeas, lastMeas);
 
-	// get the measure count of current layer
-	let measW = Work.global.bpMeas / Work.global.bpNote * 16;
-	let measC = Math.ceil(endTick() / measW);
+// 	// get the measure count of current layer
+// 	let measW = Work.global.bpMeas / Work.global.bpNote * 16;
+// 	let measC = Math.ceil(endTick() / measW);
 
-	let weightKeys=getWeightedKeys(); 
-//	console.log("weightKeys",weightKeys);
+// 	let weightKeys=getWeightedKeys(); 
+// //	console.log("weightKeys",weightKeys);
 
-	let chords=getSlimChordsByKeyScale(key_id, scale_id);
-//	console.log("chords",chords);
+// 	let chords=getSlimChordsByKeyScale(key_id, scale_id);
+// //	console.log("chords",chords);
 	
-	let chordMap=[];
+// 	let chordMap=[];
 	
-	for (var m=0; m<measC; m++){
-		let cs=[];
-		for (var c=0; c<chords.length; c++)
-			if (chords[c].mask[weightKeys[m][0]]=='1' 
-				&& chords[c].mask[weightKeys[m][1]]=='1')
-				cs.push(c);
-//		if (cs.length==0) cs.push(0);
-		chordMap.push(cs);
-	};
+// 	for (var m=0; m<measC; m++){
+// 		let cs=[];
+// 		for (var c=0; c<chords.length; c++)
+// 			if (chords[c].mask[weightKeys[m][0]]=='1' 
+// 				&& chords[c].mask[weightKeys[m][1]]=='1')
+// 				cs.push(c);
+// //		if (cs.length==0) cs.push(0);
+// 		chordMap.push(cs);
+// 	};
 	
-	if (chordMap.length==0) return [];
+// 	if (chordMap.length==0) return [];
 	
-//	console.log("chordMap",chordMap);
+// //	console.log("chordMap",chordMap);
 
-	let chordRes=[];
+// 	let chordRes=[];
 	
-	for (var m=firstMeas; m<lastMeas; m++){
-// 		if (m==0) {
-// 			// if the first chord - try to use the I chord
-// 			if (chordMap[m].indexOf(0)>-1) chordRes[m]=0;
-// 			else { // if I chord not fit in the first measure...
-// 				chordRes[m]=chordMap[m][0]; // to be upgraded				
+// 	for (var m=firstMeas; m<lastMeas; m++){
+// // 		if (m==0) {
+// // 			// if the first chord - try to use the I chord
+// // 			if (chordMap[m].indexOf(0)>-1) chordRes[m]=0;
+// // 			else { // if I chord not fit in the first measure...
+// // 				chordRes[m]=chordMap[m][0]; // to be upgraded				
+// // 			}
+// // 		} else { // if m>0
+
+// 			var ck=getScaleKeyFromChromaticKey(scaleDict[Work.global.scale_id],weightKeys[m][0]);
+// 			if (weightKeys[m][0]==weightKeys[m][1] && ck>0) 
+// 				chordRes[m]=ck-1;
+// 			else {
+// 			let min=Infinity, minC;
+// 			for (var c=0; c<chordMap[m].length; c++) {
+// //			console.log(m, c, chords[chordRes[m-1]], chords[chordMap[m][c]]);
+// 				let score= 0;
+// 				if (chords[chordRes[m-1]] && chords[chordMap[m][c]]) 
+// 					voiceLeadingScore(chords[chordRes[m-1]], chords[chordMap[m][c]]);
+// //				if (score==0) score=2;  
+// //				if (chordMap[m][c]==0) score=score*0.8;
+// //				else if (chordMap[m][c]==4 || chordMap[m][c]==6) score=score*0.5;
+// //				else if (chordMap[m][c]==3) score=score*0.4;
+// //				if (chordRes.indexOf(chordMap[m][c])>-1) score=score+1;
+// //				if (chordMap[m][c]==chordRes[m-1]) score=score*1.5;
+
+// 				if (min > score) {
+// 					min=score;
+// 					minC=chordMap[m][c];
+// 				}
+// 			};
+// 			chordRes[m]=minC;
 // 			}
-// 		} else { // if m>0
-
-			var ck=getScaleKeyFromChromaticKey(scaleDict[Work.global.scale_id],weightKeys[m][0]);
-			if (weightKeys[m][0]==weightKeys[m][1] && ck>0) 
-				chordRes[m]=ck-1;
-			else {
-			let min=Infinity, minC;
-			for (var c=0; c<chordMap[m].length; c++) {
-//			console.log(m, c, chords[chordRes[m-1]], chords[chordMap[m][c]]);
-				let score= 0;
-				if (chords[chordRes[m-1]] && chords[chordMap[m][c]]) 
-					voiceLeadingScore(chords[chordRes[m-1]], chords[chordMap[m][c]]);
-//				if (score==0) score=2;  
-//				if (chordMap[m][c]==0) score=score*0.8;
-//				else if (chordMap[m][c]==4 || chordMap[m][c]==6) score=score*0.5;
-//				else if (chordMap[m][c]==3) score=score*0.4;
-//				if (chordRes.indexOf(chordMap[m][c])>-1) score=score+1;
-//				if (chordMap[m][c]==chordRes[m-1]) score=score*1.5;
-
-				if (min > score) {
-					min=score;
-					minC=chordMap[m][c];
-				}
-			};
-			chordRes[m]=minC;
-			}
-//		};
-	};
+// //		};
+// 	};
 	
-//	console.log("chordRes",chordRes);	
+// //	console.log("chordRes",chordRes);	
 	
-	let res=[];
-	for (var i=0; i< chordRes.length; i++) res.push(chords[chordRes[i]]);
+// 	let res=[];
+// 	for (var i=0; i< chordRes.length; i++) res.push(chords[chordRes[i]]);
 	
-	return res;
-}
+// 	return res;
+// }
 
 // function getChordsByMelodyKeyScale1(key, scale){
 // 	// get the measure count of current layer

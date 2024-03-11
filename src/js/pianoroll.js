@@ -2100,7 +2100,7 @@ Pianoroll.prototype.getNotesByMeas=function(meas_id){
 
 // generate chords according to autoChord and save to Work.global.autoChord
 Pianoroll.prototype.autoSimpleChordByKey=function(){
-	let chords=Theory.getChordsByMelodyKeyScale(Work.global.key, Work.global.scale_id,
+	let chords=Theory.getChordsByMelodyKeyScale(Work.global.key, Work.global.scale_id, Work.global.mode,
 		0,this.endMeas);
 	Work.global.autoChord=[];
 	for (var i=0; i<chords.length; i++) if (chords[i]){
