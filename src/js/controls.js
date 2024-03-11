@@ -285,11 +285,9 @@ var Controls= {};
 				pianoroll.tempo("up");
 			};
 			
-			// I for improvising (one layer only)
+			// I for improvising 
 			if (e.keyCode==73) {
 				pianoroll.stop();
-				// pianoroll.rootSeeds=[];
-				// pianoroll.improviseX2("preset", 0);
 				Work.global.key = Math.floor(Math.random()*12);
 				Work.global.scale_id = Math.floor(Math.random()*Motf.theory.scaleDict.length);
 				Work.global.mode = Math.floor(Math.random()*Motf.theory.scaleDict[Work.global.scale_id].modes.length);
@@ -301,6 +299,8 @@ var Controls= {};
 				pianoroll.scroll("beginning");
 				pianoroll.play();
 								
+				// pianoroll.rootSeeds=[];
+				// pianoroll.improviseX2("preset", 0);
 				// pianoroll.rootSeeds=[];
 				// pianoroll.improvise({
 				// 	"rhythm":"11111111",

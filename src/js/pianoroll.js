@@ -1039,7 +1039,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 	
 	var tickPerMeas = Work.global.bpMeas * (16/Work.global.bpNote)	
 	
-	var scale_n = Motf.scaleDict[Work.global.scale_id].len;
+	var scale_n = Motf.theory.scaleDict[Work.global.scale_id].len;
 	
 	// draw Rhythm
 	if (Work.global.showRhythm) {
