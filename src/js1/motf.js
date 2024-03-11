@@ -206,7 +206,7 @@ class AutoDrumer {
 	}	
 }
 
-class Imp1 {
+class ImpNote {
 	rhythm4 = [[1,1,1,1],[2,1,1],[1,2,1],[1,1,2],[3,1],[1,3],[2,2],[4]];
     suggester = {values: [0,  -1,  1,   -2,   2,  -3,   3,  -4,   4,  -5,  5], 
                 chances: [1,   1,  1,  0.2, 0.1, 0.1, 0.3,   0,   0,   0,  0]}
@@ -267,7 +267,7 @@ class Imp1 {
 Motf.theory = theory;
 Motf.Context = Context;
 Motf.AutoDrumer = AutoDrumer;
-Motf.Imp1 = Imp1;
+Motf.ImpNote = ImpNote;
 
 //console.log(transpose(scaleDict[23].modes[0], 2)[n % 12] == 1);
 

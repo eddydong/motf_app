@@ -22,13 +22,13 @@ var Improviser1={};
     function rebuild(ctx){
         var parent = {note: Work.global.key+60, len:64};
         var home = Work.global.key+60;
-        var verse = new Motf.Imp1(ctx, parent, home, 0)
+        var verse = new Motf.ImpNote(ctx, parent, home, 0)
         if (verse.pick == null) return false;
 
         var phrase = [];
         for (var i=0; i<verse.pick.length; i++) {
             var home = (i==verse.pick.length-1) ? verse.home : verse.pick[i+1].note;
-            var p = new Motf.Imp1(ctx, verse.pick[i], home, 0);
+            var p = new Motf.ImpNote(ctx, verse.pick[i], home, 0);
             if (p.pick == null) return false;
             phrase.push(p);
         };
@@ -47,7 +47,7 @@ var Improviser1={};
             var rhyPat = [Math.floor(Math.random()*6), Math.floor(Math.random()*2)+6];
             for (var j=0; j<phrase1[i].pick.length; j++){
                 var home = (j==phrase1[i].pick.length-1) ? phrase1[i].home : phrase1[i].pick[j+1].note;
-                var n = new Motf.Imp1(ctx, phrase1[i].pick[j], home, rhyPat[Math.floor(j / 2)]);
+                var n = new Motf.ImpNote(ctx, phrase1[i].pick[j], home, rhyPat[Math.floor(j / 2)]);
                 if (n.pick == null) return false;
                 note.push(n);    
             }
