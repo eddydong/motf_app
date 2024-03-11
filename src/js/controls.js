@@ -296,7 +296,8 @@ var Controls= {};
 				document.getElementById("select_key").selectedIndex=Work.global.key;
 				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
 				Composer.init();
-				Improviser1.rebuild();
+				var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
+				Improviser1.tryBuild(ctx);
 				pianoroll.scroll("beginning");
 				pianoroll.play();
 								

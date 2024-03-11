@@ -142,7 +142,7 @@ class Context {
 	}
 	// n: current note; m: steps to move up(+) or down(-)
 	getNoteByScaleMove(n, m) {
-		if (!this.inScale(n)) throw "moveByScale: note not in scale.";
+		if (!this.inScale(n)) throw "moveByScale: note"+n+" not in scale s"+this.scaleId+" m"+this.mode+" k"+this.key;
 		var off = 0, pos = n;
 		while (off != m) {
 			pos = pos + (m > 0 ? 1 : -1);
@@ -210,24 +210,17 @@ class Imp1 {
 	rhythm4 = [[1,1,1,1],[2,1,1],[1,2,1],[1,1,2],[3,1],[1,3],[2,2],[4]];
     suggester = {values: [0,  -1,  1,   -2,   2,  -3,   3,  -4,   4,  -5,  5], 
                 chances: [1,   1,  1,  0.2, 0.1, 0.1, 0.3,   0,   0,   0,  0]}
-	constructor(ctx, parent={note:60,len:64}, home=60, rhythm=0, then=()=>{}){
-		this.ctx = ctx;
+	constructor(ctx, parent, home, rhythm){
+		this.ctx = ctx;  
 		this.rhythm = rhythm;
-		this.then = then;
 		this.parent = parent;
 		this.home = home;
 		this.steps = this.rhythm4[rhythm].length;
-		this.draft = [{note: parent.note, len: this.rhythm4[this.rhythm][0] / 4 * this.parent.len}];
+		this.draft = [{note: this.parent.note, len: this.rhythm4[this.rhythm][0] / 4 * this.parent.len}];
 		this.variant = [];
 		this.search(1);
-		this.pick = [];
-		if (this.variant.length == 0) {
-		//    console.log("No solution at n"+parent.note+" l"+parent.len+" h"+home+" r"+rhythm+", re-searching...");
-			Improviser1.success=false;
-			return;
-		};
-		this.repick(); // get a random pick
-		this.then(this);
+		this.pick = null;
+		if (this.variant.length>0) this.repick(); // get a random pick
 	}
 	// populat the variant(s) list
 	search(n){

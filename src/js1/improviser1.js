@@ -1,19 +1,38 @@
 var Improviser1={};
 (function(){
-    var buildCount = 0;
+    function tryBuild(ctx){
+        var buildCount= 3000;
+        for (var i=0; i<buildCount; i++){
+            var res = rebuild(ctx);
+            if (res) {
+                //console.log(res);
+                Improviser1.verse = res.verse;
+                Improviser1.bass = res.phrase;
+                Improviser1.melody = res.note;
+                console.log("Improvision k"+ ctx.key + " s" + ctx.scaleId + " m" + ctx.mode + 
+                    " succeeded after " + (i+1) + " iterations."); 
+                Imp();
+                return;
+            }
+        }
+        console.log("falied "+buildCount);
+        console.log("Max search reached. Improvision failed.")
+    }
 
-    function rebuild(){
-        var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
-        root= {note: ctx.root, len: 64}; 
-        buildCount++;
-        Improviser1.success = true;
-        var verse = new Motf.Imp1(ctx);
-        var phrase = [
-            new Motf.Imp1(ctx, verse.pick[0], verse.pick[1].note, 0),
-            new Motf.Imp1(ctx, verse.pick[1], verse.pick[2].note, 0),
-            new Motf.Imp1(ctx, verse.pick[2], verse.pick[3].note, 0),
-            new Motf.Imp1(ctx, verse.pick[3], verse.home.note, 0),
-        ]
+    function rebuild(ctx){
+        var parent = {note: Work.global.key+60, len:64};
+        var home = Work.global.key+60;
+        var verse = new Motf.Imp1(ctx, parent, home, 0)
+        if (verse.pick == null) return false;
+
+        var phrase = [];
+        for (var i=0; i<verse.pick.length; i++) {
+            var home = (i==verse.pick.length-1) ? verse.home : verse.pick[i+1].note;
+            var p = new Motf.Imp1(ctx, verse.pick[i], home, 0);
+            if (p.pick == null) return false;
+            phrase.push(p);
+        };
+
         var phrase1 = [];
         for (var i=0; i<phrase.length; i++) {
             phrase1.push({pick:[]});
@@ -22,34 +41,22 @@ var Improviser1={};
                 [0,2,4][Math.floor(Math.random()*3)]), len:phrase[i].pick[j].len});
             phrase1[i].home=phrase[i].home;
         };
+
         var note = [];
-        for (var i=0; i<phrase.length; i++){
-            var r1 = Math.floor(Math.random()*6);
-            var r2 = Math.floor(Math.random()*2)+6;
-            note.push(
-                new Motf.Imp1(ctx, phrase1[i].pick[0], phrase1[i].pick[1].note, r1),
-                new Motf.Imp1(ctx, phrase1[i].pick[1], phrase1[i].pick[2].note, r1),
-                new Motf.Imp1(ctx, phrase1[i].pick[2], phrase1[i].pick[3].note, r2),
-                new Motf.Imp1(ctx, phrase1[i].pick[3], phrase1[i].home, r2),
-            );
-        };
-        if (!Improviser1.success) {
-            if (buildCount>3000) {
-                console.log("Max search reached. Improvision failed.")
-                return;
+        for (var i=0; i<phrase1.length; i++){
+            var rhyPat = [Math.floor(Math.random()*6), Math.floor(Math.random()*2)+6];
+            for (var j=0; j<phrase1[i].pick.length; j++){
+                var home = (j==phrase1[i].pick.length-1) ? phrase1[i].home : phrase1[i].pick[j+1].note;
+                var n = new Motf.Imp1(ctx, phrase1[i].pick[j], home, rhyPat[Math.floor(j / 2)]);
+                if (n.pick == null) return false;
+                note.push(n);    
             }
-            rebuild();
-            return;
-        }
-        Improviser1.verse = verse;
-        Improviser1.bass = phrase;
-        Improviser1.melody = note;
-        console.log("Improvision k"+ ctx.key + " s" + ctx.scaleId + " m" + ctx.mode + 
-            " succeeded after "+buildCount+" iterations."); 
-        Imp();
+        };    
+
+        return {verse: verse, phrase: phrase, phrase1: phrase1, note: note};
     };
 
-    Improviser1.rebuild = () => { buildCount=0; rebuild() };
+    Improviser1.tryBuild = (ctx) => { Improviser1.buildCount=0; tryBuild(ctx); };
     
     //debugger
 })()
