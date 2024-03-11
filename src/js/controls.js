@@ -291,8 +291,8 @@ var Controls= {};
 				// pianoroll.rootSeeds=[];
 				// pianoroll.improviseX2("preset", 0);
 				Work.global.key = Math.floor(Math.random()*12);
-				Work.global.scale_id = Math.floor(Math.random()*Motf.scaleDict.length);
-				Work.global.mode = Math.floor(Math.random()*Motf.scaleDict[Work.global.scale_id].modes.length);
+				Work.global.scale_id = Math.floor(Math.random()*Motf.theory.scaleDict.length);
+				Work.global.mode = Math.floor(Math.random()*Motf.theory.scaleDict[Work.global.scale_id].modes.length);
 				document.getElementById("select_key").selectedIndex=Work.global.key;
 				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
 				Composer.init();
@@ -541,7 +541,7 @@ var Controls= {};
 	fileloader2.style.display ="none";
 	fileloader2.onchange=(e)=>{
 		var file = e.target.files[0];
-		Importer.parseFile(file);	
+		ImExporter.parseFile(file);	
 		e.target.value="";		
 	}
 
@@ -551,7 +551,7 @@ var Controls= {};
 	};
 	
 	document.querySelector("#btn_export").onclick=()=>{
-		Importer.exportMidi(Work);
+		ImExporter.exportMidi(Work);
 	};
 	
 	Controls.btn_new.onclick=()=>{
@@ -1440,10 +1440,10 @@ pianoroll.canvas.addEventListener("gestureend", function (e) {
 
 function initFixedUI(){
 	var s;
-	for (var i=0; i<Motf.scaleDict.length; i++){
+	for (var i=0; i<Motf.theory.scaleDict.length; i++){
 		s=document.getElementById("select_scale");
 		var o=document.createElement("option");
-		o.innerHTML="#"+i+" - "+Motf.scaleDict[i].name + " len:"+Motf.scaleDict[i].len;
+		o.innerHTML="#"+i+" - "+Motf.theory.scaleDict[i].name + " len:"+Motf.theory.scaleDict[i].len;
 		s.appendChild(o);
 	};
 //	s.options.selectedIndex=70;

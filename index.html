@@ -545,7 +545,7 @@
 <script src="./src/js/midifilereader.js"></script>
 <script src="./src/js/global.js"></script>
 <script src="./src/js/work.js"></script>
-<script src="./src/js/importer.js"></script>
+<script src="./src/js/imexporter.js"></script>
 <script src="./src/js1/motf.js"></script>
 <script src="./src/js/composer.js"></script>
 <script src="./src/js1/improviser.js"></script>
@@ -570,54 +570,11 @@ localStorage.clear();
 Controls.showWaiting();
 pianoroll.init(); 
 
-function fillDrum(bars){
-for (var i=0; i< 16 * bars; i++) {
-	if (i % 4 == 0)
-	pianoroll.addNote({
-			x: i,
-			y: 36 - 21,
-			d: 1, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-	if (i % 64 == 0)
-	pianoroll.addNote({
-			x: i,
-			y: 43 - 21,
-			d: 8, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});	
-	if (i % 32 == 22)
-	pianoroll.addNote({
-			x: i,
-			y: 37 - 21,
-			d: 1, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-	if (i % 16 == 8)
-	pianoroll.addNote({
-			x: i,
-			y: 38 - 21,
-			d: 1, 
-			s: 0, 
-			v: 1, 
-			l: 3, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-}
-}
-
 function Imp(){
 
 Work.global.seqXY=[];
+
+var drumer = new Motf.AutoDrumer(pianoroll, 3);
 
 var pos = 0;
 // for (var i=0; i<Improviser1.verse.pick.length; i++){
@@ -666,7 +623,7 @@ if (Improviser1.melody[i].pick[j]) {
 
 pianoroll.autoSimpleChordByKey();
 pianoroll.deSelectAll();
-fillDrum(8);
+drumer.fill();
 pianoroll.autoZoom("xy");
 };
 

@@ -392,7 +392,7 @@ Work.layer= [  // T01..T10
 		instrument: 1,
 		mute: 0,		
 		solo: 0,
-		volume: 0,
+		volume: -5,
 		pan: 0,
 		seq: [],
 		rhythm: [
@@ -412,7 +412,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: 0,		
 		solo: 0,
-		volume: 4,
+		volume: 5,
 		pan: 0,
 		seq: [],
 		rhythm: [
@@ -432,7 +432,7 @@ Work.layer= [  // T01..T10
 		instrument: 17,
 		mute: 0,		
 		solo: 0,
-		volume: 0,
+		volume: -5,
 		pan: 0,
 		seq: [],
 		rhythm: [

@@ -249,7 +249,7 @@ function getWeightedMaps(){
 //		&& Work.global.seqXY[i].t!=1)
 		{								
 			if (Work.global.seqXY[i].x >= measW * meas
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d <= measW * (meas+1)) 
+			&& Work.global.seqXY[i].x + Work.global.seqXY[i].d <= measW * (meas+1)) 
 			{
 				notes.push({
 					note: Work.global.seqXY[i],
@@ -259,8 +259,8 @@ function getWeightedMaps(){
 							] 
 				});
 			}
-			else if (Work.global.seqXY[i].x <= measW * meas
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measW * meas
+			else if (Work.global.seqXY[i].x < measW * meas
+			&& Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * meas
 			&& Work.global.seqXY[i].x + Work.global.seqXY[i].d - measW * meas>0)
 				notes.push({
 					note: {
@@ -274,9 +274,9 @@ function getWeightedMaps(){
 					},
 					weight: weight[0] 
 				});
-			else if (Work.global.seqXY[i].x <= measW * (meas+1)
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measW * (meas+1)
-			&& measW * (meas+1) - Work.global.seqXY[i].x>0)
+			else if (Work.global.seqXY[i].x < measW * (meas+1)
+			&& Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * (meas+1)
+			&& measW * (meas+1) - Work.global.seqXY[i].x > 0)
 			{
 				notes.push({
 					note: {
@@ -294,8 +294,9 @@ function getWeightedMaps(){
 							] 
 				})
 			}
-			else if (Work.global.seqXY[i].x <= measW * meas
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measW * (meas+1))
+			else 
+			// if (Work.global.seqXY[i].x < measW * meas
+			// && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measW * (meas+1))
 				notes.push({
 					note: {
 						x: measW * meas,

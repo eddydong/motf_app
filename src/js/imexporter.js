@@ -1,4 +1,4 @@
-var Importer={};
+var ImExporter={};
 
 (function(){
 
@@ -134,11 +134,11 @@ function exportMidi(work){
 // 		scale: "major",
 // 		ticks: 0
 // 	});
-// 	midi.header.tempos.push({
-// 		bpm: work.global.bpm,
-// 		ticks: 0,
-// 		time: 0
-// 	})
+	midi.header.tempos.push({
+		bpm: work.global.bpm,
+		ticks: 0,
+		time: 0
+	})
 // 	midi.header.timeSignatures.push({
 // 		measures: 0,
 // 		ticks: 0,
@@ -146,7 +146,7 @@ function exportMidi(work){
 // 	})
 	secondPerTick = 60 / work.global.bpm / 4;
 	work.global.seqXY.forEach((note)=>{
-		if ((note.l+1) > midi.tracks.length)
+		while ( note.l > midi.tracks.length - 1)
 			track = midi.addTrack();
 		midi.tracks[note.l].addNote({
 			midi : note.y + 21, // 21-108, 60 = middle C
@@ -167,8 +167,8 @@ function exportMidi(work){
 };
 
 
-Importer.parseFile = parseFile;
-Importer.exportMidi = exportMidi;
+ImExporter.parseFile = parseFile;
+ImExporter.exportMidi = exportMidi;
 
 }())
 

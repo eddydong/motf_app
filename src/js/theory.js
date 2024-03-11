@@ -255,7 +255,7 @@ function getWeightedMaps(){
 				});
 			else if (Work.global.seqXY[i].x < measW * meas 
 				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * meas
-				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d <= measW * (meas+1))
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d < measW * (meas+1))
 				notes.push({
 					note: {
 						x: measW * meas,
@@ -268,7 +268,7 @@ function getWeightedMaps(){
 					},
 					weight: weight[0] 
 				});
-			else if (Work.global.seqXY[i].x >= measW * meas 
+			else if (Work.global.seqXY[i].x > measW * meas 
 				  && Work.global.seqXY[i].x < measW * (meas+1)
 				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * (meas+1))
 				notes.push({
@@ -286,8 +286,9 @@ function getWeightedMaps(){
 								/ (16 / Work.global.bpNote))
 							] 
 				});
-			else if (Work.global.seqXY[i].x <= measW * meas
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measW * (meas+1))
+			else 
+			// if (Work.global.seqXY[i].x < measW * meas
+			// && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measW * (meas+1))
 				notes.push({
 					note: {
 						x: measW * meas,
@@ -466,13 +467,13 @@ function voiceLeadingScore(c1, c2){
 function getScaleIndexFromMaskIndex(s, k, n){
 	var si=0;
 	for (var i=k; i<12; i++) {
-		if (Motf.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
+		if (Motf.theory.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
 	};
 	for (var i=0; i<k; i++) {
-		if (Motf.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
+		if (Motf.theory.scaleDict[s].modes[Work.global.mode][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
@@ -482,7 +483,7 @@ function getScaleIndexFromMaskIndex(s, k, n){
 
 // get the I, ii, iii, IV, V... triad chords by given key_id & scale_id
 function getDiatonicChordsByKeyScale(key_id, scale_id){
-	var scale = Motf.scaleDict[scale_id];
+	var scale = Motf.theory.scaleDict[scale_id];
 	var mk;
 	for (var k=0; k<12; k++) 
 	if (scale.modes[Work.global.mode][k]==1) mk=k;
