@@ -44,10 +44,10 @@ var Improviser1={};
 
         var note = [];
         for (var i=0; i<phrase1.length; i++){
-            var rhyPat = [Math.floor(Math.random()*6), Math.floor(Math.random()*2)+6];
+            var rhyPat = [Math.floor(Math.random()*4), 4, 5, 6, 7];
             for (var j=0; j<phrase1[i].pick.length; j++){
                 var home = (j==phrase1[i].pick.length-1) ? phrase1[i].home : phrase1[i].pick[j+1].note;
-                var n = new Motf.ImpNote(ctx, phrase1[i].pick[j], home, rhyPat[Math.floor(j / 2)]);
+                var n = new Motf.ImpNote(ctx, phrase1[i].pick[j], home, rhyPat[Math.floor(Math.random()*rhyPat.length)]);
                 if (n.pick == null) return false;
                 note.push(n);    
             }

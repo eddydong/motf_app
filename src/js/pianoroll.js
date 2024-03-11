@@ -2105,19 +2105,12 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 	Work.global.autoChord=[];
 	for (var i=0; i<chords.length; i++) if (chords[i]){
 		Work.global.autoChord.push(chords[i]);
+		var c = 0;
 		for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
+			c++;
 			this.addNote({
 				x: Work.global.bpMeas / Work.global.bpNote * 16 * i,
-				y: 27 + k + 12,
-				d: Work.global.bpMeas / Work.global.bpNote * 16, 
-				s: 1, 
-				v: 1, 
-				l: 1, //Work.global.layer_sel,
-				t: 1 // type: 0: normal note; 1: just improvised			
-			});
-			this.addNote({
-				x: Work.global.bpMeas / Work.global.bpNote * 16 * i,
-				y: 27 + k,
+				y: c==1 ? 27 + k + 24 : c == 3 ? 27 + k - 12 : 27 + k,
 				d: Work.global.bpMeas / Work.global.bpNote * 16, 
 				s: 1, 
 				v: 1, 

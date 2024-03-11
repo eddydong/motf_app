@@ -5,10 +5,10 @@ var Work = {};
 Work.global= {
 	workname: "Another Piece of Shit",
 	author: "noname",
-	key: 2, // 0-11 / offset from C, in chromatic scale
+	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
 	mode: 0,
-	bpm: 180,
+	bpm: 120,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
@@ -19,6 +19,8 @@ Work.global= {
 	human_tem: 0.1,
 	magnet: 0,
 	metronome: 0,
+	scaledKeyboard: 1,
+	through: 1,
 	tempo_auto:[ // 0..seq.length/16 (resolution: 1 measure)
 	],
 	layer_sel: 0,
@@ -360,8 +362,6 @@ Work.global= {
 	selectedMeas: [],			
 	showRhythm: 0,
 	showCanvas: 0,
-	scaledKeyboard: 0,
-	through: 1,
 	printTo: "16" // "rhythm", "32", "16", "8", "4"(n) 
 };
 
@@ -369,7 +369,7 @@ Work.layer= [  // T01..T10
 	{
 		name: "Melody",
 		type: "melody",
-		instrument: 11,
+		instrument: 1,
 		mute: 0,
 		solo: 0,
 		volume: 0,
@@ -389,7 +389,7 @@ Work.layer= [  // T01..T10
 	{
 		name: "Chord",
 		type: "chord",
-		instrument: 1,
+		instrument: 13,
 		mute: 0,		
 		solo: 0,
 		volume: -5,
@@ -412,7 +412,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: 0,		
 		solo: 0,
-		volume: 5,
+		volume: 7,
 		pan: 0,
 		seq: [],
 		rhythm: [
