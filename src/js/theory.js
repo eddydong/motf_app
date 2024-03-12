@@ -237,7 +237,7 @@ function getWeightedMaps(){
 	
 	let res=[];
 	
-	for (var meas=0; meas<measC; meas++){
+	for (var meas=0; meas<measHC; meas++){
 	
 		// grab notes from measure #meas
 		let notes=[];
@@ -246,23 +246,23 @@ function getWeightedMaps(){
 		Work.global.seqXY[i].s==1)
 //		&& Work.global.seqXY[i].t!=1)
 		{
-			if (Work.global.seqXY[i].x >= measW * meas
-			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d <= measW * (meas+1))
+			if (Work.global.seqXY[i].x >= measHW * meas
+			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d <= measHW * (meas+1))
 				notes.push({
 					note: Work.global.seqXY[i],
 					weight: weight[
-								Math.floor((Work.global.seqXY[i].x-meas*measW) 
+								Math.floor((Work.global.seqXY[i].x-meas*measHW) 
 								/ (16 / Work.global.bpNote))
 							] 
 				});
-			else if (Work.global.seqXY[i].x < measW * meas 
-				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * meas
-				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d < measW * (meas+1))
+			else if (Work.global.seqXY[i].x < measHW * meas 
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measHW * meas
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d < measHW * (meas+1))
 				notes.push({
 					note: {
-						x: measW * meas,
+						x: measHW * meas,
 						y: Work.global.seqXY[i].y,
-						d: Work.global.seqXY[i].x + Work.global.seqXY[i].d - measW * meas,
+						d: Work.global.seqXY[i].x + Work.global.seqXY[i].d - measHW * meas,
 						s: Work.global.seqXY[i].s,
 						v: Work.global.seqXY[i].v,
 						l: Work.global.seqXY[i].l,
@@ -270,32 +270,32 @@ function getWeightedMaps(){
 					},
 					weight: weight[0] 
 				});
-			else if (Work.global.seqXY[i].x > measW * meas 
-				  && Work.global.seqXY[i].x < measW * (meas+1)
-				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measW * (meas+1))
+			else if (Work.global.seqXY[i].x > measHW * meas 
+				  && Work.global.seqXY[i].x < measHW * (meas+1)
+				  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measHW * (meas+1))
 				notes.push({
 					note: {
 						x: Work.global.seqXY[i].x,
 						y: Work.global.seqXY[i].y,
-						d: measW * (meas+1) - Work.global.seqXY[i].x,
+						d: measHW * (meas+1) - Work.global.seqXY[i].x,
 						s: Work.global.seqXY[i].s,
 						v: Work.global.seqXY[i].v,
 						l: Work.global.seqXY[i].l,
 						t: Work.global.seqXY[i].t,
 					},
 					weight: weight[
-								Math.floor((Work.global.seqXY[i].x-meas*measW) 
+								Math.floor((Work.global.seqXY[i].x-meas*measHW) 
 								/ (16 / Work.global.bpNote))
 							] 
 				});
 			else 
-			 if (Work.global.seqXY[i].x < measW * meas
-			 && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measW * (meas+1))
+			 if (Work.global.seqXY[i].x < measHW * meas
+			 && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measHW * (meas+1))
 				notes.push({
 					note: {
-						x: measW * meas,
+						x: measHW * meas,
 						y: Work.global.seqXY[i].y,
-						d: measW,
+						d: measHW,
 						s: Work.global.seqXY[i].s,
 						v: Work.global.seqXY[i].v,
 						l: Work.global.seqXY[i].l,
@@ -329,13 +329,15 @@ function getWeightedMaps(){
 function getChordsByMelody(){
 	// get the measure count of current layer
 	let measW = Work.global.bpMeas / Work.global.bpNote * 16;
+	let measHW = Work.global.bpMeas / Work.global.bpNote * 8;
 	let measC = Math.ceil(endTick() / measW);
+	let measHC = Math.ceil(endTick() / measHW);
 
 	let weightMaps=getWeightedMaps(); 
 	
 	let res=[];
 	
-	for (var m=0; m<measC; m++){
+	for (var m=0; m<measHC; m++){
 		res.push([]);
 		let maxMatch=0;
 		for (var c=0; c<chordDict.length; c++) 
@@ -469,13 +471,13 @@ function voiceLeadingScore(c1, c2){
 function getScaleIndexFromMaskIndex(s, k, m, n){
 	var si=0;
 	for (var i=k; i<12; i++) {
-		if (Motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
+		if (motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
 	};
 	for (var i=0; i<k; i++) {
-		if (Motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
+		if (motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
 			si++;
 			if (i==n) return si;
 		};
@@ -485,7 +487,7 @@ function getScaleIndexFromMaskIndex(s, k, m, n){
 
 // get the I, ii, iii, IV, V... triad chords by given key_id & scale_id
 function getDiatonicChordsByKeyScale(key_id, scale_id, mode){
-	var scale = Motf.theory.scaleDict[scale_id];
+	var scale = motf.theory.scaleDict[scale_id];
 	var mk;
 	for (var k=0; k<12; k++) 
 	if (scale.modes[mode][k]==1) mk=k;

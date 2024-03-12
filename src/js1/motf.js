@@ -1,6 +1,22 @@
-var Motf = {};
+var motf = {};
 
 (function(){
+
+var color = {
+	palette: {
+		red: [255,150,150],
+		green: [150,255,150],
+		blue: [150,150,255],
+		indigo: [150,255,255],
+		purple: [255,150,255],
+		yellow: [255,255,150],
+		white: [255,255,255],
+		black: [0,0,0],
+	},
+	get(name, opacity){
+		return "rgba("+this.palette[name][0]+","+this.palette[name][1]+","+this.palette[name][2]+","+opacity+")";		
+	}
+}
 
 var theory = {
 	// Properties
@@ -123,7 +139,7 @@ class Context {
 	}
 	scaleUpdate(){
 		var scale=[];
-		var mask=Motf.theory.transpose(Motf.theory.scaleDict[this.scaleId].modes[this.mode], this.key);
+		var mask=theory.transpose(theory.scaleDict[this.scaleId].modes[this.mode], this.key);
 		for (var i=0; i<88; i++)
 			if (mask[(i+9) % 12]==1) scale.push(i);
 		return scale;
@@ -162,13 +178,13 @@ class AutoDrumer {
 	}
 	fill(){
 		for (var i=0; i< this.proll.endTick; i++) {
-			if (i % 4 == 0)
+			if (i % 2 == 0)
 			pianoroll.addNote({
 					x: i,
 					y: 36 - 21,
 					d: 1, 
 					s: 0, 
-					v: 1, 
+					v: i % 4 == 0 ? 1 : 0.5, 
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
@@ -182,7 +198,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});	
-			if (i % 32 == 22)
+			if (i % 32 == 26)
 			pianoroll.addNote({
 					x: i,
 					y: 37 - 21,
@@ -192,7 +208,37 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 16 == 8)
+			if (i % 16 == 0)
+			pianoroll.addNote({
+					x: i,
+					y: 39 - 21,
+					d: 4, 
+					s: 0, 
+					v: 1, 
+					l: this.layer,
+					t: 0 // type: 0: normal note; 1: just improvised			
+			});
+			if (i % 128 == 124)
+			pianoroll.addNote({
+					x: i,
+					y: 41 - 21,
+					d: 4, 
+					s: 0, 
+					v: 2, 
+					l: this.layer,
+					t: 0 // type: 0: normal note; 1: just improvised			
+			});
+			if (i % 128 == 126)
+			pianoroll.addNote({
+					x: i,
+					y: 40 - 21,
+					d: 2, 
+					s: 0, 
+					v: 2, 
+					l: this.layer,
+					t: 0 // type: 0: normal note; 1: just improvised			
+			});
+			if (i % 8 == 4)
 			pianoroll.addNote({
 					x: i,
 					y: 38 - 21,
@@ -264,10 +310,11 @@ class ImpNote {
 	}
 }
 
-Motf.theory = theory;
-Motf.Context = Context;
-Motf.AutoDrumer = AutoDrumer;
-Motf.ImpNote = ImpNote;
+motf.color = color;
+motf.theory = theory;
+motf.Context = Context;
+motf.AutoDrumer = AutoDrumer;
+motf.ImpNote = ImpNote;
 
 //console.log(transpose(scaleDict[23].modes[0], 2)[n % 12] == 1);
 

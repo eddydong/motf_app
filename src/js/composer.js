@@ -605,7 +605,7 @@ Composer.init=init;
 
 function scaleUpdate(){
 	var scale=[];
-	var mask=Motf.theory.transpose(Motf.theory.scaleDict[Work.global.scale_id].modes[Work.global.mode], 
+	var mask=motf.theory.transpose(motf.theory.scaleDict[Work.global.scale_id].modes[Work.global.mode], 
 		Work.global.key);
 	for (var i=0; i<88; i++)
 		if (mask[(i+9) % 12]==1) scale.push(i);
@@ -614,8 +614,8 @@ function scaleUpdate(){
 
 function generate_diatonic_mask(){
 	var scale=[];
-	//console.log(Motf.scaleDict[Work.global.scale_id].modes[Work.global.mode]);
-	var mask=Motf.theory.transpose(Motf.theory.scaleDict[Work.global.scale_id].modes[Work.global.mode], 
+	//console.log(motf.scaleDict[Work.global.scale_id].modes[Work.global.mode]);
+	var mask=motf.theory.transpose(motf.theory.scaleDict[Work.global.scale_id].modes[Work.global.mode], 
 		Work.global.key);
 	for (var i=0; i<88; i++)
 		if (mask[(i+9) % 12]==1) scale.push(1); else scale.push(0);

@@ -745,17 +745,33 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		var sel=this.selCount();
  		var sel=this.selCount();
 
-		if (Work.global.seqXY[i].t==1) {
-			colorF="rgba(120,255,255,"+this.outFocusNoteOpacity+")";	
+		 if (Work.global.seqXY[i].t==1) {
+			colorF=motf.color.get("indigo", this.outFocusNoteOpacity);	
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
-				colorF="rgba(255,150,230,"+this.outFocusNoteOpacity+")";	
+				colorF=motf.color.get("yellow", this.outFocusNoteOpacity);
+		} else if (Work.global.seqXY[i].t==2) {
+			colorF=motf.color.get("purple", this.outFocusNoteOpacity);	
+			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
+				colorF=motf.color.get("yellow", this.outFocusNoteOpacity);
 		} else {
-			colorF="rgba(130,255,160,0"+this.outFocusNoteOpacity+")";		
+			colorF=motf.color.get("green", this.outFocusNoteOpacity);
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
-				colorF="rgba(255,240,170,"+this.outFocusNoteOpacity+")";	
+				colorF=motf.color.get("yellow", this.outFocusNoteOpacity);
 		};
 		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
-			colorF = "rgba(240,170,190,"+this.outFocusNoteOpacity+")";		
+			colorF = motf.color.get("red", this.outFocusNoteOpacity);
+
+		// if (Work.global.seqXY[i].t==1) {
+		// 	colorF="rgba(120,255,255,"+this.outFocusNoteOpacity+")";	
+		// 	if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
+		// 		colorF="rgba(255,150,230,"+this.outFocusNoteOpacity+")";	
+		// } else {
+		// 	colorF="rgba(130,255,160,0"+this.outFocusNoteOpacity+")";		
+		// 	if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
+		// 		colorF="rgba(255,240,170,"+this.outFocusNoteOpacity+")";	
+		// };
+		// if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
+		// 	colorF = "rgba(240,170,190,"+this.outFocusNoteOpacity+")";		
 	
 
 		this.ctx.beginPath();
@@ -823,17 +839,21 @@ Pianoroll.prototype.drawPianoRoll=function(){
 									
  		var sel=this.selCount();
 
-		if (Work.global.seqXY[i].t==1) {
-			colorF="rgba(120,255,255,0.9)";	
+		 if (Work.global.seqXY[i].t==1) {
+			colorF=motf.color.get("indigo", 0.9);	
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
-				colorF="rgba(255,150,230,0.9)";	
+				colorF=motf.color.get("yellow", 0.9);
+		} else if (Work.global.seqXY[i].t==2) {
+			colorF=motf.color.get("purple", 0.9);	
+			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
+				colorF=motf.color.get("yellow", 0.9);
 		} else {
-			colorF="rgba(130,255,160,0.9)";		
+			colorF=motf.color.get("green", 0.9);
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
-				colorF="rgba(255,240,170,0.9)";	
+				colorF=motf.color.get("yellow", 0.9);
 		};
 		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
-			colorF = "rgba(240,170,190,0.9)";		
+			colorF = motf.color.get("red", 0.9);
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
@@ -851,9 +871,9 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			
 //			this.ctx.globalCompositeOperation = 'lighter';
 
-			colorF = "rgba(220,255,220,";
+			colorF = "green";
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0){
-				colorF = "rgba(255,220,220,";	
+				colorF = "red";	
 			};	
 
  			var velH=h*max_vel_height*Work.global.seqXY[i].v/3;
@@ -861,14 +881,14 @@ Pianoroll.prototype.drawPianoRoll=function(){
 // 				if (Math.round(Tone.now()*1000) % 2 == 0) velH=velH*0.96;
 			
 			var grd=this.ctx.createLinearGradient(0,top-velH,0,top);
-			grd.addColorStop(0,colorF+"0)");
-			grd.addColorStop(1,colorF+"0.6)");
+			grd.addColorStop(0,motf.color.get(colorF, 0));
+			grd.addColorStop(1,motf.color.get(colorF, 0.6));
 			this.ctx.fillStyle=grd;
 			this.ctx.fillRect(left, top-velH, width-1, velH);
 
 			grd=this.ctx.createLinearGradient(0,h+top,0,h+top+velH);
-			grd.addColorStop(0,colorF+"0.6)");
-			grd.addColorStop(1,colorF+"0)");
+			grd.addColorStop(0,motf.color.get(colorF, 0.6));
+			grd.addColorStop(1,motf.color.get(colorF, 0));
 			this.ctx.fillStyle=grd;
 			this.ctx.fillRect(left, h+top, width-1, velH);
 			
@@ -877,7 +897,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		};		
 
 		if (Work.global.seqXY[i].s===1){
-			colorB = "rgba(255,255,255,1)";
+			colorB = motf.color.get("white", 0.8)
 			lineW=Math.ceil(512/this.viewportW);
 			if (lineW<1) lineW=1;
 			if (lineW>4) lineW=4;
@@ -1039,7 +1059,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 	
 	var tickPerMeas = Work.global.bpMeas * (16/Work.global.bpNote)	
 	
-	var scale_n = Motf.theory.scaleDict[Work.global.scale_id].len;
+	var scale_n = motf.theory.scaleDict[Work.global.scale_id].len;
 	
 	// draw Rhythm
 	if (Work.global.showRhythm) {
@@ -2108,15 +2128,17 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 		var c = 0;
 		for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
 			c++;
-			this.addNote({
-				x: Work.global.bpMeas / Work.global.bpNote * 16 * i,
-				y: c==1 ? 27 + k + 24 : c == 3 ? 27 + k - 12 : 27 + k,
-				d: Work.global.bpMeas / Work.global.bpNote * 16, 
+			var newNote={
+				x: Work.global.bpMeas / Work.global.bpNote * 8 * i,
+				y: 27 + k,
+				d: Work.global.bpMeas / Work.global.bpNote * 8, 
 				s: 1, 
 				v: 1, 
 				l: 1, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
-			});
+			};
+			if (c==1) newNote.y+=12; else if (c==3) newNote.y-=12;
+			this.addNote(newNote);
 		}
 	};
 	this.autoZoom("y");

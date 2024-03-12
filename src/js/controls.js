@@ -113,12 +113,12 @@ var Controls= {};
 			if (e.keyCode==73) {
 				pianoroll.stop();
 				Work.global.key = Math.floor(Math.random()*12);
-				Work.global.scale_id = Math.floor(Math.random()*Motf.theory.scaleDict.length);
-				Work.global.mode = Math.floor(Math.random()*Motf.theory.scaleDict[Work.global.scale_id].modes.length);
+				Work.global.scale_id = Math.floor(Math.random()*motf.theory.scaleDict.length);
+				Work.global.mode = Math.floor(Math.random()*motf.theory.scaleDict[Work.global.scale_id].modes.length);
 				document.getElementById("select_key").selectedIndex=Work.global.key;
 				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
 				Composer.init();
-				var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
+				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
 				Improviser1.tryBuild(ctx);
 				pianoroll.scroll("beginning");
 				pianoroll.play();
@@ -299,7 +299,7 @@ var Controls= {};
 			if (e.keyCode==73) {
 				pianoroll.stop();
 				Composer.init();
-				var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
+				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
 				Improviser1.tryBuild(ctx);
 				pianoroll.scroll("beginning");
 				pianoroll.play();
@@ -1446,10 +1446,10 @@ pianoroll.canvas.addEventListener("gestureend", function (e) {
 
 function initFixedUI(){
 	var s;
-	for (var i=0; i<Motf.theory.scaleDict.length; i++){
+	for (var i=0; i<motf.theory.scaleDict.length; i++){
 		s=document.getElementById("select_scale");
 		var o=document.createElement("option");
-		o.innerHTML="#"+i+" - "+Motf.theory.scaleDict[i].name + " len:"+Motf.theory.scaleDict[i].len;
+		o.innerHTML="#"+i+" - "+motf.theory.scaleDict[i].name + " len:"+motf.theory.scaleDict[i].len;
 		s.appendChild(o);
 	};
 //	s.options.selectedIndex=70;
