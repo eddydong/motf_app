@@ -33,6 +33,13 @@ var Improviser1={};
             phrase.push(p);
         };
 
+        phrase =[
+            {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
+            {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60},
+            {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
+            {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60}
+        ];
+
         var phrase1 = [];
         for (var i=0; i<phrase.length; i++) {
             phrase1.push({pick:[]});

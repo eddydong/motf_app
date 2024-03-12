@@ -231,7 +231,9 @@ function getWeightedMaps(){
 
 	// get the measure count of current layer
 	let measW = Work.global.bpMeas / Work.global.bpNote * 16;
+	let measHW = Work.global.bpMeas / Work.global.bpNote * 8;
 	let measC = Math.ceil(endTick() / measW);
+	let measHC = Math.ceil(endTick() / measHW);
 	
 	let res=[];
 	

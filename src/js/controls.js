@@ -111,7 +111,17 @@ var Controls= {};
 
 			// Cmd + i for improvising
 			if (e.keyCode==73) {
-
+				pianoroll.stop();
+				Work.global.key = Math.floor(Math.random()*12);
+				Work.global.scale_id = Math.floor(Math.random()*Motf.theory.scaleDict.length);
+				Work.global.mode = Math.floor(Math.random()*Motf.theory.scaleDict[Work.global.scale_id].modes.length);
+				document.getElementById("select_key").selectedIndex=Work.global.key;
+				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
+				Composer.init();
+				var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
+				Improviser1.tryBuild(ctx);
+				pianoroll.scroll("beginning");
+				pianoroll.play();
 			};
 			
 			// Cmd + N for new project
@@ -288,11 +298,6 @@ var Controls= {};
 			// I for improvising 
 			if (e.keyCode==73) {
 				pianoroll.stop();
-				Work.global.key = Math.floor(Math.random()*12);
-				Work.global.scale_id = Math.floor(Math.random()*Motf.theory.scaleDict.length);
-				Work.global.mode = Math.floor(Math.random()*Motf.theory.scaleDict[Work.global.scale_id].modes.length);
-				document.getElementById("select_key").selectedIndex=Work.global.key;
-				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
 				Composer.init();
 				var ctx = new Motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
 				Improviser1.tryBuild(ctx);
