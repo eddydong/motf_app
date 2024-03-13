@@ -1627,14 +1627,12 @@ Pianoroll.prototype.playNext=function(t){
 	if (Work.global.seqIJ[currentTick] && Work.global.seqIJ[currentTick].notes.length>0) 
 	for (var i=0; i<Work.global.seqIJ[currentTick].notes.length; i++){
 		if ( (Work.global.seqIJ[currentTick].notes[i].note<88 && 
-			  Work.global.seqIJ[currentTick].notes[i].type != 2 &&
 			 (sel==0 || (sel>0 && Work.global.seqIJ[currentTick].notes[i].sel==1))) 
 				// rhythm notes
 			 || (Work.global.showRhythm && 
 			 Work.global.seqIJ[currentTick].notes[i].layer==Work.global.layer_sel)
 		){
 			var ins=this.layer[Work.global.seqIJ[currentTick].notes[i].layer].instrument;
-			if (Work.global.seqIJ[currentTick].notes[i].type == 2) ins=Instruments.drum1;
 			var pedal=0;
 			if (Work.global.pedal)
 			for (var p=0; p<Work.global.pedal.length; p++)

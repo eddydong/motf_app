@@ -21,7 +21,7 @@ var Improviser1={};
     }
 
     function rebuild(ctx){
-        var parent = {note: Work.global.key+60, len:128};
+        var parent = {note: Work.global.key+60, len:64};
         var home = Work.global.key+60;
         var verse = new motf.ImpNote(ctx, parent, home, 0)
         if (verse.pick == null) return false;
