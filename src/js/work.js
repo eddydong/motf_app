@@ -19,7 +19,7 @@ Work.global= {
 	human_tem: 0.1,
 	magnet: 0,
 	metronome: 0,
-	scaledKeyboard: 1,
+	scaledKeyboard: 0,
 	through: 1,
 	tempo_auto:[ // 0..seq.length/16 (resolution: 1 measure)
 	],
@@ -412,7 +412,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: 0,		
 		solo: 0,
-		volume: 7,
+		volume: 5,
 		pan: 0,
 		seq: [],
 		rhythm: [

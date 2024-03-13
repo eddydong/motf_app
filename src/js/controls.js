@@ -106,8 +106,11 @@ var Controls= {};
 			if (e.keyCode == 90 && e.shiftKey) 
 				pianoroll.redo();	
 			
-			// Cmd + S: save seq to local motf	
-			if (e.keyCode == 83) pianoroll.saveToLocal();
+			// Cmd + S: save seq to local storage	
+			if (e.keyCode == 83) Controls.saveTemp();
+			
+			// Cmd + L: load seq from local storage	
+			if (e.keyCode == 76) Controls.loadTemp();
 
 			// Cmd + i for improvising
 			if (e.keyCode==73) {
@@ -571,7 +574,7 @@ var Controls= {};
 		init();
 		Instruments.onDefaultLoaded();
 		pianoroll.historyPush("New");
-		Controls.saveTemp();
+		//Controls.saveTemp();
 	};
 	
 	Controls.btn_metronome.style.background="#bb33bb";
@@ -1128,7 +1131,7 @@ Controls.loadTemp=function(){
 	var work = JSON.parse(window.localStorage.getItem("tempwork"));
 	if (work) {
 		Work=work;
-		pianoroll.historyPush("Open motf File");
+		pianoroll.historyPush("Load from localStorage");
 		pianoroll.updateEndTick();
 		pianoroll.updateChords();
 		pianoroll.autoZoom();
@@ -1205,7 +1208,7 @@ function init(){
 					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
 					Instruments.updateSample();
 				};
-				Controls.saveTemp();						
+				//Controls.saveTemp();						
 			};
 		};
 
@@ -1213,14 +1216,14 @@ function init(){
 		for (var i=0; i<lvs.length; i++) lvs[i].oninput=(e)=>{
 			Work.layer[e.target.dataset.i].volume=parseInt(e.target.value);
 			pianoroll.layer[e.target.dataset.i].channel.volume.value=parseInt(e.target.value);
-			Controls.saveTemp();
+			//Controls.saveTemp();
 		};
 		
 		var lps=document.querySelectorAll(".input_layer_pan");
 		for (var i=0; i<lps.length; i++) lps[i].oninput=(e)=>{
 			Work.layer[e.target.dataset.i].pan=parseInt(e.target.value);
 			pianoroll.layer[e.target.dataset.i].channel.pan.value=parseInt(e.target.value);
-			Controls.saveTemp();
+			//Controls.saveTemp();
 		};
 		
 		var lds=document.querySelectorAll(".layer-del");
@@ -1247,7 +1250,7 @@ function init(){
 			Global.XYtoIJ();
 			
 			pianoroll.historyPush("Delete Layer");
-			Controls.saveTemp();			
+			//Controls.saveTemp();			
 		};
 		
 		if (Work.layer.length<2) 

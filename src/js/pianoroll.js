@@ -258,7 +258,7 @@ Pianoroll.prototype.addNote=function(note, cause){
 	this.updateEndTick(); 	
 	if (cause!=undefined) this.historyPush(cause);
 //	pianoroll.updateChords();
-	Controls.saveTemp();	
+//	Controls.saveTemp();	
 }
 
 Pianoroll.prototype.updateEndTick=function(){
@@ -297,7 +297,7 @@ Pianoroll.prototype.selectNotes=function(x1,y1,x2,y2,through){
 			this.currentSel.add(i);
 		};
 	};
-	Controls.saveTemp();		
+//	Controls.saveTemp();		
 };
 
 Pianoroll.prototype.scroll=function(dir, step){
@@ -341,7 +341,7 @@ Pianoroll.prototype.undo=function(){
 			if (this.history[this.historyPos+1].cause.includes("Layer")) Controls.init();
 		};
 		this.updateEndTick();
-		Controls.saveTemp();
+//		Controls.saveTemp();
 	};
 };
 Pianoroll.prototype.redo=function(){
@@ -353,7 +353,7 @@ Pianoroll.prototype.redo=function(){
 			if (this.history[this.historyPos].cause.includes("Layer")) Controls.init();
 		};
 		this.updateEndTick(); 	
-		Controls.saveTemp();
+//		Controls.saveTemp();
 	};
 };
 Pianoroll.prototype.delNotes=function(){
@@ -368,7 +368,7 @@ Pianoroll.prototype.delNotes=function(){
 	this.historyPush("del note");
 	
 //	pianoroll.updateChords();
-	Controls.saveTemp();
+//	Controls.saveTemp();
 };
 Pianoroll.prototype.move=function(dir, alt){
 //		var tickL= 60/ (Work.global.bpm / Work.global.bpNote) /16; // len of a 16n in second
@@ -484,7 +484,7 @@ Pianoroll.prototype.move=function(dir, alt){
 
 //	pianoroll.updateChords();
 
-	Controls.saveTemp();	
+//	Controls.saveTemp();	
 };
 
 Pianoroll.prototype.deSelectAll=function(){
@@ -492,7 +492,7 @@ Pianoroll.prototype.deSelectAll=function(){
 		if (Work.global.seqXY[i].s==1) 
 			Work.global.seqXY[i].s=0;
 	this.historyLastAction=null;
-	Controls.saveTemp();	
+//	Controls.saveTemp();	
 };
 Pianoroll.prototype.selCount=function(){
 	var c=0;
@@ -532,7 +532,7 @@ Pianoroll.prototype.trisect=function(){
 		Work.global.seqXY[r[i]].d=Work.global.seqXY[r[i]].d/3;
 	}
 	this.historyPush("trisect");
-	Controls.saveTemp();		
+//	Controls.saveTemp();		
 };
 
 Pianoroll.prototype.bisect=function(){
@@ -549,7 +549,7 @@ Pianoroll.prototype.bisect=function(){
 		Work.global.seqXY[r[i]].d=Work.global.seqXY[r[i]].d/2;
 	}
 	this.historyPush("bisect");	
-	Controls.saveTemp();		
+//	Controls.saveTemp();		
 };
 
 Pianoroll.prototype.merge=function(){
@@ -567,7 +567,7 @@ Pianoroll.prototype.merge=function(){
 			return;
 		}
 	
-	var max=-99999, min=99999;
+	var max=-Infinity, min=Infinity;
 	for (var i=0; i<r.length; i++) {
 		if (max<Work.global.seqXY[r[i]].x+Work.global.seqXY[r[i]].d)
 			max=Work.global.seqXY[r[i]].x+Work.global.seqXY[r[i]].d;
@@ -591,7 +591,7 @@ Pianoroll.prototype.merge=function(){
 	this.updateEndTick();
 	
 	this.historyPush("merge");	
-	Controls.saveTemp();		
+//	Controls.saveTemp();		
 };
 
 Pianoroll.prototype.drawPianoRoll=function(){
@@ -871,8 +871,9 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			
 //			this.ctx.globalCompositeOperation = 'lighter';
 
-			colorF = "green";
-			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0){
+			colorF = "white";
+			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0 && 
+				Work.layer[Work.global.seqXY[i].l].type!="percussion"){
 				colorF = "red";	
 			};	
 
@@ -1730,7 +1731,7 @@ Pianoroll.prototype.adjustVel=function(a){
 		if (Work.global.seqXY[ns[i]].v<0.05) Work.global.seqXY[ns[i]].v=0.05;
 		if (Work.global.seqXY[ns[i]].v> 3) Work.global.seqXY[ns[i]].v= 3;
 	};
-	Controls.saveTemp();		
+//	Controls.saveTemp();		
 }
 
 Pianoroll.prototype.pasteNotes=function(){
@@ -1754,7 +1755,7 @@ Pianoroll.prototype.pasteNotes=function(){
 	this.updateEndTick();
 	
 	this.historyPush("paste notes");
-	Controls.saveTemp();		
+//	Controls.saveTemp();		
 //	pianoroll.updateChords();
 };
 
@@ -1791,7 +1792,7 @@ Pianoroll.prototype.pasteInsertNotes=function(){
 	this.updateEndTick();
 	
 	this.historyPush("paste insert notes");
-	Controls.saveTemp();	
+//	Controls.saveTemp();	
 	
 //	pianoroll.updateChords();	
 };
@@ -1962,7 +1963,7 @@ Pianoroll.prototype.improviseX2=function(){
 	Global.XYtoIJ();
 	
 	this.autoZoom("y");		
-	Controls.saveTemp();	
+//	Controls.saveTemp();	
 	
 }
 
@@ -2028,7 +2029,7 @@ Pianoroll.prototype.improvise=function(params){
 		};
 		// how to force anim run for at least 1 frame here?		
 	};
-	Controls.saveTemp();	
+//	Controls.saveTemp();	
 }
 
 Pianoroll.prototype.updateChords=function(){
@@ -2071,7 +2072,6 @@ Pianoroll.prototype.updateChords1=function(){
 };
 
 Pianoroll.prototype.init=function(){
-	Controls.loadTemp();
 
 	Tone.Transport.bpm.value=Work.global.bpm;
 	pianoroll.master.volume.volume.value = document.getElementById("input_master_volume").value;
@@ -2132,12 +2132,12 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 				x: Work.global.bpMeas / Work.global.bpNote * 8 * i,
 				y: 27 + k,
 				d: Work.global.bpMeas / Work.global.bpNote * 8, 
-				s: 1, 
+				s: 0, 
 				v: 1, 
 				l: 1, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 			};
-			if (c==1) newNote.y+=12; else if (c==3) newNote.y-=12;
+			//if (c==1) newNote.y+=12; else if (c==3) newNote.y-=12;
 			this.addNote(newNote);
 		}
 	};

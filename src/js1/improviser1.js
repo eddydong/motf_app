@@ -9,7 +9,7 @@ var Improviser1={};
                 Improviser1.verse = res.verse;
                 Improviser1.bass = res.phrase;
                 Improviser1.melody = res.note;
-                Improviser1.melodyline = res.phrase1;
+                Improviser1.meline = res.phrase1;
                 console.log("Improvision k"+ ctx.key + " s" + ctx.scaleId + " m" + ctx.mode + 
                     " succeeded after " + (i+1) + " iterations."); 
                 Imp();
@@ -21,7 +21,7 @@ var Improviser1={};
     }
 
     function rebuild(ctx){
-        var parent = {note: Work.global.key+60, len:64};
+        var parent = {note: Work.global.key+60, len:128};
         var home = Work.global.key+60;
         var verse = new motf.ImpNote(ctx, parent, home, 0)
         if (verse.pick == null) return false;
@@ -34,12 +34,12 @@ var Improviser1={};
             phrase.push(p);
         };
 
-        phrase =[
-            {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
-            {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60},
-            {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
-            {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60}
-        ];
+        // phrase =[
+        //     {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
+        //     {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60},
+        //     {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
+        //     {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60}
+        // ];
 
         var phrase1 = [];
         for (var i=0; i<phrase.length; i++) {

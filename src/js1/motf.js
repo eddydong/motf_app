@@ -4,12 +4,12 @@ var motf = {};
 
 var color = {
 	palette: {
-		red: [255,150,150],
-		green: [150,255,150],
-		blue: [150,150,255],
-		indigo: [150,255,255],
-		purple: [255,150,255],
-		yellow: [255,255,150],
+		red: [255,160,160],
+		green: [160,255,160],
+		blue: [160,160,255],
+		indigo: [160,255,255],
+		purple: [255,160,255],
+		yellow: [255,255,160],
 		white: [255,255,255],
 		black: [0,0,0],
 	},
@@ -275,7 +275,8 @@ class ImpNote {
 			if (last == this.ctx.getNoteByScaleMove(this.home,1) ||
 				last == this.ctx.getNoteByScaleMove(this.home,0) ||
 				last == this.ctx.getNoteByScaleMove(this.home,-1)||
-				last == this.ctx.getNoteByScaleMove(this.home,-3)) {
+				(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
+				last == this.ctx.getNoteByScaleMove(this.home,-3) : 0)) {
 				this.variant.push(myLib.deepCopy(this.draft));
 			}
 		} else for (var i=0; i<this.suggester.values.length; i++) if (Math.random()<this.suggester.chances[i]) {
