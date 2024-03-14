@@ -8,7 +8,7 @@ Work.global= {
 	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
 	mode: 0,
-	bpm: 120,
+	bpm: 80,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,

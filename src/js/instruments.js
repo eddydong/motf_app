@@ -679,6 +679,8 @@ var updateSample = function(){
     return;
   };
 
+  console.log("Downloading instruments to cache...")
+
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
@@ -733,7 +735,7 @@ Instruments.onDefaultLoaded=()=>{
 //      console.log("updating layer "+i+" with instru "+Work.layer[i].instrument);
     };
   Controls.hideWaiting();
-  console.log("all loaded");
+  console.log("Instruments loaded from cache.");
 }
 
       // save the virtual lnk's somewhere!!!

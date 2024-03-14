@@ -567,87 +567,8 @@
 //{"x":0,"y":3,"d":64,"v":1,"l":0,"s":1,"t":0}
 
 //localStorage.clear();
-Controls.showWaiting();
-pianoroll.init(); 
 
-function Imp(){
-
-Work.global.seqXY=[];
-
-var drumer = new motf.AutoDrumer(pianoroll, 3);
-
-var pos = 0;
-// for (var i=0; i<Improviser1.verse.pick.length; i++){
-// 	pianoroll.addNote({
-// 			x: pos,
-// 			y: Improviser1.verse.pick[i].note - 21 - 24,
-// 			d: Improviser1.verse.pick[i].len * 2, 
-// 			s: 0, 
-// 			v: 1, 
-// 			l: 0, //j,
-// 			t: 0 // type: 0: normal note; 1: just improvised			
-// 	});
-// 	pos += Improviser1.verse.pick[i].len * 2;
-// };
-pos = 0;
-for (var i=0; i<Improviser1.bass.length; i++)
-for (var j=0; j<Improviser1.bass[i].pick.length; j++){	
-	pianoroll.addNote({
-			x: pos,
-			y: Improviser1.bass[i].pick[j].note - 21 - 12,
-			d: Improviser1.bass[i].pick[j].len, 
-			s: 1, 
-			v: 1, 
-			l: 2, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-	pos += Improviser1.bass[i].pick[j].len;
-}
-pos = 0;
-for (var i=0; i<Improviser1.meline.length; i++)
-for (var j=0; j<Improviser1.meline[i].pick.length; j++){	
-	pianoroll.addNote({
-			x: pos,
-			y: Improviser1.meline[i].pick[j].note - 21,
-			d: Improviser1.meline[i].pick[j].len, 
-			s: 0, 
-			v: 1, 
-			l: 1, //j,
-			t: 2 // type: 0: normal note; 1: just improvised			
-	});
-	pianoroll.addNote({
-			x: pos,
-			y: Improviser1.meline[i].pick[j].note - 21 + 12,
-			d: Improviser1.meline[i].pick[j].len, 
-			s: 0, 
-			v: 1, 
-			l: 1, //j,
-			t: 2 // type: 0: normal note; 1: just improvised			
-	});
-	pos += Improviser1.meline[i].pick[j].len;
-}
-pos = 0;
-for (var i=0; i<Improviser1.melody.length; i++)
-for (var j=0; j<Improviser1.melody[i].pick.length; j++)
-if (Improviser1.melody[i].pick[j]) {
-//	console.log(motf.melody[i].pick[j]);
-	pianoroll.addNote({
-			x: pos,
-			y: Improviser1.melody[i].pick[j].note - 21,
-			d: Improviser1.melody[i].pick[j].len, 
-			s: 0, 
-			v: 1, 
-			l: 0, //j,
-			t: 0 // type: 0: normal note; 1: just improvised			
-	});
-	pos += Improviser1.melody[i].pick[j].len;
-};
-
-pianoroll.autoSimpleChordByKey();
-pianoroll.deSelectAll();
-drumer.fill();
-pianoroll.autoZoom("xy");
-};
+pianoroll.init();
 
 // function improvise(){
 // 	var et = pianoroll.endTick;

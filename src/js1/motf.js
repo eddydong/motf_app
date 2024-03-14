@@ -253,16 +253,17 @@ class AutoDrumer {
 }
 
 class ImpNote {
-	rhythm4 = [[1,1,1,1],[2,1,1],[1,2,1],[1,1,2],[3,1],[1,3],[2,2],[4]];
-    suggester = {values: [0,  -1,  1,   -2,   2,  -3,   3,  -4,   4,  -5,  5], 
-                chances: [1,   1,  1,  0.2, 0.1, 0.1, 0.3,   0,   0,   0,  0]}
+	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[1,2,1,1,2,1],[1,1,2,1,1,2],[3,1,3,1],[1,3,1,3],
+			   [2,2,2,2],[4,2,2],[2,4,2],[2,2,4],[6,2],[2,6],[4,4],[8]];
+    suggester = {values: [0,  -1,  1,   -2,   2,  -3,   3,  -4,   4], 
+                chances: [1,   1,  1,  0.1, 0.1, 0.0, 0.2, 0.2,   0]}
 	constructor(ctx, parent, home, rhythm){
 		this.ctx = ctx;  
 		this.rhythm = rhythm;
 		this.parent = parent;
 		this.home = home;
 		this.steps = this.rhythm4[rhythm].length;
-		this.draft = [{note: this.parent.note, len: this.rhythm4[this.rhythm][0] / 4 * this.parent.len}];
+		this.draft = [{note: this.parent.note, len: this.rhythm4[this.rhythm][0] / 8 * this.parent.len}];
 		this.variant = [];
 		this.search(1);
 		this.pick = null;
@@ -283,7 +284,7 @@ class ImpNote {
 			var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
 			if (targetY > this.ctx.root + 18) { while (targetY > this.ctx.root + 18) targetY -= 12;};
 			if (targetY < this.ctx.root - 18) { while (targetY < this.ctx.root - 18) targetY += 12;};
-			this.draft.push({note: targetY, len: this.rhythm4[this.rhythm][n] / 4 * this.parent.len});
+			this.draft.push({note: targetY, len: this.rhythm4[this.rhythm][n] / 8 * this.parent.len});
 			this.search(n+1);
 			this.draft.pop();
 		};
@@ -311,12 +312,85 @@ class ImpNote {
 	}
 }
 
+suggester = {values: [-1,  1, -2,    2,   -3,    3,   -4,   4, 0], 
+			chances: [1,   1,  1,  0.1,  0.1,  0.0,  0.2,  0.2,   0]}
+
+class Tree {
+    
+	branch_count = 2; // not implemented yet
+
+	constructor(parent){
+		this.ctx = parent.ctx;  
+		this.note = parent.note;
+		this.len = parent.len / 2;
+		this.home = parent.home;
+		this.parent = parent;
+		if (this.reborn()) this.split();
+	}
+
+	reborn(){
+		for (var i=0; i<suggester.values.length; i++) {
+			var targetY = this.ctx.getNoteByScaleMove(this.note, suggester.values[i]);
+			if (targetY == this.ctx.getNoteByScaleMove(this.home, 1) ||
+			targetY == this.ctx.getNoteByScaleMove(this.home, 0) ||
+			targetY == this.ctx.getNoteByScaleMove(this.home, -1)||
+			(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
+			targetY == this.ctx.getNoteByScaleMove(this.home, -3) : 0)){
+				this.note = targetY;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	split(){		
+		if (this.len==32) return true;
+		var leftBranch = new Tree(this);
+		console.log('grow into left: ', leftBranch);
+		var rightBranch = new Tree(this)
+		console.log('grow into right: ', rightBranch);
+		this.branches = [leftBranch, rightBranch];
+
+		// var found = false;
+		// for (var i=0; i<suggester.values.length; i++) {
+		// 	var targetY = this.ctx.getNoteByScaleMove(this.children[0].note, suggester.values[i]);
+		// 	if (targetY == this.ctx.getNoteByScaleMove(this.home,1) ||
+		// 	targetY == this.ctx.getNoteByScaleMove(this.home,0) ||
+		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-1)||
+		// 	(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
+		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-3) : 0)){
+		// 		var rightBranch = new Tree(this);
+		// 		rightBranch.len = this.len / 2;
+		// 		rightBranch.note = targetY;
+		// 		rightBranch.home = this.home;
+		// 		if (rightBranch.split()){
+		// 			console.log('grow into right: ', rightBranch);
+		// 			this.children.push(rightBranch);
+		// 			return true;
+		// 		}
+		// 	}
+		// }
+		// console.log('retreving to: ', this.parent);
+		// this.reborn();
+		return false;
+	}
+}
+
+var ground = {ctx: new Context(), note: 60, len:256, home: 60, about: "I'm the ground!"};
+
 motf.color = color;
 motf.theory = theory;
 motf.Context = Context;
 motf.AutoDrumer = AutoDrumer;
 motf.ImpNote = ImpNote;
+motf.Tree = Tree;
+motf.ground = ground;
 
 //console.log(transpose(scaleDict[23].modes[0], 2)[n % 12] == 1);
 
 })()
+
+
+// var root = new motf.Tree(motf.ground);
+
+// console.log(root);
