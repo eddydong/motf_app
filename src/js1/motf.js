@@ -153,7 +153,10 @@ class Context {
 	}
 	// n: MIDI pitch number, e.g. 60 = C4
 	inScale(n) {
-		if (n < 21 || n > 108) throw "inScale: note out of range.";
+		if (n < 21 || n > 108) {
+			console.log("inScale: note "+n+" out of range.");
+			return false;
+		}
 		return theory.transpose(theory.scaleDict[this.scaleId].modes[this.mode], this.key)[n % 12] == 1;
 	}
 	// n: current note; m: steps to move up(+) or down(-)
@@ -162,8 +165,10 @@ class Context {
 		var off = 0, pos = n;
 		while (off != m) {
 			pos = pos + (m > 0 ? 1 : -1);
+			if (pos<21 || pos>108) return n;
 			while (!this.inScale(pos)) {
 				pos = pos + (m > 0 ? 1 : -1);
+				if (pos<21 || pos>108) return n;
 			}
 			off = off + (m > 0 ? 1 : -1);
 		};
@@ -255,14 +260,13 @@ class AutoDrumer {
 class ImpNote {
 	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],
 			   [1,2,1,1,2,1],[1,1,2,1,1,2],
-			   [3,1,3,1],
-			   [1,3,1,3],
+			   [3,2,1,2],[3,2,2,1],[3,2,1,2],[3,2,1,2],
 			   [2,2,2,2],
 			   [4,2,2],
 			   [2,4,2],[2,2,4],
 			   [6,2],[2,6],[4,4],[8]];
     suggester = {values: [  0,  -1,   1,    -2,    2,   -3,    3,   -4,   4], 
-                chances: [0.1,   1,   1,   0.1,  0.1,  0.0,  0.1,  0.2,   0]}
+                chances: [0.1,   1,   1,   0.1,  0.1,  0.1,  0.1,  0.1, 0.1]}
 	constructor(ctx, parent, home, rhythm){
 		this.ctx = ctx;  
 		this.rhythm = rhythm;
@@ -281,7 +285,7 @@ class ImpNote {
 			var last = this.draft[this.draft.length-1].note;
 			if (last == this.ctx.getNoteByScaleMove(this.home, 1) 
 				|| last == this.ctx.getNoteByScaleMove(this.home,-1)
-			//	|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last == this.home - 5) : 0)
+				|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last == this.home - 5) : 0)
 			) 
 				this.variant.push(myLib.deepCopy(this.draft));
 		} else for (var i=0; i<this.suggester.values.length; i++) if (Math.random()<this.suggester.chances[i]) {
