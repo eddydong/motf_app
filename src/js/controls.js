@@ -120,6 +120,7 @@ var Controls= {};
 				Work.global.mode = Math.floor(Math.random()*motf.theory.scaleDict[Work.global.scale_id].modes.length);
 				document.getElementById("select_key").selectedIndex=Work.global.key;
 				document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
+				document.getElementById("select_mode").selectedIndex=Work.global.mode;
 				Composer.init();
 				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
 				Improviser1.tryBuild(ctx);
@@ -963,6 +964,20 @@ var Controls= {};
 	
 	document.getElementById("select_scale").oninput=()=>{
 		Work.global.scale_id=document.getElementById("select_scale").selectedIndex;
+		var s=document.getElementById("select_mode");
+		s.options.length=0;
+		for (var i=0; i<motf.theory.scaleDict[Work.global.scale_id].len; i++){
+			var o=document.createElement("option");
+			o.innerHTML=i;
+			s.appendChild(o);
+		};	
+		Work.global.mode=document.getElementById("select_mode").selectedIndex;
+		Composer.init();
+		pianoroll.autoZoom('y');
+	}
+		
+	document.getElementById("select_mode").oninput=()=>{
+		Work.global.mode=document.getElementById("select_mode").selectedIndex;
 		Composer.init();
 		pianoroll.autoZoom('y');
 	}
@@ -1292,6 +1307,7 @@ function init(){
 		
 		document.getElementById("select_key").selectedIndex=Work.global.key;
 		document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
+		document.getElementById("select_mode").selectedIndex=Work.global.mode;
 		
 		var k=-1;
 		var ss=document.getElementById("select_bpMeas");
@@ -1453,6 +1469,13 @@ function initFixedUI(){
 		s=document.getElementById("select_scale");
 		var o=document.createElement("option");
 		o.innerHTML="#"+i+" - "+motf.theory.scaleDict[i].name + " len:"+motf.theory.scaleDict[i].len;
+		s.appendChild(o);
+	};
+	s=document.getElementById("select_mode");
+	s.options.length=0;
+	for (var i=0; i<motf.theory.scaleDict[Work.global.scale_id].len; i++){
+		var o=document.createElement("option");
+		o.innerHTML=i;
 		s.appendChild(o);
 	};
 //	s.options.selectedIndex=70;
