@@ -261,8 +261,8 @@ class ImpNote {
 			   [4,2,2],
 			   [2,4,2],[2,2,4],
 			   [6,2],[2,6],[4,4],[8]];
-    suggester = {values: [  0,  -1,  1,   -2,   2,  -3,   3,  -4,   4], 
-                chances: [0.2,   1,  1,  0.5, 0.5, 0.0, 0.7, 0.7,   0]}
+    suggester = {values: [  0,  -1,   1,    -2,    2,   -3,    3,   -4,   4], 
+                chances: [0.1,   1,   1,   0.1,  0.1,  0.0,  0.1,  0.2,   0]}
 	constructor(ctx, parent, home, rhythm){
 		this.ctx = ctx;  
 		this.rhythm = rhythm;
@@ -279,18 +279,15 @@ class ImpNote {
 	search(n){
 		if (n == this.steps) {
 			var last = this.draft[this.draft.length-1].note;
-			if (last == this.ctx.getNoteByScaleMove(this.home,1) ||
-				//last == this.ctx.getNoteByScaleMove(this.home,0) ||
-				last == this.ctx.getNoteByScaleMove(this.home,-1)||
-				(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
-				// last == this.ctx.getNoteByScaleMove(this.home,-3) : 0)) {
-				(last == this.home - 5) : 0)) {
+			if (last == this.ctx.getNoteByScaleMove(this.home, 1) 
+				|| last == this.ctx.getNoteByScaleMove(this.home,-1)
+			//	|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last == this.home - 5) : 0)
+			) 
 				this.variant.push(myLib.deepCopy(this.draft));
-			}
 		} else for (var i=0; i<this.suggester.values.length; i++) if (Math.random()<this.suggester.chances[i]) {
 			var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
-			if (targetY > this.ctx.root + 18) { while (targetY > this.ctx.root + 18) targetY -= 12;};
-			if (targetY < this.ctx.root - 18) { while (targetY < this.ctx.root - 18) targetY += 12;};
+			// if (targetY > this.ctx.root + 18) { while (targetY > this.ctx.root + 18) targetY -= 12;};
+			// if (targetY < this.ctx.root - 18) { while (targetY < this.ctx.root - 18) targetY += 12;};
 			this.draft.push({note: targetY, len: this.rhythm4[this.rhythm][n] / 8 * this.parent.len});
 			this.search(n+1);
 			this.draft.pop();
@@ -298,7 +295,26 @@ class ImpNote {
 	}
 	// get a new pick from the varian(s)
 	repick(){
-		this.pick = this.variant[Math.floor(Math.random()*this.variant.length)];
+		var upNdown=function(draft){
+			var c=0, prev_dir=0;
+			for (var i=1; i<draft.length; i++) if (draft[i].note != draft[i-1].note) {
+				var dir = (draft[i].note>draft[i-1].note ? 1 : -1);
+				if (dir != prev_dir) {
+					c++;
+					prev_dir = dir;
+				}
+			}
+			return c;
+		}
+		var min=Infinity, minI;
+		for (var i=0; i<this.variant.length; i++) {
+			var v = upNdown(this.variant[i]);
+			if (v < min || (v == min && Math.random()<0.5)) {
+				min = v;
+				minI = i;
+			}
+		}
+		this.pick = this.variant[minI];
 	}
 	// mutate a pick by random note pitch modifications 
 	mutate(){
@@ -319,7 +335,7 @@ class ImpNote {
 	}
 }
 
-suggester = {values: [-1,  1, -2,    2,   -3,    3,   -4,   4, 0], 
+suggester = {values: [-1,  1, -2,    2,   -3,    3,   -4,   4, 	  0], 
 			chances: [1,   1,  1,  0.1,  0.1,  0.0,  0.2,  0.2,   0]}
 
 class Tree {
