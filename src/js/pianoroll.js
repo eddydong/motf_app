@@ -1,5 +1,5 @@
 function Pianoroll(){
- 	this.resolution="16n";
+	this.resolution="16n";
 	this.canvas=document.getElementById("canvas-main");
 	this.ctx = this.canvas.getContext("2d");
 	this.left = 0;
@@ -945,7 +945,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 // 		this.ctx.font = Math.round(h)+"px Arial bold";
 		this.ctx.font = "bold 32px myFont";
 		this.ctx.fillStyle = "rgba(200,200,200,1)";
-		this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)+1), 
+		this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)), 
 			(i+1-this.viewportL)*w, 25);
 
 // Draw Chord Signs
@@ -1363,7 +1363,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 // 		this.ctx.font = Math.round(h)+"px Arial bold";
 		this.ctx.font = "bold 32px myFont";
 		this.ctx.fillStyle = "rgba(200,200,200,1)";
-		this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)+1), 
+		this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)), 
 			(i+1-this.viewportL)*w, 25);
 
 		this.ctx.font = "bold 16px myFont";
@@ -2121,7 +2121,7 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 	let chords=Theory.getChordsByMelodyKeyScale(Work.global.key, Work.global.scale_id, Work.global.mode,
 		0,this.endMeas);
 	Work.global.autoChord=[];
-	for (var i=0; i<chords.length; i++) if (chords[i]){
+	for (var i=2; i<chords.length; i++) if (chords[i]){
 		Work.global.autoChord.push(chords[i]);
 		var c = 0;
 		for (var k=0; k<12; k++) if (chords[i].mask[k]==1){

@@ -183,7 +183,7 @@ class AutoDrumer {
 	}
 	fill(){
 		for (var i=0; i< this.proll.endTick; i++) {
-			if (i % 2 == 0)
+			if ((i-16) % 2 == 0)
 			pianoroll.addNote({
 					x: i,
 					y: 36 - 21,
@@ -193,7 +193,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 64 == 0)
+			if ((i-16) % 64 == 0)
 			pianoroll.addNote({
 					x: i,
 					y: 43 - 21,
@@ -203,7 +203,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});	
-			if (i % 32 == 26)
+			if ((i-16) % 32 == 26)
 			pianoroll.addNote({
 					x: i,
 					y: 37 - 21,
@@ -213,7 +213,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 16 == 0)
+			if (i>0 && i % 16 == 0)
 			pianoroll.addNote({
 					x: i,
 					y: 39 - 21,
@@ -223,7 +223,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 128 == 124)
+			if ((i-16) % 128 == 124)
 			pianoroll.addNote({
 					x: i,
 					y: 41 - 21,
@@ -233,7 +233,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 128 == 126)
+			if ((i-16) % 128 == 126)
 			pianoroll.addNote({
 					x: i,
 					y: 40 - 21,
@@ -259,7 +259,7 @@ class AutoDrumer {
 
 class ImpNote {
 	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],
-			   [1,2,1,1,2,1],[1,1,2,1,1,2],
+			   [2,1,2,1,2],[1,1,2,1,1,2],
 			   [3,2,1,2],[3,2,2,1],[3,2,1,2],[3,2,1,2],
 			   [2,2,2,2],
 			   [4,2,2],

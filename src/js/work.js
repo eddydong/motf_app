@@ -2,12 +2,14 @@ var Work = {};
 
 (function(){
 
+// scale: 23m0-Major, 23m5-Minor, 16-Major Blues
+
 Work.global= {
 	workname: "Another Piece of Shit",
 	author: "noname",
 	key: 0, // 0-11 / offset from C, in chromatic scale
-	scale_id: 23,
-	mode: 0,
+	scale_id: 16,
+	mode: 3,
 	bpm: 80,
 	bpMeas: 4,
 	bpNote: 4,
@@ -372,7 +374,7 @@ Work.layer= [  // T01..T10
 		instrument: 1,
 		mute: 0,
 		solo: 0,
-		volume: 0,
+		volume: 2,
 		pan: 0,
 		seq: [],
 		rhythm: [
@@ -412,7 +414,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: 0,		
 		solo: 0,
-		volume: 3,
+		volume: 2,
 		pan: 0,
 		seq: [],
 		rhythm: [
@@ -445,7 +447,27 @@ Work.layer= [  // T01..T10
 		],
 		imp_a:[ // 0..seq.length/8 (resolution: 16n x 8 = 2n, or 1/2 measure)
 		]
-	}	
+	},	
+	{
+		name: "Walking Bass",
+		type: "bass",
+		instrument: 16,
+		mute: 1,		
+		solo: 0,
+		volume: 0,
+		pan: 0,
+		seq: [],
+		rhythm: [
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/4],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/16,1/16,1/8,1/16,1/16,1/16,1/16,1/16,1/16]
+		],
+		vel_a:[ // 0..seq.length
+		],
+		imp_a:[ // 0..seq.length/8 (resolution: 16n x 8 = 2n, or 1/2 measure)
+		]
+	}
 ]
 
 // init layer[0].imp_a with default iparams

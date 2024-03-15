@@ -82,6 +82,16 @@ var Improviser1={};
                 note1.push(n);    
         };   
 
+        note2 = [];
+        var rhyPat = [4,4,4,4, 4,4,4,8, 4,4,4,4, 4,4,4,8];
+        for (var i=0; i<phrase.length; i++)
+        for (var j=0; j<phrase[i].pick.length; j++){
+                var home = (j==phrase[i].pick.length-1) ? phrase[i].home : phrase[i].pick[j+1].note;
+                var n = new motf.ImpNote(ctx, phrase[i].pick[j], home, rhyPat[note2.length]);
+                if (n.pick == null) return false;
+                note2.push(n);    
+        };   
+
         return {verse: verse, phrase: phrase, phrase1: phrase1, phrase2: phrase2, note1: note1, note2: note2};
     };
 
@@ -91,20 +101,12 @@ var Improviser1={};
     
         var drumer = new motf.AutoDrumer(pianoroll, 3);
     
-        var pos = 0;
-        // for (var i=0; i<Improviser1.verse.pick.length; i++){
-        // 	pianoroll.addNote({
-        // 			x: pos,
-        // 			y: Improviser1.verse.pick[i].note - 21 - 24,
-        // 			d: Improviser1.verse.pick[i].len * 2, 
-        // 			s: 0, 
-        // 			v: 1, 
-        // 			l: 0, //j,
-        // 			t: 0 // type: 0: normal note; 1: just improvised			
-        // 	});
-        // 	pos += Improviser1.verse.pick[i].len * 2;
-        // };
-        pos = 0;
+        var start = 16;
+        var pos = start;
+        var syncopation = Math.floor(Math.random()*3) * 2;
+
+        // bass
+        pos = start;
         for (var i=0; i<Improviser1.bass.length; i++)
         for (var j=0; j<Improviser1.bass[i].pick.length; j++){	
             pianoroll.addNote({
@@ -112,13 +114,15 @@ var Improviser1={};
                     y: Improviser1.bass[i].pick[j].note - 21 - 12,
                     d: Improviser1.bass[i].pick[j].len, 
                     s: 1, 
-                    v: 1, 
+                    v: 2, 
                     l: 2, //j,
                     t: 0 // type: 0: normal note; 1: just improvised			
             });
             pos += Improviser1.bass[i].pick[j].len;
         }
-        pos = 0;
+
+        // melody baseline -> purple on chord page
+        pos = start;
         for (var i=0; i<Improviser1.meline1.length; i++){	
             pianoroll.addNote({
                     x: pos,
@@ -131,21 +135,9 @@ var Improviser1={};
             });
             pos += Improviser1.meline1[i].len;
         }
-        // pos = 0;
-        // for (var i=0; i<Improviser1.meline2.length; i++)
-        // for (var j=0; j<Improviser1.meline2[i].pick.length; j++){	
-        //     pianoroll.addNote({
-        //             x: pos,
-        //             y: Improviser1.meline2[i].pick[j].note - 21 + 12,
-        //             d: Improviser1.meline2[i].pick[j].len, 
-        //             s: 0, 
-        //             v: 0.5, 
-        //             l: 1, //j,
-        //             t: 2 // type: 0: normal note; 1: just improvised			
-        //     });
-        //     pos += Improviser1.meline2[i].pick[j].len;
-        // }
-        pos = 0;
+
+        // melody
+        pos = start;
         for (var i=0; i<Improviser1.melody1.length; i++)
         for (var j=0; j<Improviser1.melody1[i].pick.length; j++)
         if (Improviser1.melody1[i].pick[j]) {
@@ -161,22 +153,35 @@ var Improviser1={};
             });
             pos += Improviser1.melody1[i].pick[j].len;
         };
-        // pos = 0;
-        // for (var i=0; i<Improviser1.melody2.length; i++)
-        // for (var j=0; j<Improviser1.melody2[i].pick.length; j++)
-        // if (Improviser1.melody2[i].pick[j]) {
-        // //	console.log(motf.melody[i].pick[j]);
-        //     pianoroll.addNote({
-        //             x: pos,
-        //             y: Improviser1.melody2[i].pick[j].note - 21,
-        //             d: Improviser1.melody2[i].pick[j].len, 
-        //             s: 0, 
-        //             v: 1, 
-        //             l: 0, //j,
-        //             t: 0 // type: 0: normal note; 1: just improvised			
-        //     });
-        //     pos += Improviser1.melody2[i].pick[j].len;
-        // };
+        var lastNote=Improviser1.melody1[Improviser1.melody1.length-1].pick[Improviser1.melody1[Improviser1.melody1.length-1].pick.length-1];
+        if (lastNote.len<=4)
+            pianoroll.addNote({
+                x: start - lastNote.len,
+                y: lastNote.note - 21,
+                d: lastNote.len, 
+                s: 0, 
+                v: 1, 
+                l: 0, //j,
+                t: 0 // type: 0: normal note; 1: just improvised			
+            }); 
+
+        // jazz walking bass
+        pos = start;
+        for (var i=0; i<Improviser1.melody2.length; i++)
+        for (var j=0; j<Improviser1.melody2[i].pick.length; j++)
+        if (Improviser1.melody2[i].pick[j]) {
+        //	console.log(motf.melody[i].pick[j]);
+            pianoroll.addNote({
+                    x: pos,
+                    y: Improviser1.melody2[i].pick[j].note - 21 - 12,
+                    d: Improviser1.melody2[i].pick[j].len, 
+                    s: 0, 
+                    v: 1, 
+                    l: 4, //j,
+                    t: 2 // type: 0: normal note; 1: just improvised			
+            });
+            pos += Improviser1.melody2[i].pick[j].len;
+        };
     
         pianoroll.autoSimpleChordByKey();
         pianoroll.deSelectAll();
