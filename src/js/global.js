@@ -164,27 +164,27 @@ Global.XYtoIJ=()=>{
 	// push in rhythm notes
 	// this is something seqXY never have - just dynamically generated, inserted into seqIJ and played
 	// aka when playing you can hear it but it would be saved as notes 
-	var mt = Work.global.bpMeas / Work.global.bpNote * 16;
-	var mn = Math.ceil(seqTT / mt);
-	for (var l=0; l<Work.layer.length; l++)
-	for (var i=0; i<mn; i++) {
-		var ii = i % Work.layer[l].rhythm.length;
-		var o=0;
-		for (var j=0; j<Work.layer[l].rhythm[ii].length; j++) {
-			var tt= i * mt + Math.floor(o);
-			if (tt<seqTT)
-			res[tt].notes.push({
-				note: 0,
-				len: Work.layer[l].rhythm[ii][j] * mt,
-				offset: o-Math.floor(o),
-				vel: 0.1,
-				layer: l,
-				sel: 0,
-				type: 2 // 0 normal note, 1 improvised notes, 2 rhythm beat notes
-			});
-			o+=Work.layer[l].rhythm[ii][j] * mt;
-		};
-	};
+	// var mt = Work.global.bpMeas / Work.global.bpNote * 16;
+	// var mn = Math.ceil(seqTT / mt);
+	// for (var l=0; l<Work.layer.length; l++)
+	// for (var i=0; i<mn; i++) {
+	// 	var ii = i % Work.layer[l].rhythm.length;
+	// 	var o=0;
+	// 	for (var j=0; j<Work.layer[l].rhythm[ii].length; j++) {
+	// 		var tt= i * mt + Math.floor(o);
+	// 		if (tt<seqTT)
+	// 		res[tt].notes.push({
+	// 			note: 0,
+	// 			len: Work.layer[l].rhythm[ii][j] * mt,
+	// 			offset: o-Math.floor(o),
+	// 			vel: 0.1,
+	// 			layer: l,
+	// 			sel: 0,
+	// 			type: 2 // 0 normal note, 1 improvised notes, 2 rhythm beat notes
+	// 		});
+	// 		o+=Work.layer[l].rhythm[ii][j] * mt;
+	// 	};
+	// };
 
 	Work.global.seqIJ=res;
 	

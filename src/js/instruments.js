@@ -756,41 +756,41 @@ Instruments.onDefaultLoaded=()=>{
 
 // const drum1 = new Tone.MembraneSynth().connect(pianoroll.master.metro_vol);
 
-// const lowPass1 = new Tone.Filter({
-//   frequency: 14000,
-// }).connect(pianoroll.master.metro_vol);
+const lowPass1 = new Tone.Filter({
+  frequency: 15000,
+}).connect(pianoroll.master.metro_vol);
 
-// const lowPass2 = new Tone.Filter({
-//   frequency: 7000,
-// }).connect(pianoroll.master.metro_vol);
+const lowPass2 = new Tone.Filter({
+  frequency: 7500,
+}).connect(pianoroll.master.metro_vol);
 
-// const snareDrum1 = new Tone.NoiseSynth({
-// //  volume: 5,
-//   noise: {
-//     type: 'white',
-// //    playbackRate: 3,
-//   },
-//   envelope: {
-//     attack: 0.001,
-//     decay: 0.20,
-//     sustain: 0.1,
-//     release: 0.02,
-//   },
-// }).connect(lowPass1);
+const snareDrum1 = new Tone.NoiseSynth({
+//  volume: 5,
+  noise: {
+    type: 'white',
+//    playbackRate: 3,
+  },
+  envelope: {
+    attack: 0.001,
+    decay: 0.20,
+    sustain: 0.1,
+    release: 0.02,
+  },
+}).connect(lowPass1);
 
-// const snareDrum2 = new Tone.NoiseSynth({
-// //  volume: 5,
-//   noise: {
-//     type: 'white',
-// //    playbackRate: 3,
-//   },
-//   envelope: {
-//     attack: 0.001,
-//     decay: 0.20,
-//     sustain: 0.1,
-//     release: 0.02,
-//   },
-// }).connect(lowPass2);
+const snareDrum2 = new Tone.NoiseSynth({
+//  volume: 5,
+  noise: {
+    type: 'white',
+//    playbackRate: 3,
+  },
+  envelope: {
+    attack: 0.001,
+    decay: 0.20,
+    sustain: 0.1,
+    release: 0.02,
+  },
+}).connect(lowPass2);
 
 // Instruments.bank=[];
 
@@ -852,8 +852,8 @@ Instruments.newSampler=(i, ch)=>{
 // Instruments.init();
 
 // Instruments.drum1=drum1;
-// Instruments.drum2=snareDrum1;
-// Instruments.drum3=snareDrum2;
+Instruments.drum2=snareDrum1;
+Instruments.drum3=snareDrum2;
 
 Instruments.updateSample=updateSample;
 

@@ -1,5 +1,6 @@
 function Pianoroll(){
 	this.resolution="16n";
+	this.leadTick=16;
 	this.canvas=document.getElementById("canvas-main");
 	this.ctx = this.canvas.getContext("2d");
 	this.left = 0;
@@ -1472,7 +1473,7 @@ Pianoroll.prototype.anim=function(){
 		this.playhead += (now-lastFrameT) / Tone.Time("16n");
 
 	if (this.playhead>this.selEnd) {
-		if (sel==0) this.selStart=0;	
+		if (sel==0) this.selStart=this.leadTick;	
 		this.playTick=this.selStart;
 		this.playStart=this.playTick;
 		this.playhead=this.playTick;
@@ -1554,8 +1555,8 @@ Pianoroll.prototype.play=function(){
 		
 		sel=this.selCount();
 		if (sel>0){
-			this.selEnd=-99999;
-			this.selStart=99999;
+			this.selEnd=-Infinity;
+			this.selStart=Infinity;
 			for (var i=0; i<Work.global.seqXY.length; i++)
 				if (Work.global.seqXY[i].s===1){
 					if (this.selEnd< (Work.global.seqXY[i].x+Work.global.seqXY[i].d))
@@ -1589,7 +1590,8 @@ Pianoroll.prototype.playNext=function(t){
 	var sel=this.selCount();
 
 	if (this.playTick>this.selEnd) {
-		if (sel==0) this.selStart=0;	
+		if (sel==0) this.selStart=this.leadTick;	
+		console.log("back");
 		this.playTick=this.selStart;
 		this.playStart=this.playTick;
 		this.playhead=this.selStart;
@@ -1621,7 +1623,7 @@ Pianoroll.prototype.playNext=function(t){
  		for (i=1; i<Work.global.bpMeas; i++)
 			if (tt == tickPerBeat * i) 
 				//Instruments.metronome[1].start();
-				Instruments.drum3.triggerAttackRelease(0.01, t, Global.metroVolume);
+				Instruments.drum3.triggerAttackRelease(0.003, t, Global.metroVolume);
 	};	
 
 	if (Work.global.seqIJ[currentTick] && Work.global.seqIJ[currentTick].notes.length>0) 
@@ -2132,7 +2134,7 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 				d: Work.global.bpMeas / Work.global.bpNote * 8, 
 				s: 0, 
 				v: 1, 
-				l: 1, //Work.global.layer_sel,
+				l: 3, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 			};
 			//if (c==1) newNote.y+=12; else if (c==3) newNote.y-=12;

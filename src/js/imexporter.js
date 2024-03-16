@@ -139,11 +139,11 @@ function exportMidi(work){
 		ticks: 0,
 		time: 0
 	})
-// 	midi.header.timeSignatures.push({
-// 		measures: 0,
-// 		ticks: 0,
-// 		timeSignature: [2, work.global.bpNote]
-// 	})
+	midi.header.timeSignatures.push({
+		measures: 0,
+		ticks: 0,
+		timeSignature: [work.global.bpNote, work.global.bpNote]
+	})
 	secondPerTick = 60 / work.global.bpm / 4;
 	work.global.seqXY.forEach((note)=>{
 		while ( note.l > midi.tracks.length - 1)

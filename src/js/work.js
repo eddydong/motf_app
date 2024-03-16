@@ -8,9 +8,9 @@ Work.global= {
 	workname: "Another Piece of Shit",
 	author: "noname",
 	key: 0, // 0-11 / offset from C, in chromatic scale
-	scale_id: 16,
-	mode: 3,
-	bpm: 80,
+	scale_id: 23,
+	mode: 5,
+	bpm: 84,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
@@ -369,7 +369,7 @@ Work.global= {
 
 Work.layer= [  // T01..T10
 	{
-		name: "Melody",
+		name: "Melody 1", //0
 		type: "melody",
 		instrument: 1,
 		mute: 0,
@@ -389,7 +389,47 @@ Work.layer= [  // T01..T10
 		]
 	},
 	{
-		name: "Chord",
+		name: "Melody 2", //1
+		type: "melody",
+		instrument: 1,
+		mute: 0,
+		solo: 0,
+		volume: 2,
+		pan: 0,
+		seq: [],
+		rhythm: [
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/4],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/16,1/16,1/8,1/16,1/16,1/16,1/16,1/16,1/16]
+		],
+		vel_a:[ // 0..seq.length
+		],
+		imp_a:[ // 0..seq.length/8 (resolution: 16n x 8 = 2n, or 1/2 measure)
+		]
+	},
+	{
+		name: "Meline", //2
+		type: "bass",
+		instrument: 11,
+		mute: 0,
+		solo: 0,
+		volume: 2,
+		pan: 0,
+		seq: [],
+		rhythm: [
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/4],
+		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
+		[1/8,1/16,1/16,1/8,1/16,1/16,1/8,1/16,1/16,1/16,1/16,1/16,1/16]
+		],
+		vel_a:[ // 0..seq.length
+		],
+		imp_a:[ // 0..seq.length/8 (resolution: 16n x 8 = 2n, or 1/2 measure)
+		]
+	},
+	{
+		name: "Chord", //3
 		type: "chord",
 		instrument: 13,
 		mute: 0,		
@@ -409,7 +449,7 @@ Work.layer= [  // T01..T10
 		]
 	},
 	{
-		name: "Bass",
+		name: "Bass", //4
 		type: "bass",
 		instrument: 16,
 		mute: 0,		
@@ -429,12 +469,12 @@ Work.layer= [  // T01..T10
 		]
 	},
 	{
-		name: "Percussion",
-		type: "percussion",
-		instrument: 17,
-		mute: 0,		
+		name: "Walking Bass", //5
+		type: "bass",
+		instrument: 16,
+		mute: 1,		
 		solo: 0,
-		volume: -5,
+		volume: 0,
 		pan: 0,
 		seq: [],
 		rhythm: [
@@ -447,14 +487,14 @@ Work.layer= [  // T01..T10
 		],
 		imp_a:[ // 0..seq.length/8 (resolution: 16n x 8 = 2n, or 1/2 measure)
 		]
-	},	
+	},
 	{
-		name: "Walking Bass",
-		type: "bass",
-		instrument: 16,
-		mute: 1,		
+		name: "Percussion", //6
+		type: "percussion",
+		instrument: 17,
+		mute: 0,		
 		solo: 0,
-		volume: 0,
+		volume: -5,
 		pan: 0,
 		seq: [],
 		rhythm: [
