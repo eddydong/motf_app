@@ -948,6 +948,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			this.ctx.fillStyle = "rgba(200,200,200,1)";
 			this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)), 
 				(i+1-this.viewportL)*w, 25);
+			this.ctx.restore();
 		};
 	// 	if (i>=16 && i % (tickPerMeas*display_step/2) == 0) {
 	// // Draw Chord Signs
@@ -961,7 +962,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 	// //			if (ch.length>6) ch=ch.substring(0,6)+"...";
 	// 			this.ctx.fillText(ch,(i+1-this.viewportL)*w, 50+j*25);	
 	// 		}
-	// 		this.ctx.restore();
+	// 		
 	// 	};
 	};	
 
