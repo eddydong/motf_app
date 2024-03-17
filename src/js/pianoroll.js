@@ -939,31 +939,31 @@ Pianoroll.prototype.drawPianoRoll=function(){
 	};
 		
 	//draw measure numbers
-	var display_step= Math.ceil( 110 / (w * tickPerMeas) );
-	for (var i=Math.floor(this.viewportL)-16; i< Math.ceil(this.viewportL + this.viewportW); i++)
-	if (i % (tickPerMeas*display_step) == 0){
-		this.ctx.save();	
-// 		this.ctx.font = Math.round(h)+"px Arial bold";
-		this.ctx.font = "bold 32px myFont";
-		this.ctx.fillStyle = "rgba(200,200,200,1)";
-		this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)), 
-			(i+1-this.viewportL)*w, 25);
-
-// Draw Chord Signs
-		this.ctx.font = "bold 16px myFont";
-		this.ctx.fillStyle = "rgba(120,255,255,0.7)";
-		var chs=this.chord[Math.floor(i / tickPerMeas)];
-		if (chs!=undefined && chs.length>0)
-//		for (var j=0; j<chs.length; j++) 
-		for (var j=0; j<1; j++) 
-		{
-			var ch=this.chord[Math.floor(i / tickPerMeas)][j];
-//			if (ch.length>6) ch=ch.substring(0,6)+"...";
-			this.ctx.fillText(ch,(i+1-this.viewportL)*w, 50+j*25);	
-		}
-			
-		this.ctx.restore();
-	};
+	var display_step= Math.ceil( 140 / (w * tickPerMeas) );
+	for (var i=0; i< Math.ceil(this.viewportL + this.viewportW); i++){
+		if (i % (tickPerMeas*display_step) == 0){
+			this.ctx.save();	
+	// 		this.ctx.font = Math.round(h)+"px Arial bold";
+			this.ctx.font = "bold 32px myFont";
+			this.ctx.fillStyle = "rgba(200,200,200,1)";
+			this.ctx.fillText("M" + (Math.floor(i/tickPerMeas)), 
+				(i+1-this.viewportL)*w, 25);
+		};
+	// 	if (i>=16 && i % (tickPerMeas*display_step/2) == 0) {
+	// // Draw Chord Signs
+	// 		this.ctx.font = "bold 16px myFont";
+	// 		this.ctx.fillStyle = "rgba(120,255,255,0.7)";
+	// 		var chs=this.chord[Math.floor(i / (tickPerMeas/2))-2];
+	// 		if (chs!=undefined && chs.length>0)
+	// //		for (var j=0; j<chs.length; j++) 
+	// 		for (var j=0; j<1; j++) {
+	// 			var ch=this.chord[Math.floor(i / (tickPerMeas/2))-2][j];
+	// //			if (ch.length>6) ch=ch.substring(0,6)+"...";
+	// 			this.ctx.fillText(ch,(i+1-this.viewportL)*w, 50+j*25);	
+	// 		}
+	// 		this.ctx.restore();
+	// 	};
+	};	
 
 	// draw rectangle selection
  	var ins= Controls.tempDrag=="" ? this.dragType : Controls.tempDrag;		
@@ -2032,22 +2032,20 @@ Pianoroll.prototype.improvise=function(params){
 }
 
 Pianoroll.prototype.updateChords=function(){
-	var tpMeas = Work.global.bpMeas / Work.global.bpNote * 16;
+	var tpMeas = Work.global.bpMeas / Work.global.bpNote * 8;
 	var mn = Math.ceil(this.endTick / tpMeas);
 	this.chord=[];
-	for (var i=0; i<mn; i++){
+	for (var i=2; i<mn; i++){
 		var cns=new Set();
 		for (var j=0; j<Work.global.seqXY.length; j++){
 		if (Work.global.seqXY[j].x < tpMeas*(i+1) 
 		&& (Work.global.seqXY[j].x+Work.global.seqXY[j].d) > tpMeas*i
-		&& (Work.global.seqXY[j].t==1) 
-		&& (Work.global.seqXY[j].l==Work.global.layer_sel || Work.global.through))
-//			cns.add(Global.chromatic_scale[(Work.global.seqXY[j].y-3) % 12 + 3]);		
+		//&& (Work.global.seqXY[j].l==Work.global.layer_sel || Work.global.through)
+		&& (Work.layer[Work.global.seqXY[j].l].name=="Chord"))
 			cns.add(Global.chromatic_scale[Work.global.seqXY[j].y]);		
 		};
 		var arr = Array.from(cns);
 		var ch="";
-		//console.log(arr);
 		if (arr.length>0) ch=Tonal.Chord.detect(arr);
 		if (ch!="cant find name" && ch.length<7)
 			this.chord.push(ch);
@@ -2128,17 +2126,28 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 		var c = 0;
 		for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
 			c++;
-			var newNote={
+			var newNote1={
 				x: Work.global.bpMeas / Work.global.bpNote * 8 * i,
 				y: 27 + k,
-				d: Work.global.bpMeas / Work.global.bpNote * 8, 
+				d: Work.global.bpMeas / Work.global.bpNote * 4, 
 				s: 0, 
 				v: 1, 
 				l: 3, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 			};
-			//if (c==1) newNote.y+=12; else if (c==3) newNote.y-=12;
-			this.addNote(newNote);
+			var newNote2={
+				x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 4,
+				y: 27 + k,
+				d: Work.global.bpMeas / Work.global.bpNote * 4, 
+				s: 0, 
+				v: 1, 
+				l: 3, //Work.global.layer_sel,
+				t: 1 // type: 0: normal note; 1: just improvised			
+			};
+			if (c==1) newNote1.y+=12; else if (c==3) newNote1.y-=12;
+			if (c==1) newNote2.y+=12; else if (c==3) newNote2.y-=12;
+			this.addNote(newNote1);
+			this.addNote(newNote2);
 		}
 	};
 	this.autoZoom("y");

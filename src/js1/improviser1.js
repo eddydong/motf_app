@@ -150,7 +150,7 @@ var Improviser1={};
                     x: pos,
                     y: Improviser1.bass[i].pick[j].note - 21 - 12,
                     d: Improviser1.bass[i].pick[j].len, 
-                    s: 1, 
+                    s: 0, 
                     v: 1, 
                     l: 4, //j,
                     t: 0 // type: 0: normal note; 1: just improvised			
@@ -188,8 +188,7 @@ var Improviser1={};
         for (var i=0; i<Improviser1.melody1.length; i++)
         for (var j=0; j<Improviser1.melody1[i].pick.length; j++)
         if (Improviser1.melody1[i].pick[j]) {
-            if (prevNote && Math.random() < 0.8 &&
-                Improviser1.melody1[i].pick[j].note==prevNote.y+21){
+            if (prevNote && Math.random() < 0.8 && Improviser1.melody1[i].pick[j].note==prevNote.y+21){
                 prevNote.d += Improviser1.melody1[i].pick[j].len;
             } else {
                 pianoroll.addNote({
@@ -265,7 +264,7 @@ var Improviser1={};
         };
     
         pianoroll.autoSimpleChordByKey();
-        pianoroll.deSelectAll();
+        //pianoroll.deSelectAll();
         drumer.fill();
         pianoroll.autoZoom("xy");
     };    

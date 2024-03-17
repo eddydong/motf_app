@@ -20,7 +20,7 @@ Work.global= {
 	human_vel: 0.1,
 	human_tem: 0.1,
 	magnet: 0,
-	metronome: 1,
+	metronome: 0,
 	scaledKeyboard: 0,
 	through: 1,
 	tempo_auto:[ // 0..seq.length/16 (resolution: 1 measure)

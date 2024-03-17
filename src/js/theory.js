@@ -171,13 +171,12 @@ function getChordsByKeyScale(key_id, scale_id){
 
 function endTick(){
 	// get whole length of current layer in ticks
-	let endTick=-99999;
+	let endTick=-Infinity;
 	for (var i=0; i<Work.global.seqXY.length; i++)
-		if (Work.global.seqXY[i].l == Work.global.layer_sel &&
-			endTick < (Work.global.seqXY[i].x+Work.global.seqXY[i].d))
+		if (endTick < (Work.global.seqXY[i].x+Work.global.seqXY[i].d))
 			endTick = (Work.global.seqXY[i].x+Work.global.seqXY[i].d);
 	endTick= Math.ceil(endTick);
-	if (endTick==-99999) endTick=0;
+	if (endTick==-Infinity) endTick=0;
 	return endTick;
 }
 
@@ -245,9 +244,7 @@ function getWeightedMaps(){
 		// grab notes from measure #meas
 		let notes=[];
 		for (var i=0; i<Work.global.seqXY.length; i++)
-		if (//Work.global.seqXY[i].l==Work.global.layer_sel && 
-		Work.global.seqXY[i].s==1)
-//		&& Work.global.seqXY[i].t!=1)
+		if (Work.layer[Work.global.seqXY[i].l].name=="Melody 1")
 		{
 			if (Work.global.seqXY[i].x >= measHW * meas
 			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d <= measHW * (meas+1))
@@ -292,8 +289,8 @@ function getWeightedMaps(){
 							] 
 				});
 			else 
-			 if (Work.global.seqXY[i].x < measHW * meas
-			 && Work.global.seqXY[i].x+Work.global.seqXY[i].d > measHW * (meas+1))
+			 if (Work.global.seqXY[i].x <= measHW * meas
+			 && Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measHW * (meas+1))
 				notes.push({
 					note: {
 						x: measHW * meas,
