@@ -5,7 +5,7 @@ const keymapScaled=[81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 219, 221, // q to ]
      			    
 const keymapChroma=[81,50,87,51,69,  82,53,84,54,89,55,85, 73,57,79,48,80, 219,187,221];
 
-const keyLag = -0.6;
+const keyLag = 0; //-0.6;
 
 var keyMap=Array(88).fill(0);
 
@@ -43,21 +43,27 @@ function stopNote(k){
 	};
 };
 
+var octave = 4;
+
 function onkeydown(e){
 	// octave shift
 	var k;
-	if (keymapScaled.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==1) k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(27)];
+	var octStart = 3+12*(octave-1)+Work.global.key;
+	if (keymapScaled.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==1) 
+		k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(octStart)];
 	if (keymapChroma.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==0)
-		k=keymapChroma.indexOf(e.keyCode)+39;
+		k=keymapChroma.indexOf(e.keyCode)+octStart;
+	console.log(k);
 	if (k) startNote(k);		
 };
 
 function onkeyup(e){
 	var k;
+	var octStart = 3+12*(octave-1)+Work.global.key;
 	if (keymapScaled.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==1)
-		k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(27)];
+		k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(octStart)];
 	if (keymapChroma.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==0)
-		k=keymapChroma.indexOf(e.keyCode)+39;
+		k=keymapChroma.indexOf(e.keyCode)+octStart;
 	if (k) stopNote(k);
 };
 

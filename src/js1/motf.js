@@ -161,7 +161,7 @@ class Context {
 	}
 	// n: current note; m: steps to move up(+) or down(-)
 	getNoteByScaleMove(n, m) {
-		if (!this.inScale(n)) throw "moveByScale: note"+n+" not in scale s"+this.scaleId+" m"+this.mode+" k"+this.key;
+		if (!this.inScale(n)) throw "moveByScale: note "+n+" not in scale s"+this.scaleId+" m"+this.mode+" k"+this.key;
 		var off = 0, pos = n;
 		while (off != m) {
 			pos = pos + (m > 0 ? 1 : -1);
@@ -193,7 +193,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 64 == 0)
+			if (i % 64 == 16)
 			pianoroll.addNote({
 					x: i,
 					y: 43 - 21,
@@ -203,7 +203,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});	
-			if (i % 32 == 26)
+			if (i % 32 == 10)
 			pianoroll.addNote({
 					x: i,
 					y: 37 - 21,
@@ -223,7 +223,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 128 == 124)
+			if (i % 128 == 12)
 			pianoroll.addNote({
 					x: i,
 					y: 41 - 21,
@@ -233,7 +233,7 @@ class AutoDrumer {
 					l: this.layer,
 					t: 0 // type: 0: normal note; 1: just improvised			
 			});
-			if (i % 128 == 126)
+			if (i % 128 == 14)
 			pianoroll.addNote({
 					x: i,
 					y: 40 - 21,
@@ -261,8 +261,8 @@ class ImpNote {
 	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[1,1,2,1,1,2],
 			   [3,2,1,2],[3,2,2,1],[3,2,1,2],[3,2,1,2],[2,2,2,2],
 			   [4,2,2],[2,4,2],[2,2,4],[6,2],[2,6],[4,4],[8]];
-    suggester = {values: [  0,  -1,   1,    -2,    2,   -3,    3,   -4,   4], 
-                chances: [0.1,   1,   1,   0.1,  0.1,  0.1,  0.1,  0.1, 0.1]}
+    suggester = {values: [   0,  -1,   1,    -2,    2,   -3,    3,   -4,   4], 
+                chances: [ 0.4,   1,   1,   0.1,  0.1,  0.1,  0.1,  0.1, 0.1]}
 	constructor(ctx, parent, home, rhythm){
 		this.ctx = ctx;  
 		this.rhythm = rhythm;
@@ -280,8 +280,9 @@ class ImpNote {
 		if (n == this.steps) {
 			var last = this.draft[this.draft.length-1].note;
 			if (last == this.ctx.getNoteByScaleMove(this.home, 1) 
-				|| last == this.ctx.getNoteByScaleMove(this.home,-1)
-				|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last == this.home - 5) : 0)
+			|| last == this.home
+			|| last == this.ctx.getNoteByScaleMove(this.home,-1)
+			|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last == this.home - 5) : 0)
 			) 
 				this.variant.push(myLib.deepCopy(this.draft));
 		} else for (var i=0; i<this.suggester.values.length; i++) if (Math.random()<this.suggester.chances[i]) {
@@ -309,7 +310,7 @@ class ImpNote {
 		var min=Infinity, minI;
 		for (var i=0; i<this.variant.length; i++) {
 			var v = upNdown(this.variant[i]);
-			if (v < min || (v == min && Math.random()<0.5)) {
+			if (v < min || (v == min && Math.random()<0.7)) {
 				min = v;
 				minI = i;
 			}
@@ -335,79 +336,79 @@ class ImpNote {
 	}
 }
 
-suggester = {values: [-1,  1, -2,    2,   -3,    3,   -4,   4, 	  0], 
-			chances: [1,   1,  1,  0.1,  0.1,  0.0,  0.2,  0.2,   0]}
+// suggester = {values: [-1,  1, -2,    2,   -3,    3,   -4,   4, 	  0], 
+// 			chances: [1,   1,  1,  0.1,  0.1,  0.0,  0.2,  0.2,   0]}
 
-class Tree {
+// class Tree {
     
-	branch_count = 2; // not implemented yet
+// 	branch_count = 2; // not implemented yet
 
-	constructor(parent){
-		this.ctx = parent.ctx;  
-		this.note = parent.note;
-		this.len = parent.len / 2;
-		this.home = parent.home;
-		this.parent = parent;
-		if (this.reborn()) this.split();
-	}
+// 	constructor(parent){
+// 		this.ctx = parent.ctx;  
+// 		this.note = parent.note;
+// 		this.len = parent.len / 2;
+// 		this.home = parent.home;
+// 		this.parent = parent;
+// 		if (this.reborn()) this.split();
+// 	}
 
-	reborn(){
-		for (var i=0; i<suggester.values.length; i++) {
-			var targetY = this.ctx.getNoteByScaleMove(this.note, suggester.values[i]);
-			if (targetY == this.ctx.getNoteByScaleMove(this.home, 1) ||
-			targetY == this.ctx.getNoteByScaleMove(this.home, 0) ||
-			targetY == this.ctx.getNoteByScaleMove(this.home, -1)||
-			(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
-			targetY == this.ctx.getNoteByScaleMove(this.home, -3) : 0)){
-				this.note = targetY;
-				return true;
-			}
-		}
-		return false;
-	}
+// 	reborn(){
+// 		for (var i=0; i<suggester.values.length; i++) {
+// 			var targetY = this.ctx.getNoteByScaleMove(this.note, suggester.values[i]);
+// 			if (targetY == this.ctx.getNoteByScaleMove(this.home, 1) ||
+// 			targetY == this.ctx.getNoteByScaleMove(this.home, 0) ||
+// 			targetY == this.ctx.getNoteByScaleMove(this.home, -1)||
+// 			(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
+// 			targetY == this.ctx.getNoteByScaleMove(this.home, -3) : 0)){
+// 				this.note = targetY;
+// 				return true;
+// 			}
+// 		}
+// 		return false;
+// 	}
 	
-	split(){		
-		if (this.len==32) return true;
-		var leftBranch = new Tree(this);
-		console.log('grow into left: ', leftBranch);
-		var rightBranch = new Tree(this)
-		console.log('grow into right: ', rightBranch);
-		this.branches = [leftBranch, rightBranch];
+// 	split(){		
+// 		if (this.len==32) return true;
+// 		var leftBranch = new Tree(this);
+// 		console.log('grow into left: ', leftBranch);
+// 		var rightBranch = new Tree(this)
+// 		console.log('grow into right: ', rightBranch);
+// 		this.branches = [leftBranch, rightBranch];
 
-		// var found = false;
-		// for (var i=0; i<suggester.values.length; i++) {
-		// 	var targetY = this.ctx.getNoteByScaleMove(this.children[0].note, suggester.values[i]);
-		// 	if (targetY == this.ctx.getNoteByScaleMove(this.home,1) ||
-		// 	targetY == this.ctx.getNoteByScaleMove(this.home,0) ||
-		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-1)||
-		// 	(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
-		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-3) : 0)){
-		// 		var rightBranch = new Tree(this);
-		// 		rightBranch.len = this.len / 2;
-		// 		rightBranch.note = targetY;
-		// 		rightBranch.home = this.home;
-		// 		if (rightBranch.split()){
-		// 			console.log('grow into right: ', rightBranch);
-		// 			this.children.push(rightBranch);
-		// 			return true;
-		// 		}
-		// 	}
-		// }
-		// console.log('retreving to: ', this.parent);
-		// this.reborn();
-		return false;
-	}
-}
+// 		// var found = false;
+// 		// for (var i=0; i<suggester.values.length; i++) {
+// 		// 	var targetY = this.ctx.getNoteByScaleMove(this.children[0].note, suggester.values[i]);
+// 		// 	if (targetY == this.ctx.getNoteByScaleMove(this.home,1) ||
+// 		// 	targetY == this.ctx.getNoteByScaleMove(this.home,0) ||
+// 		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-1)||
+// 		// 	(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
+// 		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-3) : 0)){
+// 		// 		var rightBranch = new Tree(this);
+// 		// 		rightBranch.len = this.len / 2;
+// 		// 		rightBranch.note = targetY;
+// 		// 		rightBranch.home = this.home;
+// 		// 		if (rightBranch.split()){
+// 		// 			console.log('grow into right: ', rightBranch);
+// 		// 			this.children.push(rightBranch);
+// 		// 			return true;
+// 		// 		}
+// 		// 	}
+// 		// }
+// 		// console.log('retreving to: ', this.parent);
+// 		// this.reborn();
+// 		return false;
+// 	}
+// }
 
-var ground = {ctx: new Context(), note: 60, len:256, home: 60, about: "I'm the ground!"};
+// var ground = {ctx: new Context(), note: 60, len:256, home: 60, about: "I'm the ground!"};
 
 motf.color = color;
 motf.theory = theory;
 motf.Context = Context;
 motf.AutoDrumer = AutoDrumer;
 motf.ImpNote = ImpNote;
-motf.Tree = Tree;
-motf.ground = ground;
+//motf.Tree = Tree;
+//motf.ground = ground;
 
 //console.log(transpose(scaleDict[23].modes[0], 2)[n % 12] == 1);
 

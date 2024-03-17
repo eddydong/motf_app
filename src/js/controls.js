@@ -1,3 +1,5 @@
+//const { lstatSync } = require("node:original-fs");
+
 var Controls= {};
 
 (function(){
@@ -20,11 +22,20 @@ var Controls= {};
 
 		// Escape
 		var isEscapeDown = false;
-		if ("key" in e) {
-			isEscapeDown = (e.key == "Escape" || e.key == "Esc");
+		if ("code" in e) {
+			isEscapeDown = (e.key == "Escape");
 		} else {
 			isEscapeDown = (e.keyCode == 27);
 		};
+
+		// Esc for abort
+		if (isEscapeDown) {	
+			document.getElementById("btn_esc").onclick();
+			for (var i=0; i<pianoroll.layer.length; i++)
+				pianoroll.layer[i].instrument.releaseAll();
+			pianoroll.setNewNote(null);
+		};		
+		
 		
 		// Space
 		if (e.keyCode==32) Controls.spaceDown=true;
@@ -40,12 +51,6 @@ var Controls= {};
 // 		};
 		
 		if (pianoroll.vKeyboardOn) {
-			// Esc for abort
-			if (isEscapeDown) {	
-				document.getElementById("btn_esc").onclick();
-				for (var i=0; i<pianoroll.layer.length; i++)
-					pianoroll.layer[i].instrument.releaseAll();
-			};		
 					
 			// Enter for PLAY
 			if (e.keyCode==13){ // space
@@ -106,12 +111,6 @@ var Controls= {};
 			if (e.keyCode == 90 && e.shiftKey) 
 				pianoroll.redo();	
 			
-			// Cmd + S: save seq to local storage	
-			if (e.keyCode == 83) Controls.saveTemp();
-			
-			// Cmd + L: load seq from local storage	
-			if (e.keyCode == 76) Controls.loadTemp();
-
 			// Cmd + i for improvising
 			if (e.keyCode==73) {
 				pianoroll.stop();
@@ -205,26 +204,26 @@ var Controls= {};
 				};	
 			};
 		} else if (e.ctrlKey){
-			// Ctrl + S to solo current layer
-			if (e.keyCode == 83){
-				Work.layer[Work.global.layer_sel].solo=1-Work.layer[Work.global.layer_sel].solo;
-				pianoroll.layer[Work.global.layer_sel].channel.solo=Work.layer[Work.global.layer_sel].solo;			
-				var lss=document.querySelectorAll(".solo");
-				lss[Work.global.layer_sel].style.background= pianoroll.layer[Work.global.layer_sel].channel.solo ? Global.color.solo_active : Global.color.solo_inactive;
-				var ms1 = document.querySelectorAll(".mute");
-				for (j=0; j<ms1.length; j++) if (pianoroll.layer[j].channel.muted)
-					ms1[j].style.background=Global.color.mute_active;
-				else
-					ms1[j].style.background=Global.color.mute_inactive;				
-			};			
-		} else { // when no func key is down
-			// Esc for abort
-			if (isEscapeDown) {	
-				document.getElementById("btn_esc").onclick();
-				for (var i=0; i<pianoroll.layer.length; i++)
-					pianoroll.layer[i].instrument.releaseAll();
-			};		
-					
+
+			// Ctrl + S: save seq to local storage	
+			if (e.keyCode == 83) Controls.saveTemp();
+			
+			// Ctrl + L: load seq from local storage	
+			if (e.keyCode == 76) Controls.loadTemp();
+
+		} else {			
+			if (e.code == "KeyS"){
+				pianoroll.layer[Work.global.layer_sel].channel.solo = 
+					!pianoroll.layer[Work.global.layer_sel].channel.solo;
+				updateSoloMute();
+			}
+
+			if (e.code == "KeyM"){
+				pianoroll.layer[Work.global.layer_sel].channel.mute = 
+					!pianoroll.layer[Work.global.layer_sel].channel.muted;										
+				updateSoloMute();
+			}
+	
 			// Enter for PLAY
 			if (e.keyCode==13){
 				if (pianoroll.isPlaying) document.getElementById("btn_stop").onclick();
@@ -242,8 +241,8 @@ var Controls= {};
 				pianoroll.vKeyboardOn=1-pianoroll.vKeyboardOn;
 			};
 			
-			// M for Metronome
-			if (e.keyCode == 77) { 
+			// E for Metronome
+			if (e.code == "KeyE") { 
 				document.getElementById("btn_metronome").click();
 			};			
 			
@@ -271,10 +270,10 @@ var Controls= {};
 			};
 			
 			// S for showCanvas (Stroke)
-			if (e.keyCode == 83){
-				if (Work.global.showCanvas) canvas.hide();
-				else canvas.show();
-			};
+			// if (e.keyCode == 83){
+			// 	if (Work.global.showCanvas) canvas.hide();
+			// 	else canvas.show();
+			// };
 			
 			// H for random Chord generation
 			if (e.keyCode==72) {
@@ -288,8 +287,8 @@ var Controls= {};
 			};
 						
 			// R for showRhythm
-			if (e.keyCode==82)
-				Work.global.showRhythm=1-Work.global.showRhythm;
+			// if (e.keyCode==82)
+			// 	Work.global.showRhythm=1-Work.global.showRhythm;
 			
 			// +/- for changing tempo
 			if (e.keyCode==189){ // -
@@ -377,8 +376,7 @@ var Controls= {};
 			if (e.keyCode == 55) { pianoroll.setNewNote(Tone.Time("1n")*4); };
 			if (e.keyCode == 56) { pianoroll.setNewNote(Tone.Time("1n")*8); };
 			// "`" for dotted note					
-			if (e.keyCode == 192) { document.getElementById("btn_dot").click(); };
-			
+			if (e.keyCode == 192) { document.getElementById("btn_dot").click(); };	
 		};
 	};
 	
@@ -747,11 +745,6 @@ var Controls= {};
 		Controls.params.iparams[5][0]=parseFloat(Controls.input_min_5.value);
 		Controls.params.iparams[5][1]=parseFloat(Controls.input_max_5.value);
 	};
-
-	document.getElementById("input_bpm").onchange=()=>{
-		Tone.Transport.bpm.rampTo(document.getElementById("input_bpm").value);
-		Work.global.bpm=document.getElementById("input_bpm").value;
-	}
 	
 //	window.onload=()=>{
 		var b=whichBrowser();
@@ -1121,6 +1114,11 @@ var Controls= {};
 		Work.global.layer_sel=ls.length-1;
 		ls[ls.length-1].style.background=Global.color.btn_active;
 	};
+
+	document.getElementById("input_bpm").onchange=()=>{
+		Tone.Transport.bpm.rampTo(document.getElementById("input_bpm").value);
+		Work.global.bpm=document.getElementById("input_bpm").value;
+	};
 	
 	// record current project and save to local webm file 
 	// use convertio.co to convert webm file to wav/mp3
@@ -1135,6 +1133,7 @@ var Controls= {};
 Controls.saveTemp=function(){
     try {
 		window.localStorage.setItem("tempwork", JSON.stringify(Work));
+		console.log("saved to localstorage");
     } catch(e) {
     	// error means local storage is full...
 		window.localStorage.clear();
@@ -1153,7 +1152,22 @@ Controls.loadTemp=function(){
 		pianoroll.scroll("beginning");
 		Composer.init();
 		init();
+		Instruments.updateSample();		
 	};
+	console.log("loaded from localstorage");
+}
+
+function updateSoloMute(){
+	var lss=document.querySelectorAll(".solo");
+	var lms=document.querySelectorAll(".mute");
+	for (var i=0; i<lss.length; i++) {
+		lss[i].style.background= pianoroll.layer[i].channel.solo ? Global.color.solo_active : Global.color.solo_inactive;
+		lms[i].style.background= pianoroll.layer[i].channel.muted ? Global.color.mute_active : Global.color.mute_inactive;
+		Work.layer[i].solo = pianoroll.layer[i].channel.solo;
+		Work.layer[i].mute = pianoroll.layer[i].channel.muted;		
+		Work.layer[i].volume = pianoroll.layer[i].channel.volume.value;		
+		Work.layer[i].pan = pianoroll.layer[i].channel.pan;		
+	}
 }
 
 function init(){
@@ -1179,18 +1193,22 @@ function init(){
 		document.querySelector("#div-layer-container").innerHTML="";	
 
 		// dispose all channels manually or otherwise they still live in background and creates volume overlap		
- 		for (var i=0; i<pianoroll.layer.length; i++) pianoroll.layer[i].channel.dispose();		
+ 		for (var i=0; i<pianoroll.layer.length; i++) pianoroll.layer[i].channel.dispose();	
+		// re-build channels for pianoroll
 		pianoroll.layer=[];
-
 		for (var i=0; i<Work.layer.length; i++){
-				
 			document.querySelector("#div-layer-container").innerHTML+="<span><button class=\"mute\" data-i="+i+">M</button></span><span><button class=\"solo\" data-i="+i+">S</button></span><span><button id=\"btn_layer_"+i+"\" class= \"layer-name\" data-i="+i+">"+Work.layer[i].name+"</button></span><span><select id=\"select_instrument_"+i+"\" class=\"select_instrument\" data-i="+i+"></select></span><span>Vol<input class=\"input_layer_volume\" data-i="+i+" type=\"range\" min=-30 max=10 step=1 value="+Work.layer[i].volume+"></input></span><span>Pan<input class=\"input_layer_pan\" data-i="+i+" type=\"range\" min=-1 max=1 step=0.1 value="+Work.layer[i].pan+"></input></span><span><button class=\"layer-del\" data-i="+i+">Del</button></span><br>";
-			
-			pianoroll.layer.push({
-				channel: new Tone.Channel(0,0).connect(pianoroll.master.reverb),
+			var layerChannel ={
+				channel: new Tone.Channel().connect(pianoroll.master.reverb),
 				instrument: null
-			});
+			};
+			layerChannel.channel.volume.value = Work.layer[i].volume;
+			layerChannel.channel.solo = Work.layer[i].solo;
+			layerChannel.channel.mute = Work.layer[i].mute;
+			layerChannel.channel.pan = Work.layer[i].pan;
+			pianoroll.layer.push(layerChannel);
 		};	
+		updateSoloMute();
 
 		var lnsp=document.querySelectorAll("#div-layer-container span");
 		for (var i=0; i<lnsp.length; i++) {
@@ -1229,16 +1247,13 @@ function init(){
 
 		var lvs=document.querySelectorAll(".input_layer_volume");
 		for (var i=0; i<lvs.length; i++) lvs[i].oninput=(e)=>{
-			Work.layer[e.target.dataset.i].volume=parseInt(e.target.value);
 			pianoroll.layer[e.target.dataset.i].channel.volume.value=parseInt(e.target.value);
-			//Controls.saveTemp();
+			updateSoloMute();
 		};
 		
 		var lps=document.querySelectorAll(".input_layer_pan");
 		for (var i=0; i<lps.length; i++) lps[i].oninput=(e)=>{
-			Work.layer[e.target.dataset.i].pan=parseInt(e.target.value);
 			pianoroll.layer[e.target.dataset.i].channel.pan.value=parseInt(e.target.value);
-			//Controls.saveTemp();
 		};
 		
 		var lds=document.querySelectorAll(".layer-del");
@@ -1267,29 +1282,24 @@ function init(){
 			pianoroll.historyPush("Delete Layer");
 			//Controls.saveTemp();			
 		};
-		
 		if (Work.layer.length<2) 
 			document.querySelector(".layer-del").style.display="none";
 		else
 			document.querySelector(".layer-del").style.display="display";
 		
+
 		var lms=document.querySelectorAll(".mute");
 		for (var i=0; i<lms.length; i++) 
 		lms[i].onclick=(e)=>{
-			pianoroll.layer[e.target.dataset.i].channel.mute = 1-pianoroll.layer[e.target.dataset.i].channel.muted;
-			e.target.style.background= pianoroll.layer[e.target.dataset.i].channel.muted ? Global.color.mute_active : Global.color.mute_inactive;
+			pianoroll.layer[e.target.dataset.i].channel.mute = !pianoroll.layer[e.target.dataset.i].channel.muted;
+			updateSoloMute();
 		};
 		
 		var lss=document.querySelectorAll(".solo");
 		for (var i=0; i<lss.length; i++) 
 		lss[i].onclick=(e)=>{
-			pianoroll.layer[e.target.dataset.i].channel.solo = 1-pianoroll.layer[e.target.dataset.i].channel.solo;
-			e.target.style.background= pianoroll.layer[e.target.dataset.i].channel.solo ? Global.color.solo_active : Global.color.solo_inactive;
-			var ms1 = document.querySelectorAll(".mute");
-			for (j=0; j<ms1.length; j++) if (pianoroll.layer[j].channel.muted)
-				ms1[j].style.background=Global.color.mute_active;
-			else
-				ms1[j].style.background=Global.color.mute_inactive;	
+			pianoroll.layer[e.target.dataset.i].channel.solo = !pianoroll.layer[e.target.dataset.i].channel.solo;
+			updateSoloMute();
 		};
 		
 //		document.querySelector(".layer-name").click();
@@ -1303,8 +1313,7 @@ function init(){
 
 		for (var i=0; i<sis.length; i++) {
 			sis[i].selectedIndex=Work.layer[i].instrument;
-		};
-		
+		};	
 		document.getElementById("select_key").selectedIndex=Work.global.key;
 		document.getElementById("select_scale").selectedIndex=Work.global.scale_id;
 		document.getElementById("select_mode").selectedIndex=Work.global.mode;

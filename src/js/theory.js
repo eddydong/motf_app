@@ -88,9 +88,10 @@ function keyScaleFit1(notes) {
 	var totalDuration=0;
 	for (var i=0; i<notes.length; i++) totalDuration+=notes[i].d;
 	for (var k=0; k<12; k++) {
-		for (var s=0; s<scaleDict.length-1; s++) 
+		for (var s=0; s<motf.theory.scaleDict.length-1; s++) 
+		for (var m=0; m<motf.theory.scaleDict[s].len-1; m++)
 		{	
-			var mask = transpose(scaleDict[s].mask, k);
+			var mask = transpose(motf.theory.scaleDict[s].modes[m], k);
 			var inScaleDuration=0, outScaleCount=0;
 			var map=Array(12).fill(0);
 			for (var n=0; n<notes.length; n++){
@@ -106,9 +107,10 @@ function keyScaleFit1(notes) {
 		}
 	};
 	for (var k=0; k<12; k++) {
-		for (var s=0; s<scaleDict.length-1; s++) 
+		for (var s=0; s<motf.theory.scaleDict.length-1; s++) 
+		for (var m=0; m<motf.theory.scaleDict[s].len-1; m++)
 		{	
-			var mask = transpose(scaleDict[s].mask, k);
+			var mask = transpose(motf.theory.scaleDict[s].modes[m], k);
 			var inScaleDuration=0, outScaleCount=0;
 			var map=Array(12).fill(0);
 			for (var n=0; n<notes.length; n++){
@@ -121,8 +123,9 @@ function keyScaleFit1(notes) {
 				if (mask[i]=="1" && map[i]==0) outScaleCount++;
 			var score= inScaleDuration / totalDuration - outScaleCount / 12;
 			if (score == maxScore) {
-				maxRes.push({maxK:k, maxKN: keyNames[k],
- 					 maxS: s, maxSN: scaleDict[s].name});
+				maxRes.push({key:k, keyName: motf.theory.keyNames[k],
+ 					 scale_id: s, scaleName: motf.theory.scaleDict[s].name, 
+					 mode: m, scaleLen: motf.theory.scaleDict[s].len});
 			}
 		}
 	};

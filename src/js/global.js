@@ -74,15 +74,17 @@ Global.color.mute_active="#ff0000";
 Global.color.mute_inactive="#660000";
 Global.initialSeq=[{x: 0, y: 39, d: 16, v: 3, l: 0, s: 0}];
 
-Global.meter = new Tone.Meter();
+Global.meter = new Tone.Meter({channels:2});
 Global.meter.normalRange=1;
 
 var meter=document.getElementById("canvas-meter");
 var meter_ctx = meter.getContext("2d");
 
-var fallback=0;
+var fallback1=0;
+var fallback2=0;
 const fb_a=0.0001;
-var fb_v=0;
+var fb_v1=0;
+var fb_v2=0;
 const fbW=4;
 var maxV=0;
 
@@ -93,26 +95,40 @@ meter.width=x; meter.height=y;
 
 	meter_ctx.clearRect(0,0, x, y);
 
-	var v= Math.pow(Global.meter.getValue(),0.3)/2;
+	var v1= Math.pow(Global.meter.getValue()[0],0.3)/2;
+	var v2= Math.pow(Global.meter.getValue()[1],0.3)/2;
 
 //	if (v>maxV) {maxV=v; console.log(maxV);};
 
-	if (fallback<=v) {
-		fallback=v; 
-		fb_v=0;
-	} else if (fallback>v) {
-		fb_v+=fb_a;
-		fallback=fallback-fb_v;
+	if (fallback1<=v1) {
+		fallback1=v1; 
+		fb_v1=0;
+	} else if (fallback1>v1) {
+		fb_v1+=fb_a;
+		fallback1=fallback1-fb_v1;
+	};
+
+	if (fallback2<=v2) {
+		fallback2=v2; 
+		fb_v2=0;
+	} else if (fallback2>v2) {
+		fb_v2+=fb_a;
+		fallback2=fallback2-fb_v2;
 	};
 
 //	fallback=v;
 	
 	meter_ctx.fillStyle="rgba(100,255,130,1)";
-	meter_ctx.fillRect(0,0,(meter.width-fbW)*v, meter.height);
+	meter_ctx.fillRect(0,0,(meter.width-fbW)*v1, 4);
+	meter_ctx.fillRect(0,6,(meter.width-fbW)*v2, 4);
 
-	if (fallback>0.0001) {
+	if (fallback1>0.0001) {
 		meter_ctx.fillStyle="rgba(255,255,255,1)";
-		meter_ctx.fillRect((meter.width-fbW)*fallback,0,fbW, meter.height);	
+		meter_ctx.fillRect((meter.width-fbW)*fallback1,0,fbW, 4);	
+	};
+	if (fallback2>0.0001) {
+		meter_ctx.fillStyle="rgba(255,255,255,1)";
+		meter_ctx.fillRect((meter.width-fbW)*fallback2,6,fbW, 4);	
 	};
 };
 

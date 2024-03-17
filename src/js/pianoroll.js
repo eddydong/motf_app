@@ -8,7 +8,7 @@ function Pianoroll(){
 	this.width = this.canvas.width;
 	this.height = this.canvas.height;
  	this.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
- 	this.maxW= Work.global.bpMeas * 16 * (16 / Work.global.bpNote)+1;
+ 	this.maxW= Work.global.bpMeas * 32 * (16 / Work.global.bpNote)+1;
 	this.viewportL = 0;  // left most column position in timeline
 	this.viewportW = this.maxW; // number of columns / 8n's
 	this.viewportH = vH(); // height of viewport in rows (key's)
@@ -1591,7 +1591,6 @@ Pianoroll.prototype.playNext=function(t){
 
 	if (this.playTick>this.selEnd) {
 		if (sel==0) this.selStart=this.leadTick;	
-		console.log("back");
 		this.playTick=this.selStart;
 		this.playStart=this.playTick;
 		this.playhead=this.selStart;
@@ -1847,16 +1846,16 @@ Pianoroll.prototype.autoZoom=function(xy){
 	};
 
 	if (xy=="xy" || xy=="x"){
-		var Xmax=-99999, Xmin=99999;
+		var Xmax=-Infinity, Xmin=Infinity;
 		for (var i=0; i<Work.global.seqXY.length; i++)
 		{
 			if (Xmax<Work.global.seqXY[i].x+Work.global.seqXY[i].d) Xmax=Work.global.seqXY[i].x+Work.global.seqXY[i].d;
 			if (Xmin>Work.global.seqXY[i].x) Xmin=Work.global.seqXY[i].x;
 		};
-		if (Xmax==-99999) Xmax= Work.global.bpMeas * 4 * (16 / Work.global.bpNote);
-		if (Xmin==99999) Xmin= 0;
+		if (Xmax==-Infinity) Xmax= Work.global.bpMeas * 4 * (16 / Work.global.bpNote);
+		if (Xmin==Infinity) Xmin= 0;
 		this.viewportL = 0; // Math.floor(Xmin)-1;
-		this.viewportW = Math.ceil(Xmax)+2;
+		this.viewportW = Math.ceil(Xmax)+16;
  		if (this.viewportW< this.minW) 
  			this.viewportW=this.minW;
  		if (this.viewportW> this.maxW) 
@@ -2072,7 +2071,6 @@ Pianoroll.prototype.updateChords1=function(){
 };
 
 Pianoroll.prototype.init=function(){
-
 	Tone.Transport.bpm.value=Work.global.bpm;
 	pianoroll.master.volume.volume.value = document.getElementById("input_master_volume").value;
 	pianoroll.master.reverb.decay = document.getElementById("input_master_roomsize").value;
@@ -2101,10 +2099,12 @@ Pianoroll.prototype.detectKeyScale=function(){
 	var ksFit1 = ksFits.bestMatches[0];
 	console.log(ksFits);
 	 
-	document.getElementById("select_key").selectedIndex=ksFit1.maxK;	
-	document.getElementById("select_scale").selectedIndex=ksFit1.maxS;
-	Work.global.scale_id=ksFit1.maxS;
-	Work.global.key=ksFit1.maxK;
+	document.getElementById("select_key").selectedIndex=ksFit1.key;	
+	document.getElementById("select_scale").selectedIndex=ksFit1.scale_id;
+	document.getElementById("select_mode").selectedIndex=ksFit1.mode;
+	Work.global.scale_id=ksFit1.scale_id;
+	Work.global.key=ksFit1.key;
+	Work.global.mode=ksFit1.mode;
 	Composer.init();
 }
 
@@ -2169,6 +2169,7 @@ Pianoroll.prototype.autoSimpleChordByKey_1=function(){
 var pianoroll=new Pianoroll();
 
 pianoroll.recorder = new Tone.Recorder();
+//pianoroll.recorder.channelCount = 2;
 
 pianoroll.master.volume = new Tone.Volume(0).toDestination();
 pianoroll.master.metro_vol= new Tone.Volume(0).toDestination();

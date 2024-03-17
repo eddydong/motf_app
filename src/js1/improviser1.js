@@ -47,6 +47,22 @@ var Improviser1={};
             phrase.push(phrase[i]);
         };
 
+        // phrase1 = [];
+        // for (var i=0; i<verse.pick.length/2; i++) {
+        //     var home = (i==verse.pick.length-1) ? verse.home : verse.pick[i+1].note;
+        //     var p = new motf.ImpNote(ctx, verse.pick[i], home, 8);
+        //     if (p.pick == null) return false;
+        //     for (var j=0; j<p.pick.length; j++)
+        //         phrase1.push(p.pick[j]);
+        // };
+        // var phaseLen = phrase1.length;
+        // phrase1[phrase1.length-1].home = verse.home;
+        // for (var i=phrase1.length-2; i>=0; i--) phrase1[i].home=phrase1[i+1].note;
+        // //repeat
+        // for (var i=0; i < phaseLen; i++) {
+        //     phrase1.push(phrase1[i]);
+        // };
+
         // phrase =[
         //     {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
         //     {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60},
@@ -57,8 +73,16 @@ var Improviser1={};
         phrase1 = []; 
         for (var i=0; i<phrase.length/2; i++) {
             for (var j=0; j<phrase[i].pick.length; j++) {
-                phrase1.push({note: ctx.getNoteByScaleMove(phrase[i].pick[j].note, 
-                    [0,2,2,2,4,4,4,4,4,4][Math.floor(Math.random()*7)]), len:phrase[i].pick[j].len});    
+                var choices = [0];
+                if (ctx.inScale(phrase[i].pick[j].note+7))
+                    for (var k=0; k<3; k++) choices.push(7);
+                if (ctx.inScale(phrase[i].pick[j].note+4))
+                    for (var k=0; k<2; k++) choices.push(4)
+                else if (ctx.inScale(phrase[i].pick[j].note+3))
+                    for (var k=0; k<2; k++) choices.push(3);
+                phrase1.push({note: phrase[i].pick[j].note +
+                    choices[Math.floor(Math.random()*choices.length)], 
+                    len:phrase[i].pick[j].len});    
             }
         };
         phrase1[phrase1.length-1].home = verse.home;
@@ -74,6 +98,7 @@ var Improviser1={};
         var r5 = Math.floor(Math.random()*7)+9;
         var r6 = Math.floor(Math.random()*7)+9;
         var rhyPat = [r3, r3 ,r3, r5,  r3, r3, r3, r6,  r4, r4, r4, r5,  r4, r4, r4, r6];
+//        var rhyPat = [r5, r3 ,r5, r6,  r5, r3, r5, r6,  r6, r4, r6, r5,  r6, r4, r6, r5];
         for (var i=0; i<phrase1.length; i++){
                 var home = (i==phrase1.length-1) ? verse.home : phrase1[i+1].note;
                 var n = new motf.ImpNote(ctx, phrase1[i], home, rhyPat[i]);
@@ -126,7 +151,7 @@ var Improviser1={};
                     y: Improviser1.bass[i].pick[j].note - 21 - 12,
                     d: Improviser1.bass[i].pick[j].len, 
                     s: 1, 
-                    v: 2, 
+                    v: 1, 
                     l: 4, //j,
                     t: 0 // type: 0: normal note; 1: just improvised			
             });
@@ -141,7 +166,7 @@ var Improviser1={};
                     y: Improviser1.meline1[i].note - 21 + 12,
                     d: Improviser1.meline1[i].len, 
                     s: 0, 
-                    v: 0.1, 
+                    v: 1, 
                     l: 2, //j,
                     t: 2 // type: 0: normal note; 1: just improvised			
             });
@@ -150,7 +175,7 @@ var Improviser1={};
                 y: Improviser1.meline1[i].note - 21,
                 d: Improviser1.meline1[i].len, 
                 s: 0, 
-                v: 0.1, 
+                v: 1, 
                 l: 2, //j,
                 t: 2 // type: 0: normal note; 1: just improvised			
             });
@@ -159,11 +184,15 @@ var Improviser1={};
 
         // melody1
         pos = start;
+        var prevNote=null;
         for (var i=0; i<Improviser1.melody1.length; i++)
         for (var j=0; j<Improviser1.melody1[i].pick.length; j++)
         if (Improviser1.melody1[i].pick[j]) {
-        //	console.log(motf.melody[i].pick[j]);
-            pianoroll.addNote({
+            if (prevNote && Math.random() < 0.8 &&
+                Improviser1.melody1[i].pick[j].note==prevNote.y+21){
+                prevNote.d += Improviser1.melody1[i].pick[j].len;
+            } else {
+                pianoroll.addNote({
                     x: pos,
                     y: Improviser1.melody1[i].pick[j].note - 21,
                     d: Improviser1.melody1[i].pick[j].len, 
@@ -171,7 +200,9 @@ var Improviser1={};
                     v: 1, 
                     l: 0, //j,
                     t: 0 // type: 0: normal note; 1: just improvised			
-            });
+                });
+                prevNote = Work.global.seqXY[Work.global.seqXY.length-1];
+            };
             pos += Improviser1.melody1[i].pick[j].len;
         };
         var lastNote=Improviser1.melody1[Improviser1.melody1.length-1].pick[Improviser1.melody1[Improviser1.melody1.length-1].pick.length-1];

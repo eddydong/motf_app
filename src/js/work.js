@@ -20,7 +20,7 @@ Work.global= {
 	human_vel: 0.1,
 	human_tem: 0.1,
 	magnet: 0,
-	metronome: 0,
+	metronome: 1,
 	scaledKeyboard: 0,
 	through: 1,
 	tempo_auto:[ // 0..seq.length/16 (resolution: 1 measure)
@@ -372,10 +372,10 @@ Work.layer= [  // T01..T10
 		name: "Melody 1", //0
 		type: "melody",
 		instrument: 1,
-		mute: 0,
-		solo: 0,
+		mute: false,
+		solo: false,
 		volume: 2,
-		pan: 0,
+		pan: 0.5,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
@@ -392,10 +392,10 @@ Work.layer= [  // T01..T10
 		name: "Melody 2", //1
 		type: "melody",
 		instrument: 1,
-		mute: 0,
-		solo: 0,
-		volume: 2,
-		pan: 0,
+		mute: false,
+		solo: false,
+		volume: -0.5,
+		pan: -0.5,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
@@ -412,10 +412,10 @@ Work.layer= [  // T01..T10
 		name: "Meline", //2
 		type: "bass",
 		instrument: 11,
-		mute: 0,
-		solo: 0,
-		volume: 2,
-		pan: 0,
+		mute: false,
+		solo: false,
+		volume: -12,
+		pan: 0.4,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
@@ -432,10 +432,10 @@ Work.layer= [  // T01..T10
 		name: "Chord", //3
 		type: "chord",
 		instrument: 13,
-		mute: 0,		
-		solo: 0,
+		mute: false,		
+		solo: false,
 		volume: -6,
-		pan: 0,
+		pan: -0.3,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
@@ -452,10 +452,10 @@ Work.layer= [  // T01..T10
 		name: "Bass", //4
 		type: "bass",
 		instrument: 16,
-		mute: 0,		
-		solo: 0,
-		volume: 2,
-		pan: 0,
+		mute: false,		
+		solo: false,
+		volume: 1,
+		pan: 0.3,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
@@ -472,10 +472,10 @@ Work.layer= [  // T01..T10
 		name: "Walking Bass", //5
 		type: "bass",
 		instrument: 16,
-		mute: 1,		
-		solo: 0,
+		mute: true,		
+		solo: false,
 		volume: 0,
-		pan: 0,
+		pan: -0.7,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
@@ -492,10 +492,10 @@ Work.layer= [  // T01..T10
 		name: "Percussion", //6
 		type: "percussion",
 		instrument: 17,
-		mute: 0,		
-		solo: 0,
+		mute: false,		
+		solo: false,
 		volume: -5,
-		pan: 0,
+		pan: -0.2,
 		seq: [],
 		rhythm: [
 		[1/8,1/16,1/16,1/8,1/8,1/16,1/8,1/16,1/8,1/8],
