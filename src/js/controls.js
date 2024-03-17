@@ -1203,6 +1203,7 @@ function init(){
 				instrument: null
 			};
 			layerChannel.channel.volume.value = Work.layer[i].volume;
+			// mute must be set after volume, or it will be set to false automatically for any volume change
 			layerChannel.channel.solo = Work.layer[i].solo;
 			layerChannel.channel.mute = Work.layer[i].mute;
 			layerChannel.channel.pan = Work.layer[i].pan;
