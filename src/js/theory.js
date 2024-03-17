@@ -244,7 +244,7 @@ function getWeightedMaps(){
 		// grab notes from measure #meas
 		let notes=[];
 		for (var i=0; i<Work.global.seqXY.length; i++)
-		if (Work.layer[Work.global.seqXY[i].l].name=="Melody 1")
+		if (Work.global.seqXY[i].s)
 		{
 			if (Work.global.seqXY[i].x >= measHW * meas
 			&& Work.global.seqXY[i].x+Work.global.seqXY[i].d <= measHW * (meas+1))

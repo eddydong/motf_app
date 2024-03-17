@@ -35,7 +35,7 @@ function Pianoroll(){
  	this.historyPos=-1;
  	this.newNote=null;
  	this.endTick=0;
- 	this.selEnd=-99999;
+ 	this.selEnd=-Infinity;
  	this.curNote;
  	this.dragType="rect";
  	this.panX;
@@ -263,14 +263,21 @@ Pianoroll.prototype.addNote=function(note, cause){
 }
 
 Pianoroll.prototype.updateEndTick=function(){
-	this.endTick=-99999;
-	for (var i=0; i<Work.global.seqXY.length; i++)
+	this.endTick=-Infinity;
+	this.startTick=Infinity;
+	for (var i=0; i<Work.global.seqXY.length; i++) 
+	if (Work.layer[Work.global.seqXY[i].l].type!="chord") {
 		if (this.endTick < (Work.global.seqXY[i].x+Work.global.seqXY[i].d))
 			this.endTick = (Work.global.seqXY[i].x+Work.global.seqXY[i].d);
+		if (this.startTick > (Work.global.seqXY[i].x))
+			this.startTick = (Work.global.seqXY[i].x);
+	}
 			
-	if (this.endTick==-99999) this.endTick=0;
+	if (this.endTick == -Infinity) this.endTick = 0;
+	if (this.startTick ==  Infinity) this.startTick = 0;
 
 	this.endTick= (this.endTick % 1 == 0 ? this.endTick : Math.floor(this.endTick)+1);
+	this.startTick= (this.startTick % 1 == 0 ? this.startTick : Math.floor(this.startTick)+1);
 
 	this.endMeas = Math.floor(this.endTick / (Work.global.bpMeas / Work.global.bpNote * 16));			
 
@@ -310,7 +317,7 @@ Pianoroll.prototype.scroll=function(dir, step){
 	if (dir=="bottom") this.viewportB=0;
 	if (dir=="beginning") {
 		this.viewportL=0;
-		this.playhead=0;
+		this.playhead=this.startTick;
 		this.playTick=0;
 	};
 	if (dir=="end") {
@@ -652,13 +659,13 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			this.ctx.fillRect(w*(i-this.viewportL),0,w,this.height);
 		};
 		// beginning column
-		if (i == 0 && this.endTick>0) {
-			this.ctx.fillStyle="rgba(180,200,220,0.3)";
+		if (i == this.startTick-1) {
+			this.ctx.fillStyle=motf.color.get("yellow",0.5);
 			this.ctx.fillRect(w*(i-this.viewportL),0,w,this.height);
 		};
 		// ending column
 		if (i == this.endTick) {
-			this.ctx.fillStyle="rgba(180,200,220,0.3)";
+			this.ctx.fillStyle=motf.color.get("yellow",0.5);
 			this.ctx.fillRect(w*(i-this.viewportL),0,w,this.height);
 		};
 
@@ -1556,8 +1563,8 @@ Pianoroll.prototype.play=function(){
 		
 		sel=this.selCount();
 		if (sel>0){
-			this.selEnd=-Infinity;
-			this.selStart=Infinity;
+			this.selEnd = -Infinity;
+			this.selStart = Infinity;
 			for (var i=0; i<Work.global.seqXY.length; i++)
 				if (Work.global.seqXY[i].s===1){
 					if (this.selEnd< (Work.global.seqXY[i].x+Work.global.seqXY[i].d))
@@ -1567,8 +1574,8 @@ Pianoroll.prototype.play=function(){
 				};
 			this.playhead=this.selStart;
 		} else {
-			this.selEnd=this.endTick;
-			this.selStart=this.playhead;
+			this.selEnd = this.endTick;
+			this.selStart = this.playhead;
 		};
 		
 		this.playTick=Math.floor(this.playhead);
@@ -2118,7 +2125,7 @@ Pianoroll.prototype.getNotesByMeas=function(meas_id){
 }
 
 // generate chords according to autoChord and save to Work.global.autoChord
-Pianoroll.prototype.autoSimpleChordByKey=function(){
+Pianoroll.prototype.autoSimpleChordByKey=function(guitarSwipe){
 	let chords=Theory.getChordsByMelodyKeyScale(Work.global.key, Work.global.scale_id, Work.global.mode,
 		0,this.endMeas);
 	Work.global.autoChord=[];
@@ -2128,31 +2135,31 @@ Pianoroll.prototype.autoSimpleChordByKey=function(){
 		for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
 			c++;
 			var newNote1={
-				x: Work.global.bpMeas / Work.global.bpNote * 8 * i,
+				x: Work.global.bpMeas / Work.global.bpNote * 8 * i + ((c-1)*guitarSwipe),
 				y: 27 + k,
-				d: Work.global.bpMeas / Work.global.bpNote * 4, 
+				d: Work.global.bpMeas / Work.global.bpNote * 6, 
 				s: 0, 
 				v: 1, 
 				l: 3, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 			};
 			var newNote2={
-				x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 4,
+				x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 6 + ((c-1)*guitarSwipe),
 				y: 27 + k,
-				d: Work.global.bpMeas / Work.global.bpNote * 4, 
+				d: Work.global.bpMeas / Work.global.bpNote * 2, 
 				s: 0, 
 				v: 1, 
 				l: 3, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 			};
-			if (c==1) newNote1.y+=12; else if (c==3) newNote1.y-=12;
-			if (c==1) newNote2.y+=12; else if (c==3) newNote2.y-=12;
+			if (c==1) newNote1.y += 12; else if (c==3) newNote1.y-=12;
+			if (c==1) newNote2.y += 12; else if (c==3) newNote2.y-=12;
 			this.addNote(newNote1);
 			this.addNote(newNote2);
 		}
 	};
 	this.autoZoom("y");
-	this.updateChords();
+	//this.updateChords();
  	this.historyPush("auto chord simple"); 	
 }
 

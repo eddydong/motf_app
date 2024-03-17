@@ -266,7 +266,7 @@ var Controls= {};
 			// C for showChord
 			if (e.keyCode==67) {
 				// Chord.print();
-				pianoroll.autoSimpleChordByKey();
+				pianoroll.autoSimpleChordByKey(0.08);
 			};
 			
 			// S for showCanvas (Stroke)
@@ -1166,7 +1166,7 @@ function updateSoloMute(){
 		Work.layer[i].solo = pianoroll.layer[i].channel.solo;
 		Work.layer[i].mute = pianoroll.layer[i].channel.muted;		
 		Work.layer[i].volume = pianoroll.layer[i].channel.volume.value;		
-		Work.layer[i].pan = pianoroll.layer[i].channel.pan;		
+		Work.layer[i].pan = pianoroll.layer[i].channel.pan.value;		
 	}
 }
 
@@ -1206,7 +1206,7 @@ function init(){
 			// mute must be set after volume, or it will be set to false automatically for any volume change
 			layerChannel.channel.solo = Work.layer[i].solo;
 			layerChannel.channel.mute = Work.layer[i].mute;
-			layerChannel.channel.pan = Work.layer[i].pan;
+			layerChannel.channel.pan.value = Work.layer[i].pan;
 			pianoroll.layer.push(layerChannel);
 		};	
 		updateSoloMute();

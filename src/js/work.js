@@ -10,15 +10,15 @@ Work.global= {
 	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
 	mode: 5,
-	bpm: 84,
+	bpm: 80,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
 	roomsize: 3,
 	metro_vol: -10, 	
 	rhythm_vol: -10, 	
-	human_vel: 0.1,
-	human_tem: 0.1,
+	human_vel: 0.7,
+	human_tem: 0,
 	magnet: 0,
 	metronome: 0,
 	scaledKeyboard: 0,
@@ -391,10 +391,10 @@ Work.layer= [  // T01..T10
 	{
 		name: "Melody 2", //1
 		type: "melody",
-		instrument: 1,
+		instrument: 9,
 		mute: false,
 		solo: false,
-		volume: -0.5,
+		volume: -5,
 		pan: -0.5,
 		seq: [],
 		rhythm: [
@@ -411,7 +411,7 @@ Work.layer= [  // T01..T10
 	{
 		name: "Meline", //2
 		type: "bass",
-		instrument: 11,
+		instrument: 10,
 		mute: false,
 		solo: false,
 		volume: -12,
@@ -431,10 +431,10 @@ Work.layer= [  // T01..T10
 	{
 		name: "Chord", //3
 		type: "chord",
-		instrument: 13,
+		instrument: 4,
 		mute: false,		
 		solo: false,
-		volume: -6,
+		volume: -4,
 		pan: -0.3,
 		seq: [],
 		rhythm: [
@@ -494,7 +494,7 @@ Work.layer= [  // T01..T10
 		instrument: 17,
 		mute: false,		
 		solo: false,
-		volume: -5,
+		volume: -6,
 		pan: -0.2,
 		seq: [],
 		rhythm: [

@@ -53,7 +53,7 @@ function onkeydown(e){
 		k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(octStart)];
 	if (keymapChroma.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==0)
 		k=keymapChroma.indexOf(e.keyCode)+octStart;
-	console.log(k);
+	//console.log(k);
 	if (k) startNote(k);		
 };
 
