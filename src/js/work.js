@@ -7,10 +7,10 @@ var Work = {};
 Work.global= {
 	workname: "Another Piece of Shit",
 	author: "noname",
-	key: 0, // 0-11 / offset from C, in chromatic scale
-	scale_id: 23,
-	mode: 0,
-	bpm: 60,
+	key: 7, // 0-11 / offset from C, in chromatic scale
+	scale_id: 16,
+	mode: 5,
+	bpm: 85,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
@@ -374,7 +374,7 @@ Work.layer= [  // T01..T10
 		instrument: 1,
 		mute: false,
 		solo: false,
-		volume: 1,
+		volume: 0,
 		pan: 0.5,
 		seq: [],
 		rhythm: [
@@ -392,7 +392,7 @@ Work.layer= [  // T01..T10
 		name: "Melody 2", //1
 		type: "melody",
 		instrument: 9,
-		mute: false,
+		mute: true,
 		solo: false,
 		volume: -6,
 		pan: -0.5,
@@ -412,7 +412,7 @@ Work.layer= [  // T01..T10
 		name: "Meline", //2
 		type: "bass",
 		instrument: 10,
-		mute: false,
+		mute: true,
 		solo: false,
 		volume: -12,
 		pan: 0.4,
@@ -432,7 +432,7 @@ Work.layer= [  // T01..T10
 		name: "Chord", //3
 		type: "chord",
 		instrument: 10,
-		mute: false,		
+		mute: true,		
 		solo: false,
 		volume: -20,
 		pan: -0.3,
@@ -452,7 +452,7 @@ Work.layer= [  // T01..T10
 		name: "Bass", //4
 		type: "bass",
 		instrument: 16,
-		mute: false,		
+		mute: true,		
 		solo: false,
 		volume: 0,
 		pan: 0.3,
@@ -472,9 +472,9 @@ Work.layer= [  // T01..T10
 		name: "Walking Bass", //5
 		type: "bass",
 		instrument: 16,
-		mute: true,		
+		mute: false,		
 		solo: false,
-		volume: -3,
+		volume: -1,
 		pan: -0.7,
 		seq: [],
 		rhythm: [

@@ -94,6 +94,11 @@ function randPick(choices){
 	return null;
 }
 
+// get a random element form a give array
+function pick(a){
+	return a[Math.floor(Math.random()*a.length)];
+}
+
 // Export
 
 myLib.deepCopy = deepCopy;
@@ -105,5 +110,6 @@ myLib.getDist = getDist;
 myLib.getAngle = getAngle;
 myLib.getUuid = getUuid;
 myLib.arrayDel = arrayDel;
+myLib.pick = pick;
 
 })();

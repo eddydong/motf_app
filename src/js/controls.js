@@ -53,7 +53,7 @@ var Controls= {};
 		if (pianoroll.vKeyboardOn) {
 					
 			// Enter for PLAY
-			if (e.keyCode==13){ // space
+			if (e.keyCode==13){ 
 				if (pianoroll.isPlaying) document.getElementById("btn_stop").onclick();
 				else document.getElementById("btn_play").onclick();
 			};
@@ -120,9 +120,10 @@ var Controls= {};
 				document.getElementById("select_mode").selectedIndex=Work.global.mode;
 				Composer.init();
 				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
-				Improviser1.tryBuild(ctx);
-				pianoroll.scroll("beginning");
-				pianoroll.play();
+				if (Improviser1.tryBuild(ctx)){
+					pianoroll.scroll("beginning");
+					pianoroll.play();
+				};
 			};
 			
 			// Cmd + N for new project
@@ -218,7 +219,7 @@ var Controls= {};
 
 			if (e.code == "KeyM"){
 				pianoroll.layer[Work.global.layer_sel].channel.mute = 
-					!pianoroll.layer[Work.global.layer_sel].channel.muted;										
+					!pianoroll.layer[Work.global.layer_sel].channel.mute;										
 				updateSoloMute();
 			}
 	
@@ -301,9 +302,10 @@ var Controls= {};
 				pianoroll.stop();
 				Composer.init();
 				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
-				Improviser1.tryBuild(ctx);
-				pianoroll.scroll("beginning");
-				pianoroll.play();
+				if (Improviser1.tryBuild(ctx)){
+					pianoroll.scroll("beginning");
+					pianoroll.play();
+				};
 								
 				// pianoroll.rootSeeds=[];
 				// pianoroll.improviseX2("preset", 0);
@@ -1161,7 +1163,7 @@ function updateSoloMute(){
 		lss[i].style.background= pianoroll.layer[i].channel.solo ? Global.color.solo_active : Global.color.solo_inactive;
 		lms[i].style.background= pianoroll.layer[i].channel.muted ? Global.color.mute_active : Global.color.mute_inactive;
 		Work.layer[i].solo = pianoroll.layer[i].channel.solo;
-		Work.layer[i].mute = pianoroll.layer[i].channel.muted;		
+		Work.layer[i].mute = pianoroll.layer[i].channel.mute;		
 		Work.layer[i].volume = pianoroll.layer[i].channel.volume.value;		
 		Work.layer[i].pan = pianoroll.layer[i].channel.pan.value;		
 	}
@@ -1289,7 +1291,7 @@ function init(){
 		var lms=document.querySelectorAll(".mute");
 		for (var i=0; i<lms.length; i++) 
 		lms[i].onclick=(e)=>{
-			pianoroll.layer[e.target.dataset.i].channel.mute = !pianoroll.layer[e.target.dataset.i].channel.muted;
+			pianoroll.layer[e.target.dataset.i].channel.mute = !pianoroll.layer[e.target.dataset.i].channel.mute;
 			updateSoloMute();
 		};
 		

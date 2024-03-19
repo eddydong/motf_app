@@ -18,6 +18,24 @@ var color = {
 	}
 }
 
+var rhythm ={
+	bass : [[2,2,2,2]],
+	walking : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
+	walking_alter : [[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1]],
+	melody : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],
+			[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
+	melody_alter : [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
+	[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
+	[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2],[4,4],[8]]
+}
+
+var suggester = {
+	melody: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+			chances: [ 0.3,  0.7,  0.7,   0.5,  0.5,  0.3,  0.5,  0.5,  0.3]},
+	bass :	{values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+			chances: [   0,    0,    1,     1,    0,    1,    0,    1,    0]}
+}
+
 var theory = {
 	// Properties
 
@@ -258,31 +276,24 @@ class AutoDrumer {
 }
 
 class ImpNote {
-	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
-			   [2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
-			   [4,2,1,1],[5,1,1,1],[6,1,1],[4,2,2],[4,4],[8]];
-	suggester1 = {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-				 chances: [ 0.3,  0.7,  0.7,   0.5,  0.5,  0.3,  0.5,  0.5,  0.3]}
-	suggester2 = {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-			     chances: [   0,    0,    1,     1,    0,    1,    0,    1,    0]}
 	
-	constructor(ctx, parent, home, type){
+	constructor(ctx, parent, home, type, alter=0){
 		if (type == "bass") {
-			this.rhythm = 4;
-			this.suggester = this.suggester2;
+			this.rhythm = myLib.pick(rhythm.bass);
+			this.suggester = suggester.bass;
 		} else if (type == "walking") {
-			this.rhythm = 3;
-			this.suggester = this.suggester1;
+			this.rhythm = alter ? myLib.pick(rhythm.walking_alter) : myLib.pick(rhythm.walking);
+			this.suggester = suggester.melody;
 		} else if (type == "melody"){
-			this.rhythm = Math.floor(Math.random()*12+4);
-			this.suggester = this.suggester1;
+			this.rhythm = alter ? myLib.pick(rhythm.melody) : myLib.pick(rhythm.melody_alter);
+			this.suggester = suggester.melody;
 		}
 		this.type = type;
 		this.ctx = ctx;  
 		this.parent = parent;
 		this.home = home;
-		this.steps = this.rhythm4[this.rhythm].length;
-		this.draft = [{note: this.parent.note, len: this.rhythm4[this.rhythm][0] / 8 * this.parent.len}];
+		this.steps = this.rhythm.length;
+		this.draft = [{note: this.parent.note, len: this.rhythm[0] / 8 * this.parent.len}];
 		this.variant = [];
 		this.search(1);
 		this.pick = null;
@@ -292,18 +303,21 @@ class ImpNote {
 	search(n){
 		if (n == this.steps) {
 			var last = this.draft[this.draft.length-1];
-			if ( this.type!="bass" ? (Math.abs(last.note - this.home)<=7) :
+			if ( 
+				this.type=="bass" ? (Math.abs(last.note - this.home)<=7) :
 				(last.note == this.home
 				|| last.note == this.ctx.getNoteByScaleMove(this.home, 1) 			
 				|| last.note == this.ctx.getNoteByScaleMove(this.home,-1)
-				|| last.len>2 && last.note == this.ctx.getNoteByScaleMove(this.home, 2) 			
-				|| last.len>2 && last.note == this.ctx.getNoteByScaleMove(this.home,-2)
+				|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home, 2) 			
+				|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home,-2)
 				|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last.note == this.home - 5) : 0)
 			)) 
 				this.variant.push(myLib.deepCopy(this.draft));
 		} else {
-			var len = this.rhythm4[this.rhythm][n] / 8 * this.parent.len;
-			var maxStep = len <=2 ? 3 : this.suggester.values.length;
+			// prevent short note gets too jumpy
+			var len = this.rhythm[n] / 8 * this.parent.len;
+			var maxStep = len <=2 ? 5 : this.suggester.values.length;
+
 			for (var i=0; i<maxStep; i++) if (Math.random()<this.suggester.chances[i]) {
 				var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
 				if (this.type=="bass"){
@@ -312,10 +326,10 @@ class ImpNote {
 					if (targetY < this.ctx.root - 12)
 						while (targetY < this.ctx.root - 12) targetY += 12;	
 				} else {
-					if (targetY > this.ctx.root + 18) 
-						while (targetY > this.ctx.root + 18) targetY -= 12;
-					if (targetY < this.ctx.root - 18) 
-						while (targetY < this.ctx.root - 18) targetY += 12;
+					if (targetY > this.ctx.root + 15) 
+						while (targetY > this.ctx.root + 15) targetY -= 12;
+					if (targetY < this.ctx.root - 15) 
+						while (targetY < this.ctx.root - 15) targetY += 12;
 				}
 				this.draft.push({note: targetY, len});
 				this.search(n+1);
@@ -325,6 +339,10 @@ class ImpNote {
 	}
 	// get a new pick from the varian(s)
 	repick(){
+		if (this.type=="bass") {
+			this.pick = this.variant[Math.floor(Math.random()*this.variant.length)];
+			return;
+		};
 		var upNdown=function(draft){
 			var c=0, prev_dir=0;
 			for (var i=1; i<draft.length; i++) if (draft[i].note != draft[i-1].note) {

@@ -266,10 +266,11 @@ Pianoroll.prototype.updateEndTick=function(){
 	this.endTick=-Infinity;
 	this.startTick=Infinity;
 	for (var i=0; i<Work.global.seqXY.length; i++) 
-	if (Work.layer[Work.global.seqXY[i].l].type!="chord") {
-		if (this.endTick < (Work.global.seqXY[i].x+Work.global.seqXY[i].d))
+	if (Work.layer[Work.global.seqXY[i].l].type!="chord" 
+	&& Work.layer[Work.global.seqXY[i].l].type!="percussion") {
+		if ((Work.global.seqXY[i].x+Work.global.seqXY[i].d) - this.endTick > 0.001)
 			this.endTick = (Work.global.seqXY[i].x+Work.global.seqXY[i].d);
-		if (this.startTick > (Work.global.seqXY[i].x))
+		if (this.startTick - Work.global.seqXY[i].x > 0.01)
 			this.startTick = (Work.global.seqXY[i].x);
 	}
 			
@@ -1452,7 +1453,9 @@ Pianoroll.prototype.resize=function(){
 var t_lastframe=Date.now();
 
 var lastFrameT;
-Pianoroll.prototype.anim=function(){
+var anim;
+
+Pianoroll.prototype.render = function(){
 	if (lastFrameT == undefined) lastFrameT=Tone.now();
  	let now=Tone.now();
  	
@@ -1526,11 +1529,15 @@ Pianoroll.prototype.anim=function(){
 
 	Global.updateMeter();
 	
-	requestAnimationFrame(this.anim.bind(this));	
+	anim = requestAnimationFrame(this.render.bind(this));	
 }
+
+const cancelAnimationFrame =
+  window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
 Pianoroll.prototype.stop=function(){
 	if (this.isPlaying) { 
+		cancelAnimationFrame(anim);
 		Tone.Transport.stop(); 
 
 		if (this.recorder.state=="started") {
@@ -1555,10 +1562,11 @@ Pianoroll.prototype.stop=function(){
 
 Pianoroll.prototype.play=function(){
 	this.autoScrolling=0;
+
 	if (Work.global.seqXY.length==0) return;
-	else if (this.isPlaying) { 
-		this.stop();
-	} else { 
+
+	if (!this.isPlaying) { 
+
 		Global.XYtoIJ();
 		
 		sel=this.selCount();
@@ -1583,6 +1591,7 @@ Pianoroll.prototype.play=function(){
 		this.playingFromT = Tone.now();
 		this.playStart = this.playhead; 
 		this.isPlaying = true;  
+		anim = requestAnimationFrame(this.render.bind(this));
 		Tone.Transport.start();
 	};
 }
@@ -2085,7 +2094,7 @@ Pianoroll.prototype.init=function(){
 
 	var f=this.playNext.bind(this);
 	Tone.Transport.scheduleRepeat(function(t){f(t);}, this.resolution);
-	requestAnimationFrame(this.anim.bind(this));
+	anim = requestAnimationFrame(this.render.bind(this));
 	
  	this.updateEndTick();
 	this.autoZoom("xy");

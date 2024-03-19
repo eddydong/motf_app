@@ -17,35 +17,39 @@ var Improviser1={};
                     " succeeded after " + (i+1) + " iterations."); 
                 //console.log(res.verse, res.phrase, res.phrase1, res.note1);
                 exportToPianoroll();
-                return;
+                return true;
             }
         }
         console.log("falied "+buildCount);
-        console.log("Max search reached. Improvision failed.")
+        console.log("Max search reached. Improvision failed.");
+        return false;
     }
 
     function rebuild(ctx){
         var verse, phrase, phrase1, phrase2, note1, note2;
 
-        var parent = {note: Work.global.key+60, len:128};
-        var home = Work.global.key+60;
-        verse = new motf.ImpNote(ctx, parent, home, "bass");
-        for (var i=0; i<verse.pick.length; i++) verse.pick[i].len=verse.pick[i].len;
-        if (verse.pick == null) return false;
-        // repeat
-        // verse.pick.push(verse.pick[0],verse.pick[1]);
+        // var parent = {note: Work.global.key+60, len:128};
+        // var home = Work.global.key+60;
+        // verse = new motf.ImpNote(ctx, parent, home, "bass");
+        // //for (var i=0; i<verse.pick.length; i++) verse.pick[i].len=verse.pick[i].len;
+        // if (verse.pick == null) return false;
+        // // repeat
+        // // verse.pick.push(verse.pick[0],verse.pick[1]);
+
+        verse = {pick:[{note: 60, len: 32},{note: 60, len: 32},{note: 67, len: 32},{note: 67, len: 32}], 
+                 home: 60};
 
         phrase = [];
-        for (var i=0; i<verse.pick.length/2; i++) {
+        for (var i=0; i<verse.pick.length; i++) {
             var home = (i==verse.pick.length-1) ? verse.home : verse.pick[i+1].note;
             var p = new motf.ImpNote(ctx, verse.pick[i], home, "bass");
             if (p.pick == null) return false;
             phrase.push(p);
         };
         // repeat
-        for (var i=0; i<verse.pick.length/2; i++) {
-            phrase.push(phrase[i]);
-        };
+        // for (var i=0; i<verse.pick.length/2; i++) {
+        //     phrase.push(phrase[i]);
+        // };
 
         // phrase1 = [];
         // for (var i=0; i<verse.pick.length/2; i++) {
@@ -100,37 +104,26 @@ var Improviser1={};
         // ];
 
         note1 = [];
-        var r3 = Math.floor(Math.random()*10)+4;
-        var r4 = Math.floor(Math.random()*10)+4;
-        var r5 = Math.floor(Math.random()*5)+10;
-        var r6 = Math.floor(Math.random()*5)+10;
-        var rhyPat = [r5, r5 ,r3, r6,  r5, r5, r3, r6,  r5, r5 ,r4, r6,  r5, r5, r4, r6];
-//        var rhyPat = [r5, r3 ,r5, r6,  r5, r3, r5, r6,  r6, r4, r6, r5,  r6, r4, r6, r5];
         for (var i=0; i<phrase1.length; i++){
                 var home = (i==phrase1.length-1) ? verse.home : phrase1[i+1].note;
-                var n = new motf.ImpNote(ctx, phrase1[i], home, "melody");
+                var n = new motf.ImpNote(ctx, phrase1[i], home, "melody", i % 4 == 3);
                 if (n.pick == null) return false;
                 note1.push(n);    
         };   
 
         note2 = [];
-        var r1 = Math.floor(Math.random()*4);
-        var r2 = Math.floor(Math.random()*8)+4;
-        var r3 = Math.floor(Math.random()*5)+11;
-        var rhyPat = [r3, r3 ,r3, r2,  r3, r3, r3, r2,  r3, r3, r3, r2,  r3, r2, r3, r1];
         for (var i=0; i<phrase1.length; i++){
                 var home = (i==phrase1.length-1) ? verse.home : phrase1[i+1].note;
-                var n = new motf.ImpNote(ctx, phrase1[i], home, "melody");
+                var n = new motf.ImpNote(ctx, phrase1[i], home, "melody", i % 4 == 3);
                 if (n.pick == null) return false;
                 note2.push(n);    
         };   
 
         walking = [];
-        var rhyPat = [3,3,3,3, 3,3,3,1, 3,3,3,3, 3,3,3,9];
         for (var i=0; i<phrase.length; i++)
         for (var j=0; j<phrase[i].pick.length; j++){
                 var home = (j==phrase[i].pick.length-1) ? phrase[i].home : phrase[i].pick[j+1].note;
-                var n = new motf.ImpNote(ctx, phrase[i].pick[j], home, "walking");
+                var n = new motf.ImpNote(ctx, phrase[i].pick[j], home, "walking", j % 4 == 3);
                 if (n.pick == null) return false;
                 walking.push(n);    
         };   
@@ -156,7 +149,7 @@ var Improviser1={};
                     x: pos,
                     y: Improviser1.bass[i].pick[j].note - 21 - 12,
                     d: Improviser1.bass[i].pick[j].len, 
-                    s: 0, 
+                    s: 1, 
                     v: 1, 
                     l: 4, //j,
                     t: 0 // type: 0: normal note; 1: just improvised			
@@ -201,7 +194,7 @@ var Improviser1={};
                     x: pos,
                     y: Improviser1.melody1[i].pick[j].note - 21,
                     d: Improviser1.melody1[i].pick[j].len, 
-                    s: 1, 
+                    s: 0, 
                     v: 1, 
                     l: 0, //j,
                     t: 0 // type: 0: normal note; 1: just improvised			
@@ -217,7 +210,7 @@ var Improviser1={};
                 x: start - lastNote1.len,
                 y: lastNote1.note - 21,
                 d: lastNote1.len, 
-                s: 1, 
+                s: 0, 
                 v: 1, 
                 l: 0, //j,
                 t: 0 // type: 0: normal note; 1: just improvised			
@@ -226,7 +219,7 @@ var Improviser1={};
                 x: start - lastNote1.len - lastNote2.len,
                 y: lastNote2.note - 21,
                 d: lastNote2.len, 
-                s: 1, 
+                s: 0, 
                 v: 1, 
                 l: 0, //j,
                 t: 0 // type: 0: normal note; 1: just improvised			
@@ -236,7 +229,7 @@ var Improviser1={};
                 x: start - lastNote1.len,
                 y: lastNote1.note - 21,
                 d: lastNote1.len, 
-                s: 1, 
+                s: 0, 
                 v: 1, 
                 l: 0, //j,
                 t: 0 // type: 0: normal note; 1: just improvised			
@@ -297,7 +290,7 @@ var Improviser1={};
         pianoroll.autoZoom("xy");
     };    
 
-    Improviser1.tryBuild = (ctx) => { Improviser1.buildCount=0; tryBuild(ctx); };
+    Improviser1.tryBuild = (ctx) => { Improviser1.buildCount=0; return tryBuild(ctx)};
     
     //debugger
 })()
