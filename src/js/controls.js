@@ -97,13 +97,11 @@ var Controls= {};
 
 			// Cmd+Shift+A: select all
 			if (e.shiftKey && e.keyCode==65) {
-				var last_through=Work.global.through;
-				Work.global.through=1;
 				pianoroll.selectAll(Work.global.through);
-				Work.global.through=last_through;
+				console.log("all through");
 			} else
 			// Cmd+A: select all			
-			if (e.keyCode == 65) pianoroll.selectAll(Work.global.through);
+			if (e.keyCode == 65) pianoroll.selectAll(0);
 			
 			// Cmd + Z: undo | Meta+Shift+Z: redo
 			if (e.keyCode == 90 && !e.shiftKey) 
@@ -1035,7 +1033,6 @@ var Controls= {};
 	}
 
 	document.getElementById("btn_select_all").onclick=()=>{
-		pianoroll.selectAll(Work.global.through);
 	}
 
 	document.getElementById("btn_undo").onclick=()=>{
@@ -1444,9 +1441,9 @@ pianoroll.canvas.addEventListener('wheel', (e) => {
 			Navbar.updateLR();
 		};
 		pianoroll.viewportB-=(e.deltaY * pianoroll.viewportH * hstep);
-		if (pianoroll.viewportB<0) pianoroll.viewportB=0;
 		let vH = Work.global.scaledKeyboard ? Composer.scale.length : 88;
 		if (pianoroll.viewportB+pianoroll.viewportH>vH) pianoroll.viewportB=vH-pianoroll.viewportH;
+		if (pianoroll.viewportB<0) pianoroll.viewportB=0;
 	};
 });	
 

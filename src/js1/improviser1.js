@@ -29,16 +29,16 @@ var Improviser1={};
 
         var parent = {note: Work.global.key+60, len:128};
         var home = Work.global.key+60;
-        verse = new motf.ImpNote(ctx, parent, home, 14);
-        for (var i=0; i<verse.pick.length; i++) verse.pick[i].len=verse.pick[i].len/2;
+        verse = new motf.ImpNote(ctx, parent, home, "bass");
+        for (var i=0; i<verse.pick.length; i++) verse.pick[i].len=verse.pick[i].len;
         if (verse.pick == null) return false;
         // repeat
-        verse.pick.push(verse.pick[0],verse.pick[1]);
+        // verse.pick.push(verse.pick[0],verse.pick[1]);
 
         phrase = [];
         for (var i=0; i<verse.pick.length/2; i++) {
             var home = (i==verse.pick.length-1) ? verse.home : verse.pick[i+1].note;
-            var p = new motf.ImpNote(ctx, verse.pick[i], home, 8);
+            var p = new motf.ImpNote(ctx, verse.pick[i], home, "bass");
             if (p.pick == null) return false;
             phrase.push(p);
         };
@@ -64,14 +64,14 @@ var Improviser1={};
         // };
 
         // phrase =[
-        //     {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
-        //     {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60},
-        //     {pick:[{note: 60, len: 4},{note: 55, len: 4},{note: 57, len: 4},{note: 52, len: 4}], home: 53},
-        //     {pick:[{note: 53, len: 4},{note: 48, len: 4},{note: 53, len: 4},{note: 55, len: 4}], home: 60}
+        //     {pick:[{note: 60, len: 8},{note: 55, len: 8},{note: 57, len: 8},{note: 52, len: 8}], home: 53},
+        //     {pick:[{note: 53, len: 8},{note: 48, len: 8},{note: 53, len: 8},{note: 55, len: 8}], home: 60},
+        //     {pick:[{note: 60, len: 8},{note: 55, len: 8},{note: 57, len: 8},{note: 52, len: 8}], home: 53},
+        //     {pick:[{note: 53, len: 8},{note: 48, len: 8},{note: 53, len: 8},{note: 55, len: 8}], home: 60}
         // ];
 
         phrase1 = []; 
-        for (var i=0; i<phrase.length/2; i++) {
+        for (var i=0; i<phrase.length; i++) {
             for (var j=0; j<phrase[i].pick.length; j++) {
                 var choices = [0];
                 if (ctx.inScale(phrase[i].pick[j].note+7))
@@ -88,20 +88,27 @@ var Improviser1={};
         phrase1[phrase1.length-1].home = verse.home;
         for (var i=phrase1.length-2; i>=0; i--) phrase1[i].home=phrase1[i+1].note;
         // repeat
-        for (var i=0; i<phrase1.length/2; i++) {
-            phrase1.push(phrase1[i]);
-        };   
+        // for (var i=0; i<phrase1.length/2; i++) {
+        //     phrase1.push(phrase1[i]);
+        // };   
+
+        // phrase1 =[
+        //     {note: 60, len: 8},{note: 55, len: 8},{note: 57, len: 8},{note: 52, len: 8},
+        //     {note: 53, len: 8},{note: 48, len: 8},{note: 53, len: 8},{note: 55, len: 8},
+        //     {note: 60, len: 8},{note: 55, len: 8},{note: 57, len: 8},{note: 52, len: 8},
+        //     {note: 53, len: 8},{note: 48, len: 8},{note: 53, len: 8},{note: 55, len: 8}
+        // ];
 
         note1 = [];
-        var r3 = Math.floor(Math.random()*12)+4;
-        var r4 = Math.floor(Math.random()*12)+4;
-        var r5 = Math.floor(Math.random()*7)+9;
-        var r6 = Math.floor(Math.random()*3)+13;
+        var r3 = Math.floor(Math.random()*10)+4;
+        var r4 = Math.floor(Math.random()*10)+4;
+        var r5 = Math.floor(Math.random()*5)+10;
+        var r6 = Math.floor(Math.random()*5)+10;
         var rhyPat = [r5, r5 ,r3, r6,  r5, r5, r3, r6,  r5, r5 ,r4, r6,  r5, r5, r4, r6];
 //        var rhyPat = [r5, r3 ,r5, r6,  r5, r3, r5, r6,  r6, r4, r6, r5,  r6, r4, r6, r5];
         for (var i=0; i<phrase1.length; i++){
                 var home = (i==phrase1.length-1) ? verse.home : phrase1[i+1].note;
-                var n = new motf.ImpNote(ctx, phrase1[i], home, rhyPat[i]);
+                var n = new motf.ImpNote(ctx, phrase1[i], home, "melody");
                 if (n.pick == null) return false;
                 note1.push(n);    
         };   
@@ -113,17 +120,17 @@ var Improviser1={};
         var rhyPat = [r3, r3 ,r3, r2,  r3, r3, r3, r2,  r3, r3, r3, r2,  r3, r2, r3, r1];
         for (var i=0; i<phrase1.length; i++){
                 var home = (i==phrase1.length-1) ? verse.home : phrase1[i+1].note;
-                var n = new motf.ImpNote(ctx, phrase1[i], home, rhyPat[i]);
+                var n = new motf.ImpNote(ctx, phrase1[i], home, "melody");
                 if (n.pick == null) return false;
                 note2.push(n);    
         };   
 
         walking = [];
-        var rhyPat = [4,4,4,4, 4,4,4,8, 4,4,4,4, 4,4,4,8];
+        var rhyPat = [3,3,3,3, 3,3,3,1, 3,3,3,3, 3,3,3,9];
         for (var i=0; i<phrase.length; i++)
         for (var j=0; j<phrase[i].pick.length; j++){
                 var home = (j==phrase[i].pick.length-1) ? phrase[i].home : phrase[i].pick[j+1].note;
-                var n = new motf.ImpNote(ctx, phrase[i].pick[j], home, rhyPat[walking.length]);
+                var n = new motf.ImpNote(ctx, phrase[i].pick[j], home, "walking");
                 if (n.pick == null) return false;
                 walking.push(n);    
         };   
@@ -187,7 +194,7 @@ var Improviser1={};
         for (var i=0; i<Improviser1.melody1.length; i++)
         for (var j=0; j<Improviser1.melody1[i].pick.length; j++)
         if (Improviser1.melody1[i].pick[j]) {
-            if (prevNote && Math.random() < 0.8 && Improviser1.melody1[i].pick[j].note==prevNote.y+21){
+            if (prevNote && Math.random() < 0.2 && Improviser1.melody1[i].pick[j].note==prevNote.y+21){
                 prevNote.d += Improviser1.melody1[i].pick[j].len;
             } else {
                 pianoroll.addNote({
@@ -284,7 +291,7 @@ var Improviser1={};
             pos += Improviser1.walkingbass[i].pick[j].len;
         };
     
-        pianoroll.autoSimpleChordByKey(0.08);
+        pianoroll.autoSimpleChordByKey(0); //for guitar swipe effect: try 0.1;
         pianoroll.deSelectAll();
         drumer.fill();
         pianoroll.autoZoom("xy");

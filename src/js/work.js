@@ -9,8 +9,8 @@ Work.global= {
 	author: "noname",
 	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
-	mode: 5,
-	bpm: 80,
+	mode: 0,
+	bpm: 60,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
@@ -374,7 +374,7 @@ Work.layer= [  // T01..T10
 		instrument: 1,
 		mute: false,
 		solo: false,
-		volume: 2,
+		volume: 1,
 		pan: 0.5,
 		seq: [],
 		rhythm: [
@@ -394,7 +394,7 @@ Work.layer= [  // T01..T10
 		instrument: 9,
 		mute: false,
 		solo: false,
-		volume: -5,
+		volume: -6,
 		pan: -0.5,
 		seq: [],
 		rhythm: [
@@ -431,10 +431,10 @@ Work.layer= [  // T01..T10
 	{
 		name: "Chord", //3
 		type: "chord",
-		instrument: 4,
+		instrument: 10,
 		mute: false,		
 		solo: false,
-		volume: -4,
+		volume: -20,
 		pan: -0.3,
 		seq: [],
 		rhythm: [
@@ -454,7 +454,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: false,		
 		solo: false,
-		volume: 1,
+		volume: 0,
 		pan: 0.3,
 		seq: [],
 		rhythm: [
@@ -474,7 +474,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: true,		
 		solo: false,
-		volume: 0,
+		volume: -3,
 		pan: -0.7,
 		seq: [],
 		rhythm: [
@@ -494,7 +494,7 @@ Work.layer= [  // T01..T10
 		instrument: 17,
 		mute: false,		
 		solo: false,
-		volume: -6,
+		volume: -4,
 		pan: -0.2,
 		seq: [],
 		rhythm: [

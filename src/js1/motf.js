@@ -258,17 +258,30 @@ class AutoDrumer {
 }
 
 class ImpNote {
-	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[1,1,2,1,1,2],
-			   [3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,2,2,2],
-			   [4,2,2],[3,2,3],[3,3,2],[6,1,1],[6,2],[4,4],[8]];
-    suggester = {values: [   0,  -1,   1,    -2,    2,   -3,    3,   -4,   4], 
-                chances: [ 0.5,   1,   1,   0.2,  0.3,  0.1,  0.3,  0.3, 0.1]}
-	constructor(ctx, parent, home, rhythm){
+	rhythm4 = [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
+			   [2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
+			   [4,2,1,1],[5,1,1,1],[6,1,1],[4,2,2],[4,4],[8]];
+	suggester1 = {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				 chances: [ 0.3,  0.7,  0.7,   0.5,  0.5,  0.3,  0.5,  0.5,  0.3]}
+	suggester2 = {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+			     chances: [   0,    0,    1,     1,    0,    1,    0,    1,    0]}
+	
+	constructor(ctx, parent, home, type){
+		if (type == "bass") {
+			this.rhythm = 4;
+			this.suggester = this.suggester2;
+		} else if (type == "walking") {
+			this.rhythm = 3;
+			this.suggester = this.suggester1;
+		} else if (type == "melody"){
+			this.rhythm = Math.floor(Math.random()*12+4);
+			this.suggester = this.suggester1;
+		}
+		this.type = type;
 		this.ctx = ctx;  
-		this.rhythm = rhythm;
 		this.parent = parent;
 		this.home = home;
-		this.steps = this.rhythm4[rhythm].length;
+		this.steps = this.rhythm4[this.rhythm].length;
 		this.draft = [{note: this.parent.note, len: this.rhythm4[this.rhythm][0] / 8 * this.parent.len}];
 		this.variant = [];
 		this.search(1);
@@ -278,22 +291,36 @@ class ImpNote {
 	// populat the variant(s) list
 	search(n){
 		if (n == this.steps) {
-			var last = this.draft[this.draft.length-1].note;
-			if (last == this.home
-				|| last == this.ctx.getNoteByScaleMove(this.home, 1) 			
-				|| last == this.ctx.getNoteByScaleMove(this.home,-1)
-				|| last == this.ctx.getNoteByScaleMove(this.home, 2) 			
-				|| last == this.ctx.getNoteByScaleMove(this.home,-2)
-				|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last == this.home - 5) : 0)
-			) 
+			var last = this.draft[this.draft.length-1];
+			if ( this.type!="bass" ? (Math.abs(last.note - this.home)<=7) :
+				(last.note == this.home
+				|| last.note == this.ctx.getNoteByScaleMove(this.home, 1) 			
+				|| last.note == this.ctx.getNoteByScaleMove(this.home,-1)
+				|| last.len>2 && last.note == this.ctx.getNoteByScaleMove(this.home, 2) 			
+				|| last.len>2 && last.note == this.ctx.getNoteByScaleMove(this.home,-2)
+				|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last.note == this.home - 5) : 0)
+			)) 
 				this.variant.push(myLib.deepCopy(this.draft));
-		} else for (var i=0; i<this.suggester.values.length; i++) if (Math.random()<this.suggester.chances[i]) {
-			var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
-			// if (targetY > this.ctx.root + 18) { while (targetY > this.ctx.root + 18) targetY -= 12;};
-			// if (targetY < this.ctx.root - 18) { while (targetY < this.ctx.root - 18) targetY += 12;};
-			this.draft.push({note: targetY, len: this.rhythm4[this.rhythm][n] / 8 * this.parent.len});
-			this.search(n+1);
-			this.draft.pop();
+		} else {
+			var len = this.rhythm4[this.rhythm][n] / 8 * this.parent.len;
+			var maxStep = len <=2 ? 3 : this.suggester.values.length;
+			for (var i=0; i<maxStep; i++) if (Math.random()<this.suggester.chances[i]) {
+				var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
+				if (this.type=="bass"){
+					if (targetY > this.ctx.root + 12)
+						while (targetY > this.ctx.root + 12) targetY -= 12;
+					if (targetY < this.ctx.root - 12)
+						while (targetY < this.ctx.root - 12) targetY += 12;	
+				} else {
+					if (targetY > this.ctx.root + 18) 
+						while (targetY > this.ctx.root + 18) targetY -= 12;
+					if (targetY < this.ctx.root - 18) 
+						while (targetY < this.ctx.root - 18) targetY += 12;
+				}
+				this.draft.push({note: targetY, len});
+				this.search(n+1);
+				this.draft.pop();
+			};
 		};
 	}
 	// get a new pick from the varian(s)

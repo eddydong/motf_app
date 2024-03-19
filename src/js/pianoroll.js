@@ -2137,25 +2137,25 @@ Pianoroll.prototype.autoSimpleChordByKey=function(guitarSwipe){
 			var newNote1={
 				x: Work.global.bpMeas / Work.global.bpNote * 8 * i + ((c-1)*guitarSwipe),
 				y: 27 + k,
-				d: Work.global.bpMeas / Work.global.bpNote * 6, 
+				d: Work.global.bpMeas / Work.global.bpNote * 8, //6, 
 				s: 0, 
 				v: 1, 
 				l: 3, //Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 			};
-			var newNote2={
-				x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 6 + ((c-1)*guitarSwipe),
-				y: 27 + k,
-				d: Work.global.bpMeas / Work.global.bpNote * 2, 
-				s: 0, 
-				v: 1, 
-				l: 3, //Work.global.layer_sel,
-				t: 1 // type: 0: normal note; 1: just improvised			
-			};
+			// var newNote2={
+			// 	x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 6 + ((c-1)*guitarSwipe),
+			// 	y: 27 + k,
+			// 	d: Work.global.bpMeas / Work.global.bpNote * 2, 
+			// 	s: 0, 
+			// 	v: 1, 
+			// 	l: 3, //Work.global.layer_sel,
+			// 	t: 1 // type: 0: normal note; 1: just improvised			
+			// };
 			if (c==1) newNote1.y += 12; else if (c==3) newNote1.y-=12;
-			if (c==1) newNote2.y += 12; else if (c==3) newNote2.y-=12;
 			this.addNote(newNote1);
-			this.addNote(newNote2);
+			// if (c==1) newNote2.y += 12; else if (c==3) newNote2.y-=12;
+			// this.addNote(newNote2);
 		}
 	};
 	this.autoZoom("y");
