@@ -36,8 +36,9 @@ var Improviser1={};
         // // repeat
         // // verse.pick.push(verse.pick[0],verse.pick[1]);
 
-        verse = {pick:[{note: 60, len: 32},{note: 60, len: 32},{note: 67, len: 32},{note: 67, len: 32}], 
-                 home: 60};
+        var root = Work.global.key + 60;
+        verse = {pick:[{note: root, len: 32},{note: root, len: 32},{note: root, len: 32},{note: root, len: 32}], 
+                 home: root};
 
         phrase = [];
         for (var i=0; i<verse.pick.length; i++) {

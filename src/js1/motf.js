@@ -18,15 +18,17 @@ var color = {
 	}
 }
 
-var rhythm ={
-	bass : [[2,2,2,2]],
-	walking : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
-	walking_alter : [[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1]],
-	melody : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],
-			[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
-	melody_alter : [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
-	[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
-	[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2],[4,4],[8]]
+var rhythm = {
+	jazz: {
+		bass : [[2,2,2,2]],
+		walking : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
+		walking_alter : [[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1]],
+		melody : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],
+				[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
+		melody_alter : [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
+		[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
+		[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2],[4,4],[8]]
+	}
 }
 
 var suggester = {
@@ -275,17 +277,257 @@ class AutoDrumer {
 	}	
 }
 
+class AutoChorder {
+	constructor(proll, from_layer, to_layer, guitarSwipe){
+		this.proll = proll,
+		this.from = from_layer,
+		this.to = to_layer,
+		this.fill(guitarSwipe)
+	}
+
+	// get the I, ii, iii, IV, V... triad chords by given key_id & scale_id
+ 	getDiatonicChordsByKeyScale(key_id, scale_id, mode){
+		var scale = motf.theory.scaleDict[scale_id];
+		var mk;
+		for (var k=0; k<12; k++) 
+		if (scale.modes[mode][k]==1) mk=k;
+		var res=[];	
+		var kc=0;
+		for (var k=0; k<12; k++) 
+		if (scale.modes[mode][k]==1){
+			kc++;
+			if (k==mk) // if the last diatonic chord, add the dominent key (e.g.: for the 7th diatonic chord for C Major, Bo, we add in the key G, and Bo+G => G7)
+			res.push({name:"No. "+kc, mask:this.getTriadFromScaleKey(scale, k, 1),});
+			else res.push({name:"No. "+kc, mask:this.getTriadFromScaleKey(scale, k, 0)});
+		}
+		for (var i=0; i<kc; i++) res[i].mask=theory.transpose(res[i].mask, key_id);
+		return res;
+	}
+
+	// find the closest key in scale to the given key(i)
+	findClosest(scale, i){
+		var min=Infinity, minI; 
+		for (var k=0; k<24; k++)
+			if (scale.modes[Work.global.mode][k % 12]==1)
+				if (min>Math.abs(k-i) && Math.abs(k-i)<5){
+					min=Math.abs(k-i);
+					minI=k % 12;
+				}
+		return minI;
+	}
+	
+	getTriadFromScaleKey(scale, key, add5){
+		var res=Array(12).fill(0);
+		var harmony;
+		harmony=[(0+key)%12,(4+key)%12,(7+key)%12];
+		if (add5 && scale.modes[Work.global.mode][7]==1) harmony.push(7);
+		for (var h=0; h<harmony.length; h++) 
+	//		if (h!=2 || scale.mask[harmony[h]]==1)	// for the dominant note we don't compromise!
+				res[this.findClosest(scale, harmony[h])]=1; 
+				
+		var resS="";
+		for (var i=0; i<12; i++) resS+=res[i];
+		return resS;
+	};	
+
+	getWeightedKeys(){
+		var map=this.getWeightedMaps(), res=[];
+		//console.log("weight map", map);
+		for (var m=0; m<map.length; m++)
+			res.push(myLib.getMaxIndex(map[m]));
+		return res;
+	};
+	
+	// for current layer
+	getWeightedMaps(){
+		// weight definition (for each bpMeas)
+		let weight = [
+			[5],
+			[5,1],
+			[5,1,1],
+			[5,1,2.5,1],
+			[5,1,1,2.5,1],
+			[5,1,1,2.5,1,1],
+			[5,1,1,1,2.5,1,1],
+			[5,1,1,1,2.5,1,1,1]
+		][Work.global.bpMeas-1];
+	
+		// get the measure count of current layer
+		let measW = Work.global.bpMeas / Work.global.bpNote * 16;
+		let measHW = Work.global.bpMeas / Work.global.bpNote * 8;
+		let measC = Math.ceil(this.proll.endTick / measW);
+		let measHC = Math.ceil(this.proll.endTick / measHW);
+		
+		let res=[];
+		
+		for (var meas=0; meas<measHC; meas++){
+		
+			// grab notes from measure #meas
+			let notes=[];
+			for (var i=0; i<Work.global.seqXY.length; i++)
+			if (Work.global.seqXY[i].s)
+			{
+				if (Work.global.seqXY[i].x >= measHW * meas
+				&& Work.global.seqXY[i].x+Work.global.seqXY[i].d <= measHW * (meas+1))
+					notes.push({
+						note: Work.global.seqXY[i],
+						weight: weight[
+									Math.floor((Work.global.seqXY[i].x-meas*measHW) 
+									/ (16 / Work.global.bpNote))
+								] 
+					});
+				else if (Work.global.seqXY[i].x < measHW * meas 
+					  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measHW * meas
+					  && Work.global.seqXY[i].x + Work.global.seqXY[i].d < measHW * (meas+1))
+					notes.push({
+						note: {
+							x: measHW * meas,
+							y: Work.global.seqXY[i].y,
+							d: Work.global.seqXY[i].x + Work.global.seqXY[i].d - measHW * meas,
+							s: Work.global.seqXY[i].s,
+							v: Work.global.seqXY[i].v,
+							l: Work.global.seqXY[i].l,
+							t: Work.global.seqXY[i].t,
+						},
+						weight: weight[0] 
+					});
+				else if (Work.global.seqXY[i].x > measHW * meas 
+					  && Work.global.seqXY[i].x < measHW * (meas+1)
+					  && Work.global.seqXY[i].x + Work.global.seqXY[i].d > measHW * (meas+1))
+					notes.push({
+						note: {
+							x: Work.global.seqXY[i].x,
+							y: Work.global.seqXY[i].y,
+							d: measHW * (meas+1) - Work.global.seqXY[i].x,
+							s: Work.global.seqXY[i].s,
+							v: Work.global.seqXY[i].v,
+							l: Work.global.seqXY[i].l,
+							t: Work.global.seqXY[i].t,
+						},
+						weight: weight[
+									Math.floor((Work.global.seqXY[i].x-meas*measHW) 
+									/ (16 / Work.global.bpNote))
+								] 
+					});
+				else 
+				 if (Work.global.seqXY[i].x <= measHW * meas
+				 && Work.global.seqXY[i].x+Work.global.seqXY[i].d >= measHW * (meas+1))
+					notes.push({
+						note: {
+							x: measHW * meas,
+							y: Work.global.seqXY[i].y,
+							d: measHW,
+							s: Work.global.seqXY[i].s,
+							v: Work.global.seqXY[i].v,
+							l: Work.global.seqXY[i].l,
+							t: Work.global.seqXY[i].t,
+						},
+						weight: weight[0] 
+					});
+			};
+	
+			//console.log(notes);
+	
+			// map the notes into the 12 keys with note duration * weight
+			var map=[];
+			for (var k=0; k<12; k++){
+				map.push(0);
+				for (var n=0; n<notes.length; n++)
+					if ((notes[n].note.y+9) % 12 == k){
+						map[k] += notes[n].note.d / 16 * notes[n].weight;			
+					};
+			};
+			
+			// push the weighted mapping of measure #meas into the result
+			res.push(map);
+		};
+	
+		return res;
+	}
+	
+	// turn mask index (0..11) to scale key index (0..ScaleKeyCount-1), with -1 standing for "mask index not in scale"
+	// s: scale id for scaleDict; k: key of 0..12; n: mask index (0..11)
+	// return scale key index(0..ScaleKeyCount-1)
+	// note: For both mask & scale index, 0 is always the Tonic/Root pitch, since we have transposed back to key of C by the param "k"
+	// Example: input (70, 2, 4), or the E in D Major, and output will be 2, or the second diatonic pitch in D Major
+	// Jan 8, 2024
+	getScaleIndexFromMaskIndex(s, k, m, n){
+		var si=0;
+		for (var i=k; i<12; i++) {
+			if (motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
+				si++;
+				if (i==n) return si;
+			};
+		};
+		for (var i=0; i<k; i++) {
+			if (motf.theory.scaleDict[s].modes[m][(i+12-k) % 12]==1) {
+				si++;
+				if (i==n) return si;
+			};
+		};
+		return -1;
+	}
+
+	// Simply use the "k"th diatonic chord to accompany the "k"th diatonic key in the scale
+	// Example: For D Major, "k" of E, or the 2nd diatonic key in D Major, will be accompanied with the 2nd diatonic chord, or Em
+ 	getChordsByMelodyKeyScale(key_id, scale_id, mode, firstMeas, lastMeas){
+		let chords=this.getDiatonicChordsByKeyScale(key_id, scale_id, mode);
+		//	console.log("chords",chords);
+		let weightKeys=this.getWeightedKeys(); 
+		//	console.log("weightKeys",weightKeys);
+		let res=[];
+		for (var i=0; i<weightKeys.length; i++) res.push(
+			chords[this.getScaleIndexFromMaskIndex(scale_id, key_id, mode, weightKeys[i][0])-1]);		
+		return res;
+	}
+
+	fill(guitarSwipe){
+		let chords = this.getChordsByMelodyKeyScale(Work.global.key, Work.global.scale_id, Work.global.mode,
+			0,this.endMeas);
+		Work.global.autoChord=[];
+		for (var i=2; i<chords.length; i++) if (chords[i]){
+			Work.global.autoChord.push(chords[i]);
+			var c = 0;
+			for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
+				c++;
+				var newNote1={
+					x: Work.global.bpMeas / Work.global.bpNote * 8 * i + ((c-1)*guitarSwipe),
+					y: 27 + k,
+					d: Work.global.bpMeas / Work.global.bpNote * 8, //6, 
+					s: 0, 
+					v: 1, 
+					l: 3, //Work.global.layer_sel,
+					t: 1 // type: 0: normal note; 1: just improvised			
+				};
+				// var newNote2={
+				// 	x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 6 + ((c-1)*guitarSwipe),
+				// 	y: 27 + k,
+				// 	d: Work.global.bpMeas / Work.global.bpNote * 2, 
+				// 	s: 0, 
+				// 	v: 1, 
+				// 	l: 3, //Work.global.layer_sel,
+				// 	t: 1 // type: 0: normal note; 1: just improvised			
+				// };
+				if (c==1) newNote1.y += 12; else if (c==3) newNote1.y-=12;
+				this.proll.addNote(newNote1);
+				// if (c==1) newNote2.y += 12; else if (c==3) newNote2.y-=12;
+				// this.addNote(newNote2);
+			}
+		};	
+	}
+}
+
 class ImpNote {
 	
 	constructor(ctx, parent, home, type, alter=0){
 		if (type == "bass") {
-			this.rhythm = myLib.pick(rhythm.bass);
+			this.rhythm = myLib.pick(rhythm.jazz.bass);
 			this.suggester = suggester.bass;
 		} else if (type == "walking") {
-			this.rhythm = alter ? myLib.pick(rhythm.walking_alter) : myLib.pick(rhythm.walking);
+			this.rhythm = alter ? myLib.pick(rhythm.jazz.walking_alter) : myLib.pick(rhythm.jazz.walking);
 			this.suggester = suggester.melody;
 		} else if (type == "melody"){
-			this.rhythm = alter ? myLib.pick(rhythm.melody) : myLib.pick(rhythm.melody_alter);
+			this.rhythm = alter ? myLib.pick(rhythm.jazz.melody_alter) : myLib.pick(rhythm.jazz.melody);
 			this.suggester = suggester.melody;
 		}
 		this.type = type;
@@ -303,8 +545,7 @@ class ImpNote {
 	search(n){
 		if (n == this.steps) {
 			var last = this.draft[this.draft.length-1];
-			if ( 
-				this.type=="bass" ? (Math.abs(last.note - this.home)<=7) :
+			if (this.type=="bass" ? (Math.abs(last.note - this.home)<=7) :
 				(last.note == this.home
 				|| last.note == this.ctx.getNoteByScaleMove(this.home, 1) 			
 				|| last.note == this.ctx.getNoteByScaleMove(this.home,-1)
@@ -383,85 +624,11 @@ class ImpNote {
 	}
 }
 
-// suggester = {values: [-1,  1, -2,    2,   -3,    3,   -4,   4, 	  0], 
-// 			chances: [1,   1,  1,  0.1,  0.1,  0.0,  0.2,  0.2,   0]}
-
-// class Tree {
-    
-// 	branch_count = 2; // not implemented yet
-
-// 	constructor(parent){
-// 		this.ctx = parent.ctx;  
-// 		this.note = parent.note;
-// 		this.len = parent.len / 2;
-// 		this.home = parent.home;
-// 		this.parent = parent;
-// 		if (this.reborn()) this.split();
-// 	}
-
-// 	reborn(){
-// 		for (var i=0; i<suggester.values.length; i++) {
-// 			var targetY = this.ctx.getNoteByScaleMove(this.note, suggester.values[i]);
-// 			if (targetY == this.ctx.getNoteByScaleMove(this.home, 1) ||
-// 			targetY == this.ctx.getNoteByScaleMove(this.home, 0) ||
-// 			targetY == this.ctx.getNoteByScaleMove(this.home, -1)||
-// 			(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
-// 			targetY == this.ctx.getNoteByScaleMove(this.home, -3) : 0)){
-// 				this.note = targetY;
-// 				return true;
-// 			}
-// 		}
-// 		return false;
-// 	}
-	
-// 	split(){		
-// 		if (this.len==32) return true;
-// 		var leftBranch = new Tree(this);
-// 		console.log('grow into left: ', leftBranch);
-// 		var rightBranch = new Tree(this)
-// 		console.log('grow into right: ', rightBranch);
-// 		this.branches = [leftBranch, rightBranch];
-
-// 		// var found = false;
-// 		// for (var i=0; i<suggester.values.length; i++) {
-// 		// 	var targetY = this.ctx.getNoteByScaleMove(this.children[0].note, suggester.values[i]);
-// 		// 	if (targetY == this.ctx.getNoteByScaleMove(this.home,1) ||
-// 		// 	targetY == this.ctx.getNoteByScaleMove(this.home,0) ||
-// 		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-1)||
-// 		// 	(theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ?
-// 		// 	targetY == this.ctx.getNoteByScaleMove(this.home,-3) : 0)){
-// 		// 		var rightBranch = new Tree(this);
-// 		// 		rightBranch.len = this.len / 2;
-// 		// 		rightBranch.note = targetY;
-// 		// 		rightBranch.home = this.home;
-// 		// 		if (rightBranch.split()){
-// 		// 			console.log('grow into right: ', rightBranch);
-// 		// 			this.children.push(rightBranch);
-// 		// 			return true;
-// 		// 		}
-// 		// 	}
-// 		// }
-// 		// console.log('retreving to: ', this.parent);
-// 		// this.reborn();
-// 		return false;
-// 	}
-// }
-
-// var ground = {ctx: new Context(), note: 60, len:256, home: 60, about: "I'm the ground!"};
-
 motf.color = color;
 motf.theory = theory;
 motf.Context = Context;
 motf.AutoDrumer = AutoDrumer;
+motf.AutoChorder = AutoChorder;
 motf.ImpNote = ImpNote;
-//motf.Tree = Tree;
-//motf.ground = ground;
-
-//console.log(transpose(scaleDict[23].modes[0], 2)[n % 12] == 1);
 
 })()
-
-
-// var root = new motf.Tree(motf.ground);
-
-// console.log(root);

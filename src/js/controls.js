@@ -121,6 +121,7 @@ var Controls= {};
 				Composer.init();
 				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
 				if (Improviser1.tryBuild(ctx)){
+
 					pianoroll.scroll("beginning");
 					pianoroll.play();
 				};
@@ -1416,6 +1417,7 @@ var startScale;
 Controls.zoom=1;
 	
 pianoroll.canvas.addEventListener('wheel', (e) => {
+	pianoroll.autoScrollingPaused = Tone.now();
 	e.preventDefault();
 //	if (e.shiftKey) return;
 	if (e.metaKey && pianoroll.selCount()>0) {
@@ -1437,7 +1439,8 @@ pianoroll.canvas.addEventListener('wheel', (e) => {
 		if (pianoroll.viewportW < 32) pianoroll.viewportW=32;
 	} else {  // pan
 		let hstep=0.0016, wstep=0.0008;
-		if (!pianoroll.autoScrolling) {
+		//if (!pianoroll.autoScrolling) 
+		{
 			pianoroll.viewportL+=(e.deltaX * pianoroll.viewportW * wstep);
 			if (pianoroll.viewportL<0) pianoroll.viewportL=0;
 			Navbar.updateLR();

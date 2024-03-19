@@ -99,6 +99,23 @@ function pick(a){
 	return a[Math.floor(Math.random()*a.length)];
 }
 
+function getMaxIndex(arr){
+	var max=0, maxI=[];
+	for (var i=0; i<arr.length; i++) 
+		if (max<arr[i]) {
+			max=arr[i];
+			maxI[0]=i;
+		};
+	max=0;
+	for (var i=0; i<arr.length; i++) 
+		if ((max<arr[i] && arr[i]) && i!=maxI[0]) {
+			max=arr[i];
+			maxI[1]=i;
+		};
+	if (maxI.length==1) maxI[1]=maxI[0];
+	return maxI;
+}
+
 // Export
 
 myLib.deepCopy = deepCopy;
@@ -111,5 +128,6 @@ myLib.getAngle = getAngle;
 myLib.getUuid = getUuid;
 myLib.arrayDel = arrayDel;
 myLib.pick = pick;
+myLib.getMaxIndex = getMaxIndex;
 
 })();

@@ -166,7 +166,6 @@ Global.XYtoIJ=()=>{
 
 
 	for (var i=0; i<n_notes; i++){
-	
 	res[Math.floor(Work.global.seqXY[i].x)].notes.push({
 		note: Work.global.seqXY[i].y,
 		len: Work.global.seqXY[i].d,
