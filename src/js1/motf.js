@@ -18,24 +18,62 @@ var color = {
 	}
 }
 
-var rhythm = {
-	jazz: {
-		bass : [[2,2,2,2]],
-		walking : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
-		walking_alter : [[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1]],
-		melody : [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],
-				[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
-		melody_alter : [[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
-		[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
-		[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2],[4,4],[8]]
+var genre = {
+	piano:{
+		rhythm:[[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],
+					[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
+		rhythm_alter:[[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
+					[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
+					[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [ 0.3,  0.7,  0.7,   0.5,  0.5,  0.3,  0.5,  0.5,  0.3]},
+		pitchRange:[-18, 18]
+	},
+	bassline:{
+		rhythm: [[2,2,2,2]],
+		rhythm_alter:[[2,2,2,2]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [ 0.3,  0.9,  0.9,   0.3,  0.3,  0.7,  0.3,  0.7,  0.3]},
+		pitchRange:[-12, 12]
+	},
+	bassBasic:{
+		rhythm: [[3,1,3,1]],
+		rhythm_alter:[[2,1,1,2,2],[2,1,1,2,1,1]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [   1,  0.9,  0.9,   0.5,  0.5,  0.7,  0.3,  0.7,  0.3]},
+		pitchRange:[-12, 12]
+	},
+	bassWalking:{
+		rhythm: [[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
+		rhythm_alter:[[3,2,1,2]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [ 0.6,  0.7,  0.7,   0.4,  0.4,  0.7,  0.3,  0.7,  0.3]},
+		pitchRange:[-15, 15]
+	},
+	jazz:{
+		rhythm:[[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],
+					[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
+		rhythm_alter:[[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1],
+					[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],
+					[4,2,1,1],[4,4/3,4/3,4/3],[6,1,1],[4,2,2]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [ 0.3,  0.7,  0.7,   0.5,  0.5,  0.3,  0.5,  0.5,  0.3]},
+		pitchRange:[-18, 18]
+	},
+	counter_melody:{
+		rhythm:[[7,1],[6,2],[5,3],[4,4],[8]],
+		rhythm_alter:[[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [ 0.3,  0.9,  0.9,   0.3,  0.3,  0.6,  0.2,  0.6,  0.2]},
+		pitchRange:[-18, 18]
+	},
+	vocal:{
+		rhythm:[[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3]],
+		rhythm_alter:[[6,1,1],[6, 2],[4,4],[8]],
+		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
+				   chances: [ 0.5,  0.9,  0.9,   0.2,  0.2,  0.3,  0.6,  0.6,  0.3]},
+		pitchRange:[-7, 12]
 	}
-}
-
-var suggester = {
-	melody: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-			chances: [ 0.3,  0.7,  0.7,   0.5,  0.5,  0.3,  0.5,  0.5,  0.3]},
-	bass :	{values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-			chances: [   0,    0,    1,     1,    0,    1,    0,    1,    0]}
 }
 
 var theory = {
@@ -519,18 +557,11 @@ class AutoChorder {
 
 class ImpNote {
 	
-	constructor(ctx, parent, home, type, alter=0){
-		if (type == "bass") {
-			this.rhythm = myLib.pick(rhythm.jazz.bass);
-			this.suggester = suggester.bass;
-		} else if (type == "walking") {
-			this.rhythm = alter ? myLib.pick(rhythm.jazz.walking_alter) : myLib.pick(rhythm.jazz.walking);
-			this.suggester = suggester.melody;
-		} else if (type == "melody"){
-			this.rhythm = alter ? myLib.pick(rhythm.jazz.melody_alter) : myLib.pick(rhythm.jazz.melody);
-			this.suggester = suggester.melody;
-		}
-		this.type = type;
+	constructor(ctx, parent, home, gen, alter=0){
+		this.rhythm = alter ? myLib.pick(genre[gen].rhythm_alter) : myLib.pick(genre[gen].rhythm);
+		this.suggester = genre[gen].pitchStep;
+		this.range = genre[gen].pitchRange;
+
 		this.ctx = ctx;  
 		this.parent = parent;
 		this.home = home;
@@ -544,16 +575,34 @@ class ImpNote {
 	// populat the variant(s) list
 	search(n){
 		if (n == this.steps) {
-			var last = this.draft[this.draft.length-1];
-			if (this.type=="bass" ? (Math.abs(last.note - this.home)<=7) :
-				(last.note == this.home
-				|| last.note == this.ctx.getNoteByScaleMove(this.home, 1) 			
-				|| last.note == this.ctx.getNoteByScaleMove(this.home,-1)
-				|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home, 2) 			
-				|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home,-2)
-				|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last.note == this.home - 5) : 0)
-			)) 
-				this.variant.push(myLib.deepCopy(this.draft));
+			//var last = this.draft[this.draft.length-1];
+
+			// prevent short note gets too jumpy
+			var len = this.rhythm[n] / 8 * this.parent.len;
+			var maxStep = len <=2 ? 5 : this.suggester.values.length;
+
+			for (var i=0; i<maxStep; i++) if (Math.random()<this.suggester.chances[i]) {
+				var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
+				if (targetY > this.ctx.root + this.range[1])
+					while (targetY > this.ctx.root + this.range[1]) targetY -= 12;
+				if (targetY < this.ctx.root + this.range[0])
+					while (targetY < this.ctx.root + this.range[0]) targetY += 12;	
+				if (targetY == this.home){
+					this.variant.push(myLib.deepCopy(this.draft));
+					return;
+				}
+			};
+
+			// if (
+			// 	this.type=="bass" ? (Math.abs(last.note - this.home)<=7) :
+			// 	(last.note == this.home
+			// 	|| last.note == this.ctx.getNoteByScaleMove(this.home, 1) 			
+			// 	|| last.note == this.ctx.getNoteByScaleMove(this.home,-1)
+			// 	|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home, 2) 			
+			// 	|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home,-2)
+			// 	|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last.note == this.home - 5) : 0)
+			// )) 
+			// 	this.variant.push(myLib.deepCopy(this.draft));
 		} else {
 			// prevent short note gets too jumpy
 			var len = this.rhythm[n] / 8 * this.parent.len;
@@ -561,17 +610,10 @@ class ImpNote {
 
 			for (var i=0; i<maxStep; i++) if (Math.random()<this.suggester.chances[i]) {
 				var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
-				if (this.type=="bass"){
-					if (targetY > this.ctx.root + 12)
-						while (targetY > this.ctx.root + 12) targetY -= 12;
-					if (targetY < this.ctx.root - 12)
-						while (targetY < this.ctx.root - 12) targetY += 12;	
-				} else {
-					if (targetY > this.ctx.root + 15) 
-						while (targetY > this.ctx.root + 15) targetY -= 12;
-					if (targetY < this.ctx.root - 15) 
-						while (targetY < this.ctx.root - 15) targetY += 12;
-				}
+				if (targetY > this.ctx.root + this.range[1])
+					while (targetY > this.ctx.root + this.range[1]) targetY -= 12;
+				if (targetY < this.ctx.root + this.range[0])
+					while (targetY < this.ctx.root + this.range[0]) targetY += 12;	
 				this.draft.push({note: targetY, len});
 				this.search(n+1);
 				this.draft.pop();

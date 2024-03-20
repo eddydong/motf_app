@@ -1,6 +1,5 @@
-var anim;
-
 function Pianoroll(){
+	this.anim;
 	this.resolution="16n";
 	this.leadTick=16;
 	this.canvas=document.getElementById("canvas-main");
@@ -29,7 +28,7 @@ function Pianoroll(){
  	this.selCol=-1;
  	this.curX=null;
  	this.isPlaying=0;
- 	this.playingFromT=0;
+ 	//this.playingFromT=0;
  	this.autoScrolling=0;
  	this.curY=null;
  	this.clipboard=[];
@@ -122,15 +121,15 @@ function Pianoroll(){
 // 				Navbar.updateLR();
 //			} else
 			if (ins=="meas"){
-				var currentTick=self.viewportL+Math.floor(self.curX/self.width*self.viewportW);
+				var selTick=self.viewportL+Math.floor(self.curX/self.width*self.viewportW);
 				let tickPerMeas= Work.global.bpMeas * 4;
 				
-				if (currentTick<self.selX1){
+				if (selTick<self.selX1){
 					self.selX1= (Math.floor(self.selX1 / tickPerMeas) + 1) * tickPerMeas - 1;
-					self.selX2= Math.floor(currentTick / tickPerMeas) * tickPerMeas;
+					self.selX2= Math.floor(selTick / tickPerMeas) * tickPerMeas;
 				} else {
 					self.selX1= Math.floor(self.selX1 / tickPerMeas) * tickPerMeas;
-					self.selX2= (Math.floor(currentTick / tickPerMeas)+1) * tickPerMeas  - 1;
+					self.selX2= (Math.floor(selTick / tickPerMeas)+1) * tickPerMeas  - 1;
 				};
 				self.selectNotes(self.selX1, 0, self.selX2, vH()-1, e.shiftKey);
 			};
@@ -217,10 +216,10 @@ function Pianoroll(){
 					Tone.now(), Work.global.seqXY[theNote].v * self.volumeScale
 				);
 			} else {
+				self.stop();
 				self.playhead=(x/w)+self.viewportL;		
 				self.playTick=Math.ceil(self.playhead);	
-// 				self.playStart=self.playhead;
-// 				self.playingFromT=Tone.now();
+				self.play();
 			
 				if (!self.isPlaying && (Controls.tempDrag=="" ? self.dragType : Controls.tempDrag)!="audi") {
 					// pre-audi current key
@@ -265,14 +264,17 @@ Pianoroll.prototype.addNote=function(note, cause){
 }
 
 Pianoroll.prototype.updateEndTick=function(){
+	var precision = 0.01;
+
 	this.endTick=-Infinity;
 	this.startTick=Infinity;
+
 	for (var i=0; i<Work.global.seqXY.length; i++) 
-	if (Work.layer[Work.global.seqXY[i].l].type!="chord" 
-	&& Work.layer[Work.global.seqXY[i].l].type!="percussion") {
-		if ((Work.global.seqXY[i].x+Work.global.seqXY[i].d) - this.endTick > 0.001)
+	if (Work.layer[Work.global.seqXY[i].l].type != "chord" 
+	&& Work.layer[Work.global.seqXY[i].l].type != "percussion") {
+		if ((Work.global.seqXY[i].x+Work.global.seqXY[i].d) - this.endTick > precision)
 			this.endTick = (Work.global.seqXY[i].x+Work.global.seqXY[i].d);
-		if (this.startTick - Work.global.seqXY[i].x > 0.01)
+		if (this.startTick - Work.global.seqXY[i].x > precision)
 			this.startTick = (Work.global.seqXY[i].x);
 	}
 			
@@ -1457,12 +1459,9 @@ Pianoroll.prototype.resize=function(){
 var t_lastframe=Date.now();
 var frame_counter=0;
 
-var lastFrameT;
+//var lastFrameT;
 
 Pianoroll.prototype.animloop = function(){
-	// for playhead position calculation, use Tone.now
-	if (lastFrameT == undefined) lastFrameT=Tone.now();
- 	let now = Tone.now();
  	
 	// for FPS calculation
 	frame_counter++;
@@ -1490,63 +1489,66 @@ Pianoroll.prototype.animloop = function(){
 // 	let screenTime= totalTime * this.viewportW / this.endTick;
 	
 	if (this.isPlaying) {
-		this.playhead += (now-lastFrameT) / Tone.Time("16n");
-
-	if (this.playhead>this.selEnd) {
-		if (sel==0) this.selStart=this.leadTick;	
-		this.playTick=this.selStart;
-		this.playhead=this.playTick;
-		this.playingFromT=Tone.now();
-		this.viewportL=0;
-
-		// if (this.recorder.state=="started") {
-		// 	this.stop();
-		// 	return;
-		// };		
 		
-// 		if (this.improvising) {
-// //			console.log("improvising");
-// 			this.stop();
-// 			this.improviseX2("preset");
-// 			this.play();
-// 		};		
-	};
+		// for playhead position calculation, use Tone.now
+		if (startT == undefined) startT=Tone.now();
+		let now = Tone.now();
 
-	if (this.autoScrollingPaused== undefined || Tone.now()-this.autoScrollingPaused>1){
-		// auto scrolling
-		if (!this.mouseDown && this.viewportW<Work.global.seqIJ.length+1){
+		this.playhead = (now-startT) / Tone.Time("16n") + this.selStart;
 
-			var autoScrollOffset = -this.viewportW/2;	
+		if (this.playhead>this.selEnd) {
+			if (sel==0) this.selStart=this.leadTick;	
+			this.playTick=this.selStart;
+			this.playhead=this.playTick;
+			//this.playingFromT=Tone.now();
+			this.viewportL=0;
+			startT= Tone.now();
+
+			// if (this.recorder.state=="started") {
+			// 	this.stop();
+			// 	return;
+			// };		
 			
-			if (this.playhead-this.viewportL>this.viewportW/2)
-				this.viewportL = this.playhead + autoScrollOffset;
-
-			if (this.viewportL < 0) this.viewportL=0;
-			if (this.viewportL > Work.global.seqIJ.length-this.viewportW+1) 
-				this.viewportL = Work.global.seqIJ.length-this.viewportW+1;
-
-			if (this.isPlaying && this.viewportL > 0
-			&& this.viewportL< Work.global.seqIJ.length-this.viewportW+1)
-				this.autoScrolling = 1;
-			else 
-				this.autoScrolling = 0;
-		
-			Navbar.updateLR();
+	// 		if (this.improvising) {
+	// //			console.log("improvising");
+	// 			this.stop();
+	// 			this.improviseX2("preset");
+	// 			this.play();
+	// 		};		
 		};
-	};
-		
-//		this.viewportL= (now-this.playFromT)/1000 / Tone.Time("16n");
+
+		if (this.autoScrollingPaused== undefined || Tone.now()-this.autoScrollingPaused>1){
+			// auto scrolling
+			if (!this.mouseDown && this.viewportW<Work.global.seqIJ.length+1){
+
+				var autoScrollOffset = -this.viewportW/2;	
+				
+				if (this.playhead-this.viewportL>this.viewportW/2)
+					this.viewportL = this.playhead + autoScrollOffset;
+
+				if (this.viewportL < 0) this.viewportL=0;
+				if (this.viewportL > Work.global.seqIJ.length-this.viewportW+1) 
+					this.viewportL = Work.global.seqIJ.length-this.viewportW+1;
+
+				if (this.viewportL > 0
+				&& this.viewportL< Work.global.seqIJ.length-this.viewportW+1)
+					this.autoScrolling = 1;
+				else 
+					this.autoScrolling = 0;
+			
+				Navbar.updateLR();
+			};
+		};		
 	};
 
 	Global.updateMeter();
-
-	lastFrameT=now;
 	
-	anim = requestAnimationFrame(this.animloop.bind(this));	
+	this.anim = requestAnimationFrame(this.animloop.bind(this));	
 }
 
 Pianoroll.prototype.stop=function(){
 	if (this.isPlaying) { 
+		startT = null;
 		Tone.Transport.stop(); 
 
 		if (this.recorder.state=="started") {
@@ -1564,7 +1566,6 @@ Pianoroll.prototype.stop=function(){
 
 		this.autoScrolling=0;
 		this.isPlaying=false; 
-		this.improvising=0;
 		this.newNote=null;
 	};
 }
@@ -1600,9 +1601,11 @@ Pianoroll.prototype.play=function(){
 		
 		this.playTick=Math.floor(this.playhead);
 		
-		this.playingFromT = Tone.now();
+		//this.playingFromT = Tone.now();
 		this.isPlaying = true;  
+		
 		Tone.Transport.start();
+		startT = Tone.now();
 	};
 }
 
@@ -1620,7 +1623,8 @@ Pianoroll.prototype.playNext=function(t){
 		if (sel==0) this.selStart=this.leadTick;	
 		this.playTick=this.selStart;
 		this.playhead=this.selStart;
-		this.playingFromT=Tone.now();
+
+		//this.playingFromT=Tone.now();
 
 		// if (this.recorder.state=="started") {
 		// 	this.stop();
@@ -2103,7 +2107,7 @@ Pianoroll.prototype.init=function(){
 
 	var f=this.playNext.bind(this);
 	Tone.Transport.scheduleRepeat(function(t){f(t);}, this.resolution);
-	anim = requestAnimationFrame(this.animloop.bind(this));
+	this.anim = requestAnimationFrame(this.animloop.bind(this));
 	
  	this.updateEndTick();
 	this.autoZoom("xy");
