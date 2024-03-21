@@ -117,27 +117,30 @@ function getMaxIndex(arr){
 }
 
 myLib.animQueue=[];
-function ramp(object, property, from, to, inSeconds=0.2){
+function ramp(object, property, from, to, inSeconds=0.15){
 	for (var i=0; i<myLib.animQueue.length; i++)
-	if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property){
-		clearInterval(myLib.animQueue[i]);
-		break;
-	};
+	if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property
+		&& myLib.animQueue[i][2] != null){
+		clearInterval(myLib.animQueue[i][2]);
+		object[property] = to;
+		myLib.animQueue[i][2] = null;
+	};		
+
 	var step = (to-from) / (inSeconds / 0.01);
 	object[property] = from;
+
 	myLib.animQueue.push([object, property,
 		setInterval(function(){
 		if (Math.abs(object[property]+step - to)<Math.abs(step)){
 			for (var i=0; i<myLib.animQueue.length; i++)
-			if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property){
+			if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property
+				&& myLib.animQueue[i][2] != null){
 				clearInterval(myLib.animQueue[i][2]);
 				object[property] = to;
-				myLib.animQueue.splice(i,1);
-				break;
+				myLib.animQueue[i][2] = null;
 			};		
-			return;
-		}
-		object[property]+=step;
+		} else 
+			object[property]+=step;
 	},10)]);
 }
 

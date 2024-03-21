@@ -218,7 +218,7 @@ function Pianoroll(){
 		if (self.currentSelCount==0) {
 			self.deSelectAll();			
 			var theNote=self.getNote(x,y);
-			if (theNote!=undefined) {
+			if (theNote!=undefined && ((Work.global.seqXY[theNote].l==Work.global.layer_sel)||e.shiftKey)) {
 				Work.global.seqXY[theNote].s=1;
 				var ins=self.layer[Work.global.layer_sel].instrument;
 				if (ins) ins.triggerAttackRelease(
@@ -231,9 +231,7 @@ function Pianoroll(){
 				self.playTick=Math.floor(self.playhead);	
 				if (self.isPlaying) {
 					self.selStart = self.playhead;		
-					startT = Tone.now();
-					// self.stop();
-					// self.play();
+					self.startT = Tone.now();
 				};
 			
 				if (!self.isPlaying && (Controls.tempDrag=="" ? self.dragType : Controls.tempDrag)!="audi") {
@@ -1520,10 +1518,10 @@ Pianoroll.prototype.animloop = function(){
 	if (this.isPlaying) {
 		
 		// for playhead position calculation, use Tone.now
-		if (startT == undefined) startT=Tone.now();
+		if (this.startT == undefined) this.startT=Tone.now();
 		let now = Tone.now();
 
-		this.playhead = (now-startT) / Tone.Time("16n") + this.selStart;
+		this.playhead = (now-this.startT) / Tone.Time(this.resolution) + this.selStart;
 
 		if (this.playhead>this.selEnd) {
 			if (sel==0) this.selStart=this.leadTick;	
@@ -1531,7 +1529,7 @@ Pianoroll.prototype.animloop = function(){
 			this.playhead=this.playTick;
 			//this.playingFromT=Tone.now();
 			this.viewportL=0;
-			startT= Tone.now();
+			this.startT= Tone.now();
 
 			// if (this.recorder.state=="started") {
 			// 	this.stop();
@@ -1577,7 +1575,7 @@ Pianoroll.prototype.animloop = function(){
 
 Pianoroll.prototype.stop=function(){
 	if (this.isPlaying) { 
-		startT = null;
+		this.startT = null;
 		Tone.Transport.stop(); 
 
 		if (this.recorder.state=="started") {
@@ -1596,6 +1594,8 @@ Pianoroll.prototype.stop=function(){
 		this.autoScrolling=0;
 		this.isPlaying=false; 
 		this.newNote=null;
+
+		this.unDim();
 	};
 }
 
@@ -1646,7 +1646,7 @@ Pianoroll.prototype.play=function(){
 		this.isPlaying = true;  
 		
 		Tone.Transport.start();
-		startT = Tone.now();
+		this.startT = Tone.now();
 
 		this.dim();
 	};

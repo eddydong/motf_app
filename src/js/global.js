@@ -143,9 +143,9 @@ Global.updateMeter=()=>{
 		meter_ctx.fillRect((meter.width-fbW)*fallback2,8,fbW, 4);	
 	};
 
-	for (var i=0; i<100; i++){
+	for (var i=0; i<128; i++){
 		fft_ctx.fillStyle = motf.color.get('white', meterAlpha);
-		fft_ctx.fillRect(i*2, 12, 2, -vf[i]*1200);	
+		fft_ctx.fillRect(i*2, 12, 2, -vf[i]*1000);	
 	}
 };
 
