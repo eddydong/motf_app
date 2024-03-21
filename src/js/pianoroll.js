@@ -76,6 +76,23 @@ function Pianoroll(){
 
 		self.moved=1;
 		
+		//when holding a new note: auditing
+		if (self.newNote) {
+			var y = e.clientY-Global.headerH; // 100: total height of toolbar 1 & 2
+			var tickY = Math.floor((self.height-y)/h + self.viewportB);	
+			if (self.lastKey!=tickY){
+				var ins=self.layer[Work.global.layer_sel].instrument;
+				if (ins) {
+					ins.releaseAll();
+					ins.triggerAttackRelease(
+						Global.chromatic_scale[Work.global.scaledKeyboard?Composer.scale[tickY]:tickY],
+						0.25, Tone.now(), self.volumeScale
+					);
+				}			
+				self.lastKey=tickY;
+			};
+		} 
+
 		if (self.mouseDown){
 		
 			if (e.metaKey) Controls.tempDrag="rect";
@@ -86,21 +103,6 @@ function Pianoroll(){
 
 		 	var ins= Controls.tempDrag=="" ? self.dragType : Controls.tempDrag;
 
-			if (ins=="audi") {
-				var y = e.clientY-Global.headerH; // 100: total height of toolbar 1 & 2
-				var tickY = Math.floor((self.height-y)/h + self.viewportB);	
-				if (self.lastKey!=tickY && self.selCount()==0){
-					var ins=self.layer[Work.global.layer_sel].instrument;
-					if (ins) {
-						ins.releaseAll();
-						ins.triggerAttackRelease(
-							Global.chromatic_scale[Work.global.scaledKeyboard?Composer.scale[tickY]:tickY],
-							0.3, Tone.now(), self.volumeScale
-						);
-					}			
-					self.lastKey=tickY;
-				};
-			} else	
 			if (ins=="span") {
 				self.selX2=self.viewportL+self.curX/self.width*self.viewportW;
 				self.selectNotes(self.selX1, 0, self.selX2, vH()-1, e.shiftKey);

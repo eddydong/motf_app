@@ -82,7 +82,7 @@ const projectURL = SERVER+"/src";
 var samplerParams=[
 	{//0
 		name: "Piano Yamaha C5",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -122,7 +122,7 @@ var samplerParams=[
 	},
 	{//1
 		name: "Piano Steinway",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
@@ -218,7 +218,7 @@ var samplerParams=[
 	},
 	{//2
 		name: "Cello",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -262,7 +262,7 @@ var samplerParams=[
 	},
 	{//3
 		name:"Violin",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -286,7 +286,7 @@ var samplerParams=[
 	},
 	{//4
 		name:"Steel Guitar",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -334,7 +334,7 @@ var samplerParams=[
 	{//5
 		name: "Nylon Guitar",
     loadByDefault: false,
-    timeOffset: -0.1,
+    timeOffset: 0,
     volumeCorrection: 0,
     vUrls: [],
 		urls: {
@@ -372,7 +372,7 @@ var samplerParams=[
 	},
 	{//6
 		name:"Trumpet",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
@@ -393,7 +393,7 @@ var samplerParams=[
 	},
 	{//7
 		name: "Trombone",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -420,7 +420,7 @@ var samplerParams=[
 	},
 	{//8
 		name:"Harp",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -453,7 +453,7 @@ var samplerParams=[
 	},
 	{//9
 		name: "Electric Guitar",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -480,7 +480,7 @@ var samplerParams=[
 	},
 	{//10
 		name: "Contrabass",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -503,7 +503,7 @@ var samplerParams=[
 	},
 	{//11
 		name: "Flute",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -523,7 +523,7 @@ var samplerParams=[
 	},
 	{//12
 		name: "French Horn",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -543,7 +543,7 @@ var samplerParams=[
 	},
 	{//13
 		name: "Electric Bass",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -569,7 +569,7 @@ var samplerParams=[
 	},
 	{//14
 		name: "Bassoon",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     volumeCorrection: 0,
@@ -591,7 +591,7 @@ var samplerParams=[
 	},
 	{//15
 		name: "Clarinet",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
@@ -612,7 +612,7 @@ var samplerParams=[
 	},
 	{//16
 		name: "Upright Bass",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
@@ -629,7 +629,7 @@ var samplerParams=[
 	},
   {//17
 		name: "Drum Set",
-		timeOffset: -0.1,
+		timeOffset: 0,
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
