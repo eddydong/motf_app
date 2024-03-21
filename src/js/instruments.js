@@ -831,6 +831,9 @@ Instruments.newSampler=(i, ch)=>{
 
 			pianoroll.layer[ch].instrument=s;
 			pianoroll.layer[ch].instrument.connect(pianoroll.layer[ch].channel);
+      pianoroll.layer[ch].meter = new Tone.Meter();
+      pianoroll.layer[ch].meter.normalRange=1;
+      pianoroll.layer[ch].channel.connect(pianoroll.layer[ch].meter);
 
 //			if (Work.layer[ch].name=="New Layer") 
 			//document.getElementById("btn_layer_"+ch).innerHTML=samplerParams[i].name;

@@ -146,21 +146,23 @@ function exportMidi(work){
 	})
 	secondPerTick = 60 / work.global.bpm / 4;
 	work.global.seqXY.forEach((note)=>{
-		while ( note.l > midi.tracks.length - 1)
-			track = midi.addTrack();
-		midi.tracks[note.l].addNote({
-			midi : note.y + 21, // 21-108, 60 = middle C
-			time : note.x * secondPerTick,  
-			duration: note.d * secondPerTick, 
-			velocity: note.v // 0~1
-		});
+		if (note.s){
+			while ( note.l > midi.tracks.length - 1)
+				track = midi.addTrack();
+			midi.tracks[note.l].addNote({
+				midi : note.y + 21, // 21-108, 60 = middle C
+				time : note.x * secondPerTick,  
+				duration: note.d * secondPerTick, 
+				velocity: note.v // 0~1
+			});
+		}
 	});
 	console.log(midi);
 	const blob = new Blob([midi.toArray()], { type: 'application/octet-stream' });
 	const a = document.createElement('a');
 	document.body.appendChild(a);
 	a.href = window.URL.createObjectURL(blob);
-	a.download = 'test2.mid';
+	a.download = 'motf midi output.mid';
 	a.click();
 	window.URL.revokeObjectURL(a.href);
 	document.body.removeChild(a);

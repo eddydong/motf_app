@@ -116,6 +116,31 @@ function getMaxIndex(arr){
 	return maxI;
 }
 
+myLib.animQueue=[];
+function ramp(object, property, from, to, inSeconds=0.2){
+	for (var i=0; i<myLib.animQueue.length; i++)
+	if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property){
+		clearInterval(myLib.animQueue[i]);
+		break;
+	};
+	var step = (to-from) / (inSeconds / 0.01);
+	object[property] = from;
+	myLib.animQueue.push([object, property,
+		setInterval(function(){
+		if (Math.abs(object[property]+step - to)<Math.abs(step)){
+			for (var i=0; i<myLib.animQueue.length; i++)
+			if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property){
+				clearInterval(myLib.animQueue[i][2]);
+				object[property] = to;
+				myLib.animQueue.splice(i,1);
+				break;
+			};		
+			return;
+		}
+		object[property]+=step;
+	},10)]);
+}
+
 // Export
 
 myLib.deepCopy = deepCopy;
@@ -129,5 +154,6 @@ myLib.getUuid = getUuid;
 myLib.arrayDel = arrayDel;
 myLib.pick = pick;
 myLib.getMaxIndex = getMaxIndex;
+myLib.ramp = ramp;
 
 })();

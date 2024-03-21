@@ -54,8 +54,11 @@ var Controls= {};
 					
 			// Enter for PLAY
 			if (e.keyCode==13){ 
-				if (pianoroll.isPlaying) document.getElementById("btn_stop").onclick();
-				else document.getElementById("btn_play").onclick();
+				if (pianoroll.isPlaying) {
+					document.getElementById("btn_stop").onclick();
+				} else {
+					document.getElementById("btn_play").onclick();
+				};
 			};
 
 			// Tab for scaledKeyboard
@@ -225,9 +228,12 @@ var Controls= {};
 			}
 	
 			// Enter for PLAY
-			if (e.keyCode==13){
-				if (pianoroll.isPlaying) document.getElementById("btn_stop").onclick();
-				else document.getElementById("btn_play").onclick();
+			if (e.keyCode==13){ 
+				if (pianoroll.isPlaying) {
+					document.getElementById("btn_stop").onclick();
+				} else {
+					document.getElementById("btn_play").onclick();
+				};
 			};
 
 			// Tab for scaledKeyboard
@@ -303,10 +309,7 @@ var Controls= {};
 				pianoroll.stop();
 				Composer.init();
 				var ctx = new motf.Context(Work.global.key, Work.global.scale_id, Work.global.mode, 4, 4, 120);
-				if (Improviser1.tryBuild(ctx)){
-					pianoroll.scroll("beginning");
-					pianoroll.play();
-				};
+				Improviser1.tryBuild(ctx);
 								
 				// pianoroll.rootSeeds=[];
 				// pianoroll.improviseX2("preset", 0);
@@ -540,6 +543,7 @@ var Controls= {};
 	}
 	Controls.btn_open.onclick=()=>{
 		pianoroll.stop();
+		pianoroll.unDim();
 		fileloader1.click();
 	};
 	
@@ -556,6 +560,7 @@ var Controls= {};
 
 	document.querySelector("#btn_import").onclick=()=>{
 		pianoroll.stop();
+		pianoroll.unDim();
 		fileloader2.click();
 	};
 	
@@ -565,6 +570,7 @@ var Controls= {};
 	
 	Controls.btn_new.onclick=()=>{
 		pianoroll.stop();
+		pianoroll.unDim();
 		Work=copyObj(newWork);
 //		Work.global.chord=[];
 		pianoroll.chord=[];
@@ -782,6 +788,7 @@ var Controls= {};
 
 	document.getElementById("btn_stop").onclick=()=>{ 
 		pianoroll.stop(); 
+		pianoroll.unDim();
 		var c;
 		if (pianoroll.isPlaying) c="#bb33bb"; else c="#666666";
 		document.getElementById("btn_play").style.background=c;
@@ -884,6 +891,7 @@ var Controls= {};
 
 	document.getElementById("btn_esc").onclick=()=>{
 		pianoroll.stop();
+		pianoroll.unDim();
 		pianoroll.newNote=null;
 		pianoroll.deSelectAll();
 		isWritingPreset=0;

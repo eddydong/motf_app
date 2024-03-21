@@ -22,9 +22,7 @@
   <div class="dropdown-content" style="color:#eeeeee">
 	<label class="logo">motf.io</label>
 	<span style="margin-right: 220px;"></span>
-	<div class="dropdown">
-	  <span id="fps">FPS</span>
-	</div>	
+	<span id="fps">FPS</span>
 	<br>
 	<br>motf or Motif, or Music Of The Future, an
 	<br>very easy-to-use and free-of-charge music 
@@ -41,13 +39,13 @@
   <span>Project</span>
   <div class="dropdown-content">
 	<button id="btn_import" title="Command+I">Import MIDI File</button>
-	<button id="btn_export" title="Command+E">Export MIDI File</button>
+	<button id="btn_export" title="Command+E">Export Selection To MIDI File</button>
 	<span>|</span>
 	<button id="btn_open" title="Command+O">Open motf Project</button>
 	<br>
 	<button id="btn_save" title="Command+S">Save motf Project</button>
 	<span>
-	Work Name:
+	Project Name:
 	<input id="input_workname" maxlength=22 type="text" style="width:220px;" value="Another Piece of Shit" />
 	.motf
 	</span>	<br>
@@ -104,7 +102,7 @@
 	</span>
 
 	<br><br>
-	<button id="btn_detectKeyScale">Auto Detect Key & Scale</button>
+	<button id="btn_detectKeyScale">Detect Key, Scale & Mode From Selection</button>
 	
   </div>
 </div>
@@ -475,39 +473,40 @@
 	<span>|</span>
 
 <div class="dropdown">
-  <span>Playback</span>
-  <div class="dropdown-content">
-	<button id="btn_begin" title="Command+Left">Beginning</button>
-	<button id="btn_play" title="Enter">Play</button>
-	<button id="btn_stop" title="Esc">Stop</button>
-	<button id="btn_end" title="Command+Right">End</button>
-	<span>|</span>
-	<button id="btn_studio_layout" title="Studio Layout">Studio Layout</button>	
-	<br><br>
-	<span>Volume
-	<input id="input_master_volume" value=-10 min=-40 max=0 step=0.1 type="range" />
-	</span>
-	<span>Room Size
-	<input id="input_master_roomsize" value=3 min=0.1 max=6.0 step=0.1 type="range" />
-	</span>
-	<br><br>
-	<button id="btn_metronome" title="M">Metronome</button>
-	<input id="input_metro_volume" value=-10 min=-40 max=0 step=0.1 type="range" />
-	<span>Bpm
-		<input type="number" id="input_bpm" value=108 min=6 max=600/>
-	</span>
-	<span>
-	<br><br>	
-	<span>Humanizing <br>
-	Velocity
-	<input id="input_human_vel" value=0.1 min=0 max=1 step=0.01 type="range" />
-	Tempo
-	<input id="input_human_tem" value=0.1 min=0 max=1 step=0.01 type="range" />
-	</span>
-</div>
+  	<span>Playback</span>
+  	<div class="dropdown-content">
+		<button id="btn_begin" title="Command+Left">Beginning</button>
+		<button id="btn_play" title="Enter">Play</button>
+		<button id="btn_stop" title="Esc">Stop</button>
+		<button id="btn_end" title="Command+Right">End</button>
+		<span>|</span>
+		<button id="btn_studio_layout" title="Studio Layout">Studio Layout</button>	
+		<br><br>
+		<span>Volume
+		<input id="input_master_volume" value=-10 min=-40 max=0 step=0.1 type="range" />
+		</span>
+		<span>Room Size
+		<input id="input_master_roomsize" value=3 min=0.1 max=6.0 step=0.1 type="range" />
+		</span>
+		<br><br>
+		<button id="btn_metronome" title="M">Metronome</button>
+		<input id="input_metro_volume" value=-10 min=-40 max=0 step=0.1 type="range" />
+		<span>Bpm
+			<input type="number" id="input_bpm" value=108 min=6 max=600/>
+		</span>
+		<span>
+		<br><br>	
+		<span>Humanizing <br>
+		Velocity
+		<input id="input_human_vel" value=0.1 min=0 max=1 step=0.01 type="range" />
+		Tempo
+		<input id="input_human_tem" value=0.1 min=0 max=1 step=0.01 type="range" />
+		</span>
+	</div>
 </div>
 
-	<canvas id="canvas-meter" style="width:400px; height:11px;"></canvas>
+<canvas id="canvas-meter" style="width:200px; height:12px;"></canvas>
+<canvas id="canvas-fft" style="width:200px; height:12px;"></canvas>
 
 </div>
 </div>

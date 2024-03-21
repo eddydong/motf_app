@@ -76,9 +76,13 @@ Global.initialSeq=[{x: 0, y: 39, d: 16, v: 3, l: 0, s: 0}];
 
 Global.meter = new Tone.Meter({channels:2});
 Global.meter.normalRange=1;
-
 var meter=document.getElementById("canvas-meter");
 var meter_ctx = meter.getContext("2d");
+
+Global.fft = new Tone.FFT(2048);
+Global.fft.normalRange=1;
+var fft=document.getElementById("canvas-fft");
+var fft_ctx = fft.getContext("2d");
 
 var fallback1=0;
 var fallback2=0;
@@ -88,15 +92,22 @@ var fb_v2=0;
 const fbW=4;
 var maxV=0;
 
+var xm=meter.getBoundingClientRect().width;
+var	ym=meter.getBoundingClientRect().height;
+meter.width=xm; meter.height=ym;
+var xf=fft.getBoundingClientRect().width;
+var	yf=fft.getBoundingClientRect().height;
+fft.width=xf; fft.height=yf;
+
 Global.updateMeter=()=>{
-var x=meter.getBoundingClientRect().width;
-var	y=meter.getBoundingClientRect().height;
-meter.width=x; meter.height=y;
 
-	meter_ctx.clearRect(0,0, x, y);
+	meter_ctx.clearRect(0,0, xm, ym);
+	fft_ctx.clearRect(0,0,xf,yf);
 
-	var v1= Math.pow(Global.meter.getValue()[0],0.3)/2;
-	var v2= Math.pow(Global.meter.getValue()[1],0.3)/2;
+	var v1= Math.pow(Global.meter.getValue()[0],0.5)*1.3;
+	var v2= Math.pow(Global.meter.getValue()[1],0.5)*1.3;
+
+	var vf= Global.fft.getValue();
 
 //	if (v>maxV) {maxV=v; console.log(maxV);};
 
@@ -117,19 +128,25 @@ meter.width=x; meter.height=y;
 	};
 
 //	fallback=v;
-	
-	meter_ctx.fillStyle="rgba(100,255,130,1)";
-	meter_ctx.fillRect(0,0,(meter.width-fbW)*v1, 4);
-	meter_ctx.fillRect(0,6,(meter.width-fbW)*v2, 4);
+	var meterAlpha = 0.6;	
+
+	meter_ctx.fillStyle=motf.color.get('white', meterAlpha);
+	meter_ctx.fillRect(0,2,(meter.width-fbW)*v1, 4);
+	meter_ctx.fillRect(0,8,(meter.width-fbW)*v2, 4);
 
 	if (fallback1>0.0001) {
-		meter_ctx.fillStyle="rgba(255,255,255,1)";
-		meter_ctx.fillRect((meter.width-fbW)*fallback1,0,fbW, 4);	
+		meter_ctx.fillStyle=motf.color.get('white', 1);
+		meter_ctx.fillRect((meter.width-fbW)*fallback1,2,fbW, 4);	
 	};
 	if (fallback2>0.0001) {
-		meter_ctx.fillStyle="rgba(255,255,255,1)";
-		meter_ctx.fillRect((meter.width-fbW)*fallback2,6,fbW, 4);	
+		meter_ctx.fillStyle=motf.color.get('white', 1);
+		meter_ctx.fillRect((meter.width-fbW)*fallback2,8,fbW, 4);	
 	};
+
+	for (var i=0; i<100; i++){
+		fft_ctx.fillStyle = motf.color.get('white', meterAlpha);
+		fft_ctx.fillRect(i*2, 12, 2, -vf[i]*1200);	
+	}
 };
 
 
@@ -163,7 +180,6 @@ Global.XYtoIJ=()=>{
 
 	for (var i=0; i<seqTT; i++)
 		res.push({notes:[], sel:0});
-
 
 	for (var i=0; i<n_notes; i++){
 	res[Math.floor(Work.global.seqXY[i].x)].notes.push({
@@ -206,8 +222,6 @@ Global.XYtoIJ=()=>{
 	pianoroll.updateEndTick();
 	
 };
-
-Tone.context.lookAhead=0.1;
 
 // Global.XYtoIJ=()=>{
 // 	var res=[];

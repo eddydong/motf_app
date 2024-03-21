@@ -1,29 +1,31 @@
+//const { accessSync } = require("node:original-fs");
+
 var Improviser1={};
 (function(){
-    function tryBuild(ctx){
-        var buildCount= 3000;
-        for (var i=0; i<buildCount; i++){
-            var res = rebuild(ctx);
-            if (res) {
-                //console.log(res);
-                Improviser1.verse = res.verse;
-                Improviser1.bass = res.phrase;
-                Improviser1.melody1 = res.note1;
-                Improviser1.meline1 = res.phrase1;
-                Improviser1.melody2 = res.note2;
-                Improviser1.meline2 = res.phrase2;
-                Improviser1.walkingbass = res.walking;
-                Improviser1.basicbass = res.basic;
-                console.log("Improvision k"+ ctx.key + " s" + ctx.scaleId + " m" + ctx.mode + 
-                    " succeeded after " + (i+1) + " iterations."); 
-                //console.log(res.verse, res.phrase, res.phrase1, res.note1);
-                exportToPianoroll();
-                return true;
+    function build(ctx){
+        return new Promise((resolve, reject)=>{
+            var buildCount= 10000;
+            for (var i=0; i<buildCount; i++){
+                var res = rebuild(ctx);
+                if (res) {
+                    //console.log(res);
+                    Improviser1.verse = res.verse;
+                    Improviser1.bass = res.phrase;
+                    Improviser1.melody1 = res.note1;
+                    Improviser1.meline1 = res.phrase1;
+                    Improviser1.melody2 = res.note2;
+                    Improviser1.meline2 = res.phrase2;
+                    Improviser1.walkingbass = res.walking;
+                    Improviser1.basicbass = res.basic;
+                    exportToPianoroll();
+                    resolve("Improvision k"+ ctx.key + " s" + ctx.scaleId + " m" + ctx.mode + 
+                    " succeeded after " + (i+1) + " iterations.");
+                    return;
+                }
             }
-        }
-        console.log("falied "+buildCount);
-        console.log("Max search reached. Improvision failed.");
-        return false;
+            reject("Max search "+ buildCount +" reached. Improvision failed - try again!");    
+            return;
+        })
     }
 
     function rebuild(ctx){
@@ -150,7 +152,7 @@ var Improviser1={};
 
         Work.global.seqXY=[];
     
-        var drumer = new motf.AutoDrumer(pianoroll, 6);
+        var drumer = new motf.Drumer(pianoroll, 6);
     
         var start = 16;
         var pos = start;
@@ -239,7 +241,7 @@ var Improviser1={};
                 l: 0, //j,
                 t: 0 // type: 0: normal note; 1: just improvised			
             }); 
-        } else if (lastNote1.len <= 4) {
+        } else if (lastNote1.len <= 12) {
             pianoroll.addNote({
                 x: start - lastNote1.len,
                 y: lastNote1.note - 21,
@@ -302,10 +304,22 @@ var Improviser1={};
         pianoroll.deSelectAll();
         drumer.fill();
         pianoroll.autoZoom("xy");
-
     };    
 
-    Improviser1.tryBuild = (ctx) => { Improviser1.buildCount=0; return tryBuild(ctx)};
+    Improviser1.tryBuild = (ctx) => { 
+        Improviser1.buildCount=0; 
+        console.log('starting building');
+        build(ctx).then(
+            msg=>{
+                pianoroll.scroll("beginning");
+                pianoroll.play();        
+                console.log(msg);
+            },
+            err=>{
+                console.log(err);
+            }
+        );
+    };
     
     //debugger
 })()
