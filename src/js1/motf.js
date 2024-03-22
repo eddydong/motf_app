@@ -40,8 +40,8 @@ var improviser = {
 		leadingToNext: true
 	},
 	bassBasic:{
-		rhythm: [[4,3,1]],
-		rhythm_alter:[[4,2,1,1]],
+		rhythm: [[2,-2,2,-1,1]],
+		rhythm_alter:[[2,-2,2,1,1]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
 				   chances: [   1,  0.9,  0.9,   0.5,  0.5,  0.7,  0.3,  0.7,  0.3]},
 		pitchRange:[-12, 12],
@@ -67,7 +67,7 @@ var improviser = {
 		leadingToNext: true
 	},
 	counter_melody:{
-		rhythm:[[7,1],[6,2],[5,3],[4,4],[8]],
+		rhythm:[[-8]],//[7,1],[6,2],[5,3],[4,4],[8]],
 		rhythm_alter:[[1,1,1,1,1,1,1,1],[2,1,1,2,1,1],[2,1,2,1,2],[3,2,1,1,1]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
 				   chances: [ 0.3,  0.9,  0.9,   0.3,  0.3,  0.6,  0.2,  0.6,  0.2]},
@@ -76,7 +76,9 @@ var improviser = {
 	},
 	vocal:{
 		rhythm:[[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],
-				[2,2,4], [3,1,4],[1,1,6],[2,6],[1,1,1,5],[2,1,1,4]],
+				[2,2,4],[3,1,4],[1,1,6],[2,6],[1,1,1,5],[2,1,1,4],
+				[-2,2,-2,2],[3,2,-1,2],[3,-2,2,-1],[2,-1,2,3],[2,3,-1,2],[2,-1,3,-2],[4,2,-1,1],[4,-4/3,4/3,4/3],
+				[-2,2,4],[3,-1,4],[1,-1,6],[-2,6],[1,-1,1,5],[2,-1,1,4]],
 		rhythm_alter:[[6,1,1],[6, 2],[4,4],[8]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
 				   chances: [ 0.5,  0.9,  0.9,   0.4,  0.4,  0.6,  0.6,  0.3,  0.3]},
@@ -228,7 +230,7 @@ class Context {
 	}
 	// n: current note; m: steps to move up(+) or down(-)
 	getNoteByScaleMove(n, m) {
-		if (!this.inScale(n)) throw "moveByScale: note "+n+" not in scale s"+this.scaleId+" m"+this.mode+" k"+this.key;
+		if (!this.inScale(n)) throw "getNoteByScaleMove: note "+n+" not in scale s"+this.scaleId+" m"+this.mode+" k"+this.key;
 		var off = 0, pos = n;
 		while (off != m) {
 			pos = pos + (m > 0 ? 1 : -1);
@@ -265,7 +267,7 @@ class Drumer {
 			pianoroll.addNote({
 					x: i,
 					y: 43 - 21,
-					d: 8, 
+					d: 1, 
 					s: 0, 
 					v: 1, 
 					l: this.layer,
@@ -287,7 +289,7 @@ class Drumer {
 			pianoroll.addNote({
 					x: i,
 					y: 39 - 21,
-					d: 4, 
+					d: 1, 
 					s: 0, 
 					v: 1, 
 					l: this.layer,
@@ -298,7 +300,7 @@ class Drumer {
 			pianoroll.addNote({
 					x: i,
 					y: 41 - 21,
-					d: 4, 
+					d: 1, 
 					s: 0, 
 					v: 2, 
 					l: this.layer,
@@ -309,7 +311,7 @@ class Drumer {
 			pianoroll.addNote({
 					x: i,
 					y: 40 - 21,
-					d: 2, 
+					d: 1, 
 					s: 0, 
 					v: 2, 
 					l: this.layer,
@@ -336,6 +338,9 @@ class Chorder {
 		this.proll = proll,
 		this.from = from_layer,
 		this.to = to_layer,
+		this.pattern = [ 
+			[0,1,2,1,3,1,2,1]
+		],
 		this.fill(guitarSwipe)
 	}
 
@@ -541,32 +546,25 @@ class Chorder {
 		Work.global.autoChord=[];
 		for (var i=2; i<chords.length; i++) if (chords[i]){
 			Work.global.autoChord.push(chords[i]);
-			var c = 0;
-			for (var k=0; k<12; k++) if (chords[i].mask[k]==1){
-				c++;
-				var newNote1={
-					x: Work.global.bpMeas / Work.global.bpNote * 8 * i + ((c-1)*guitarSwipe),
-					y: 27 + k,
-					d: Work.global.bpMeas / Work.global.bpNote * 8, //6, 
+
+			var chord = [];
+			var chordBase = Math.floor(Math.random()*7);
+			for (var k=0+chordBase; k<24+chordBase; k++) if (chords[i].mask[k % 12]==1){
+				chord.push(k);
+			};
+
+			for (var k=0; k<this.pattern[0].length; k++) { 
+				var newNote={
+					x: Work.global.bpMeas / Work.global.bpNote * 8 * (i + 0.125 * k),
+					y: 27 + chord[this.pattern[0][k]],
+					d: Work.global.bpMeas / Work.global.bpNote * 8 * 0.125 , //6, 
 					s: 0, 
-					v: 1, 
+					v: 0.5 + (3-(k % 4)) / 3, 
 					l: 3, //Work.global.layer_sel,
 					t: 1, // type: 0: normal note; 1: just improvised	
-					p: 1		
+					p: 1	
 				};
-				// var newNote2={
-				// 	x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 6 + ((c-1)*guitarSwipe),
-				// 	y: 27 + k,
-				// 	d: Work.global.bpMeas / Work.global.bpNote * 2, 
-				// 	s: 0, 
-				// 	v: 1, 
-				// 	l: 3, //Work.global.layer_sel,
-				// 	t: 1 // type: 0: normal note; 1: just improvised			
-				// };
-				if (c==1) newNote1.y += 12; else if (c==3) newNote1.y-=12;
-				this.proll.addNote(newNote1);
-				// if (c==1) newNote2.y += 12; else if (c==3) newNote2.y-=12;
-				// this.addNote(newNote2);
+				this.proll.addNote(newNote);
 			}
 		};	
 	}
@@ -584,7 +582,9 @@ class ImpNote {
 		this.parent = parent;
 		this.home = home;
 		this.steps = this.rhythm.length;
-		this.draft = [{note: this.parent.note, len: this.rhythm[0] / 8 * this.parent.len}];
+		this.draft = this.rhythm[0] > 0 ?
+			[{note: this.parent.note, len: this.rhythm[0] / 8 * this.parent.len}]:
+			[{note: null, len: - this.rhythm[0] / 8 * this.parent.len}];
 		this.variant = [];
 		this.search(1);
 		this.pick = null;
@@ -593,17 +593,26 @@ class ImpNote {
 	// populat the variant(s) list
 	search(n){
 		if (n == this.steps) {
-			
-			if (!this.leading && this.alter){
+			var len = Math.abs(this.rhythm[n]) / 8 * this.parent.len;
+		
+			if (this.draft[n-1].note == null) {
+				this.variant.push(myLib.deepCopy(this.draft));	
+			} else if (!this.leading && this.alter){
 				if (Math.abs(this.draft[n-1].note-this.home) <= 12)
 					this.variant.push(myLib.deepCopy(this.draft));				
 			} else {
 				// prevent short note gets too jumpy
-				var len = this.rhythm[n] / 8 * this.parent.len;
 				var maxStep = len <=2 ? 5 : this.suggester.values.length;
 
 				for (var i=0; i<maxStep; i++) if (Math.random()<this.suggester.chances[i]) {
-					var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
+					var lastNote;
+					for (var j=this.draft.length-1; j>=0; j--)
+						if (this.draft[j].note!=null){
+							lastNote=this.draft[j].note;
+							break;
+						}	
+					if (lastNote==null) lastNote=this.ctx.root;
+					var targetY = this.ctx.getNoteByScaleMove(lastNote, this.suggester.values[i]);
 					if (targetY > this.ctx.root + this.range[1])
 						while (targetY > this.ctx.root + this.range[1]) targetY -= 12;
 					if (targetY < this.ctx.root + this.range[0])
@@ -614,23 +623,25 @@ class ImpNote {
 					}
 				};
 			}
-			// if (
-			// 	this.type=="bass" ? (Math.abs(last.note - this.home)<=7) :
-			// 	(last.note == this.home
-			// 	|| last.note == this.ctx.getNoteByScaleMove(this.home, 1) 			
-			// 	|| last.note == this.ctx.getNoteByScaleMove(this.home,-1)
-			// 	|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home, 2) 			
-			// 	|| last.len > 2 && last.note == this.ctx.getNoteByScaleMove(this.home,-2)
-			// 	|| (theory.scaleDict[this.ctx.scaleId].modes[this.ctx.mode][7] ? (last.note == this.home - 5) : 0)
-			// )) 
-			// 	this.variant.push(myLib.deepCopy(this.draft));
 		} else {
+			var len = Math.abs(this.rhythm[n]) / 8 * this.parent.len;
+			if (this.rhythm[n] / Math.abs(this.rhythm[n]) == -1) {
+				this.draft.push({note: null, len});
+				this.search(n+1);
+				this.draft.pop();
+			} else {
 			// prevent short note gets too jumpy
-			var len = this.rhythm[n] / 8 * this.parent.len;
 			var maxStep = len <=2 ? 5 : this.suggester.values.length;
 
 			for (var i=0; i<maxStep; i++) if (Math.random()<this.suggester.chances[i]) {
-				var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.suggester.values[i]);
+				var lastNote;
+				for (var j=this.draft.length-1; j>=0; j--)
+					if (this.draft[j].note!=null){
+						lastNote=this.draft[j].note;
+						break;
+					}
+				if (lastNote==null) lastNote=this.ctx.root;
+				var targetY = this.ctx.getNoteByScaleMove(lastNote, this.suggester.values[i]);
 				if (targetY > this.ctx.root + this.range[1]) continue;
 					//while (targetY > this.ctx.root + this.range[1]) targetY -= 12;
 				if (targetY < this.ctx.root + this.range[0]) continue;
@@ -639,6 +650,7 @@ class ImpNote {
 				this.search(n+1);
 				this.draft.pop();
 			};
+			};	
 		};
 	}
 	// get a new pick from the varian(s)

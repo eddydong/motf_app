@@ -8,7 +8,7 @@ Work.global= {
 	workname: "Another Piece of Shit",
 	author: "noname",
 	key: 5, // 0-11 / offset from C, in chromatic scale
-	scale_id: 16,
+	scale_id: 23,
 	mode: 5,
 	bpm: 85,
 	bpMeas: 4,
@@ -330,6 +330,7 @@ Work.global= {
 			]
 		}
 	],
+	pedal: [],
 	seqIJ: [],
 	// x unit: tick; y unit: key
 	seqXY: [],
@@ -350,7 +351,6 @@ Work.global= {
 // 			[0,16,1],[0,31,0],
 // 			[0,32,1],[0,47,0],
 // 			[0,48,1],[0,63,0]],
-	pedal: [],
 	// 1645
 //	chord: [[31, 34, 39],[27, 31, 36],[27, 32, 36],[29, 34, 38]],
 
@@ -374,53 +374,54 @@ Work.layer= [  // T01..T10
 		instrument: 1,
 		mute: false,
 		solo: false,
-		volume: 0,
+		volume: -1,
 		pan: 0.5,
 	},
 	{
 		name: "Melody 2", //1
 		type: "melody",
 		instrument: 9,
-		mute: true,
+		mute: false,
 		solo: false,
-		volume: -5,
+		volume: -6,
 		pan: -0.5,
 	},
 	{
 		name: "Meline", //2
 		type: "bass",
 		instrument: 10,
-		mute: true,
+		mute: false,
 		solo: false,
-		volume: -12,
+		volume: -14,
 		pan: 0.4,
 	},
 	{
 		name: "Chord", //3
 		type: "chord",
-		instrument: 13,
-		mute: true,		
+		instrument: 4,
+		mute: false,		
 		solo: false,
 		volume: -12,
 		pan: -0.3,
+		pedal: [{tick:0, onOff:1}]
 	},
 	{
 		name: "Bass", //4
 		type: "bass",
 		instrument: 16,
-		mute: true,		
+		mute: false,		
 		solo: false,
 		volume: -2,
-		pan: 0.3,
+		pan: 0.3
 	},
 	{
 		name: "Walking Bass", //5
 		type: "bass",
 		instrument: 16,
-		mute: false,		
+		mute: true,		
 		solo: false,
-		volume: -1,
-		pan: -0.7,
+		volume: -2,
+		pan: -0.7
 	},
 	{
 		name: "Percussion", //6
@@ -430,6 +431,7 @@ Work.layer= [  // T01..T10
 		solo: false,
 		volume: -4,
 		pan: -0.2,
+		pedal: [{tick:0, onOff:1}]
 	}
 ]
 

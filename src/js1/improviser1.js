@@ -85,12 +85,12 @@ var Improviser1={};
         for (var i=0; i<phrase.length; i++) {
             for (var j=0; j<phrase[i].pick.length; j++) {
                 var choices = [0];
-                if (ctx.inScale(phrase[i].pick[j].note+7))
-                    for (var k=0; k<3; k++) choices.push(7);
-                if (ctx.inScale(phrase[i].pick[j].note+4))
-                    for (var k=0; k<2; k++) choices.push(4)
-                else if (ctx.inScale(phrase[i].pick[j].note+3))
-                    for (var k=0; k<2; k++) choices.push(3);
+                // if (ctx.inScale(phrase[i].pick[j].note+7))
+                //     for (var k=0; k<3; k++) choices.push(7);
+                // if (ctx.inScale(phrase[i].pick[j].note+4))
+                //     for (var k=0; k<2; k++) choices.push(4)
+                // else if (ctx.inScale(phrase[i].pick[j].note+3))
+                //     for (var k=0; k<2; k++) choices.push(3);
                 phrase1.push({note: phrase[i].pick[j].note +
                     choices[Math.floor(Math.random()*choices.length)], 
                     len:phrase[i].pick[j].len});    
@@ -162,7 +162,8 @@ var Improviser1={};
         pos = start;
         for (var i=0; i<Improviser1.basicbass.length; i++)
         for (var j=0; j<Improviser1.basicbass[i].pick.length; j++){	
-            pianoroll.addNote({
+            if (Improviser1.basicbass[i].pick[j].note!=null)
+                pianoroll.addNote({
                     x: pos,
                     y: Improviser1.basicbass[i].pick[j].note - 21 - 12,
                     d: Improviser1.basicbass[i].pick[j].len, 
@@ -178,6 +179,7 @@ var Improviser1={};
         // meline / melody baseline -> purple on chord page
         pos = start;
         for (var i=0; i<Improviser1.meline1.length; i++){	
+            if (Improviser1.meline1[i].note!=null){
             pianoroll.addNote({
                     x: pos,
                     y: Improviser1.meline1[i].note - 21 + 12,
@@ -198,6 +200,7 @@ var Improviser1={};
                 t: 2, // type: 0: normal note; 1: just improvised			
                 p: 1
             });
+            };
             pos += Improviser1.meline1[i].len;
         }
 
@@ -207,76 +210,71 @@ var Improviser1={};
         for (var i=0; i<Improviser1.melody1.length; i++)
         for (var j=0; j<Improviser1.melody1[i].pick.length; j++)
         if (Improviser1.melody1[i].pick[j]) {
-            if (prevNote && Math.random() < 0.2 && Improviser1.melody1[i].pick[j].note==prevNote.y+21){
-                prevNote.d += Improviser1.melody1[i].pick[j].len;
-            } else {
+            if (Improviser1.melody1[i].pick[j].note!=null)
                 pianoroll.addNote({
                     x: pos,
                     y: Improviser1.melody1[i].pick[j].note - 21,
                     d: Improviser1.melody1[i].pick[j].len, 
                     s: 0, 
-                    v: 1, 
+                    v: 0.8 + Improviser1.melody1[i].pick[j].len / 16, 
                     l: 0, //j,
                     t: 0, // type: 0: normal note; 1: just improvised			
                     p: 1
                 });
-                prevNote = Work.global.seqXY[Work.global.seqXY.length-1];
-            };
             pos += Improviser1.melody1[i].pick[j].len;
         };
-        var lastNote1=Improviser1.melody1[Improviser1.melody1.length-1].pick[Improviser1.melody1[Improviser1.melody1.length-1].pick.length-1];
-        var lastNote2=Improviser1.melody1[Improviser1.melody1.length-1].pick[Improviser1.melody1[Improviser1.melody1.length-1].pick.length-2];
-        if (lastNote2 && (lastNote1.len + lastNote2.len <= 4)) {
-            pianoroll.addNote({
-                x: start - lastNote1.len,
-                y: lastNote1.note - 21,
-                d: lastNote1.len, 
-                s: 0, 
-                v: 1, 
-                l: 0, //j,
-                t: 0, // type: 0: normal note; 1: just improvised			
-                p: 1
-            }); 
-            pianoroll.addNote({
-                x: start - lastNote1.len - lastNote2.len,
-                y: lastNote2.note - 21,
-                d: lastNote2.len, 
-                s: 0, 
-                v: 1, 
-                l: 0, //j,
-                t: 0, // type: 0: normal note; 1: just improvised		
-                p: 1
-            }); 
-        } else if (lastNote1.len <= 12) {
-            pianoroll.addNote({
-                x: start - lastNote1.len,
-                y: lastNote1.note - 21,
-                d: lastNote1.len, 
-                s: 0, 
-                v: 1, 
-                l: 0, //j,
-                t: 0, // type: 0: normal note; 1: just improvised			
-                p: 1
-            }); 
-        };
+        // var lastNote1=Improviser1.melody1[Improviser1.melody1.length-1].pick[Improviser1.melody1[Improviser1.melody1.length-1].pick.length-1];
+        // var lastNote2=Improviser1.melody1[Improviser1.melody1.length-1].pick[Improviser1.melody1[Improviser1.melody1.length-1].pick.length-2];
+        // if (lastNote2 && (lastNote1.len + lastNote2.len <= 4)) {
+        //     pianoroll.addNote({
+        //         x: start - lastNote1.len,
+        //         y: lastNote1.note - 21,
+        //         d: lastNote1.len, 
+        //         s: 0, 
+        //         v: 1, 
+        //         l: 0, //j,
+        //         t: 0, // type: 0: normal note; 1: just improvised			
+        //         p: 1
+        //     }); 
+        //     pianoroll.addNote({
+        //         x: start - lastNote1.len - lastNote2.len,
+        //         y: lastNote2.note - 21,
+        //         d: lastNote2.len, 
+        //         s: 0, 
+        //         v: 1, 
+        //         l: 0, //j,
+        //         t: 0, // type: 0: normal note; 1: just improvised		
+        //         p: 1
+        //     }); 
+        // } else if (lastNote1.len <= 12) {
+        //     pianoroll.addNote({
+        //         x: start - lastNote1.len,
+        //         y: lastNote1.note - 21,
+        //         d: lastNote1.len, 
+        //         s: 0, 
+        //         v: 1, 
+        //         l: 0, //j,
+        //         t: 0, // type: 0: normal note; 1: just improvised			
+        //         p: 1
+        //     }); 
+        // };
 
         
         // melody2
         pos = start;
         for (var i=0; i<Improviser1.melody2.length; i++)
-        for (var j=0; j<Improviser1.melody2[i].pick.length; j++)
-        if (Improviser1.melody2[i].pick[j]) {
-        //	console.log(motf.melody[i].pick[j]);
-            pianoroll.addNote({
-                    x: pos,
-                    y: Improviser1.melody2[i].pick[j].note - 21,
-                    d: Improviser1.melody2[i].pick[j].len, 
-                    s: 0, 
-                    v: 1, 
-                    l: 1, //j,
-                    t: 0, // type: 0: normal note; 1: just improvised
-                    p: 1		
-            });
+        for (var j=0; j<Improviser1.melody2[i].pick.length; j++) {
+            if (Improviser1.melody2[i].pick[j].note!=null) 
+                pianoroll.addNote({
+                        x: pos,
+                        y: Improviser1.melody2[i].pick[j].note - 21,
+                        d: Improviser1.melody2[i].pick[j].len, 
+                        s: 0, 
+                        v: 1, 
+                        l: 1, //j,
+                        t: 0, // type: 0: normal note; 1: just improvised
+                        p: 1		
+                });
             pos += Improviser1.melody2[i].pick[j].len;
         };
         // var lastNote=Improviser1.melody2[Improviser1.melody2.length-1].pick[Improviser1.melody2[Improviser1.melody2.length-1].pick.length-1];
@@ -294,18 +292,18 @@ var Improviser1={};
         // jazz walking bass
         pos = start;
         for (var i=0; i<Improviser1.walkingbass.length; i++)
-        for (var j=0; j<Improviser1.walkingbass[i].pick.length; j++)
-        if (Improviser1.walkingbass[i].pick[j]) {
-            pianoroll.addNote({
-                    x: pos,
-                    y: Improviser1.walkingbass[i].pick[j].note - 21 - 12,
-                    d: Improviser1.walkingbass[i].pick[j].len, 
-                    s: 0, 
-                    v: 1, 
-                    l: 5, //j,
-                    t: 2, // type: 0: normal note; 1: just improvised			
-                    p: 0.68
-            });
+        for (var j=0; j<Improviser1.walkingbass[i].pick.length; j++){
+            if (Improviser1.walkingbass[i].pick[j].note!=null) 
+                pianoroll.addNote({
+                        x: pos,
+                        y: Improviser1.walkingbass[i].pick[j].note - 21 - 12,
+                        d: Improviser1.walkingbass[i].pick[j].len, 
+                        s: 0, 
+                        v: 1, 
+                        l: 5, //j,
+                        t: 2, // type: 0: normal note; 1: just improvised			
+                        p: 0.68
+                });
             pos += Improviser1.walkingbass[i].pick[j].len;
         };
     

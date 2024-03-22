@@ -671,7 +671,6 @@ var updateSample = function(){
     if (Instruments.samplerParams[Work.layer[i].instrument].baseUrl!=""){
       Instruments.samplerParams[Work.layer[i].instrument].loadByDefault=true;
       newInstru = true;
-      break;
     };
     
   if (!newInstru) {

@@ -88,7 +88,8 @@ var midiToSeqXY=(sample)=>{
 				d: sample.tracks[i].notes[j].duration / tickL, 
 				v: sample.tracks[i].notes[j].velocity, 
 				l: ch, 
-				s: 0
+				s: 0,
+				p: 1
 			});
 //			console.log(sample.tracks[i].notes[j].velocity);
 		}
@@ -113,16 +114,17 @@ function parseFile(file) {
 // 		console.log(Work.global.seqXY);
 		Global.XYtoIJ();
 		pianoroll.historyPush("Import MIDI File");
-		pianoroll.playhead=-1;	
+		pianoroll.playhead=0;	
 		Composer.init();
 		Controls.init();	
 		Instruments.onDefaultLoaded();
- 	pianoroll.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
- 	pianoroll.maxW= Work.global.bpMeas * 16 * (16 / Work.global.bpNote)+1;
+ 		pianoroll.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
+ 		pianoroll.maxW= Work.global.bpMeas * 16 * (16 / Work.global.bpNote)+1;
 		pianoroll.autoZoom();
 		pianoroll.updateChords();	
 		pianoroll.detectKeyScale();
 		pianoroll.scroll("beginning");
+		console.log(midi);
 	};
 	reader.readAsArrayBuffer(file);
 }
