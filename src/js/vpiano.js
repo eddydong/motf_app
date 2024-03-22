@@ -25,8 +25,8 @@ function stopNote(k){
 			.triggerRelease(Global.chromatic_scale[k], Tone.now());
 
 		if (keyMap[k]!=0 && pianoroll.isPlaying && pianoroll.recording){
-			var xxx=pianoroll.playStart + (keyMap[k]-pianoroll.playingFromT)/Tone.Time("16n") + keyLag;
-			if (xxx>=0){
+			var xxx = pianoroll.selStart + (keyMap[k]-pianoroll.startT)/Tone.Time("16n") + keyLag;
+			if (xxx >= 0){
 				pianoroll.addNote({
 					x: xxx,
 					y: k,
@@ -34,7 +34,8 @@ function stopNote(k){
 					l: Work.global.layer_sel,
 					v: 1,
 					s: 0,
-					t: 0
+					t: 0,
+					p: 1
 				});
 			};
 		};
@@ -52,7 +53,7 @@ function onkeydown(e){
 	if (keymapScaled.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==1) 
 		k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(octStart)];
 	if (keymapChroma.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==0)
-		k=keymapChroma.indexOf(e.keyCode)+octStart;
+		k=keymapChroma.indexOf(e.keyCode)+3+12*(octave-1);
 	//console.log(k);
 	if (k) startNote(k);		
 };
@@ -63,7 +64,7 @@ function onkeyup(e){
 	if (keymapScaled.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==1)
 		k=Composer.scale[keymapScaled.indexOf(e.keyCode)+Composer.scale.indexOf(octStart)];
 	if (keymapChroma.indexOf(e.keyCode)>=0 && Work.global.scaledKeyboard==0)
-		k=keymapChroma.indexOf(e.keyCode)+octStart;
+		k=keymapChroma.indexOf(e.keyCode)+3+12*(octave-1);
 	if (k) stopNote(k);
 };
 

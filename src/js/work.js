@@ -18,7 +18,7 @@ Work.global= {
 	metro_vol: -10, 	
 	rhythm_vol: -10, 	
 	human_vel: 1.0,
-	human_tem: 0.2,
+	human_tem: 0,
 	magnet: 0,
 	metronome: 0,
 	scaledKeyboard: 0,
@@ -374,7 +374,7 @@ Work.layer= [  // T01..T10
 		instrument: 1,
 		mute: false,
 		solo: false,
-		volume: -1,
+		volume: -2,
 		pan: 0.5,
 	},
 	{
@@ -392,7 +392,7 @@ Work.layer= [  // T01..T10
 		instrument: 10,
 		mute: false,
 		solo: false,
-		volume: -14,
+		volume: -12,
 		pan: 0.4,
 	},
 	{
@@ -401,7 +401,7 @@ Work.layer= [  // T01..T10
 		instrument: 4,
 		mute: false,		
 		solo: false,
-		volume: -12,
+		volume: -10,
 		pan: -0.3,
 		pedal: [{tick:0, onOff:1}]
 	},
@@ -429,7 +429,7 @@ Work.layer= [  // T01..T10
 		instrument: 17,
 		mute: false,		
 		solo: false,
-		volume: -4,
+		volume: -5,
 		pan: -0.2,
 		pedal: [{tick:0, onOff:1}]
 	}

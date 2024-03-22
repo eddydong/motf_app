@@ -2176,7 +2176,7 @@ Pianoroll.prototype.detectKeyScale=function(){
 
 	if (selected.length==0) return;
 	for (var i=0; i<selected.length; i++) notes.push(Work.global.seqXY[selected[i]]);
-	var ksFits = Theory.keyScaleFit1(notes);
+	var ksFits = motf.theory.keyScaleFit1(notes);
 	var ksFit1 = ksFits.bestMatches[0];
 	console.log(ksFits);
 	 

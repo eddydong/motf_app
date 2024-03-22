@@ -183,7 +183,64 @@ var theory = {
 			if (i==k) break;
 		}; 
 		return cc;
+	},
+
+	// notes: in format of Work.global.seqXY
+	keyScaleFit1(notes) {
+		var maxScore=-Infinity, maxRes=[];
+		var totalDuration=0;
+		for (var i=0; i<notes.length; i++) totalDuration+=notes[i].d;
+		for (var k=0; k<12; k++) {
+			for (var s=0; s<motf.theory.scaleDict.length-1; s++) 
+			for (var m=0; m<motf.theory.scaleDict[s].len-1; m++)
+			{	
+				var mask = this.transpose(motf.theory.scaleDict[s].modes[m], k);
+				var inScaleDuration=0, outScaleCount=0;
+				var map=Array(12).fill(0);
+				for (var n=0; n<notes.length; n++){
+					if (mask[(notes[n].y+9)%12]=='1') {
+						map[(notes[n].y+9)%12]=1;
+						inScaleDuration+=notes[n].d;
+					};
+				};
+				for (var i=0; i<12; i++) 
+					if (mask[i]=="1" && map[i]==0) outScaleCount++;
+				var score= inScaleDuration / totalDuration - outScaleCount / 12;
+				if (score > maxScore) maxScore = score;
+			}
+		};
+		for (var k=0; k<12; k++) {
+			for (var s=0; s<motf.theory.scaleDict.length-1; s++) 
+			for (var m=0; m<motf.theory.scaleDict[s].len-1; m++)
+			{	
+				var mask = this.transpose(motf.theory.scaleDict[s].modes[m], k);
+				var inScaleDuration=0, outScaleCount=0;
+				var map=Array(12).fill(0);
+				for (var n=0; n<notes.length; n++){
+					if (mask[(notes[n].y+9)%12]=='1') {
+						map[(notes[n].y+9)%12]=1;
+						inScaleDuration+=notes[n].d;
+					};
+				};
+				for (var i=0; i<12; i++) 
+					if (mask[i]=="1" && map[i]==0) outScaleCount++;
+				var score= inScaleDuration / totalDuration - outScaleCount / 12;
+				if (score == maxScore) {
+					maxRes.push({key:k, keyName: motf.theory.keyNames[k],
+						scale_id: s, scaleName: motf.theory.scaleDict[s].name, 
+						mode: m, scaleLen: motf.theory.scaleDict[s].len});
+				}
+			}
+		};
+		return {
+			confidence: maxScore,
+			bestMatches: maxRes
+		};
 	}
+	// console.log(keyScaleFit([{y: 27, d: 1},{y: 30, d: 1},{y: 32, d: 1},{y: 33, d: 1},{y: 34, d: 1}
+	// ,{y: 37, d: 1}]));
+	//console.log(keyScaleFit([{y: 27, d: 1},{y: 31, d: 1},{y: 34, d: 1}]));
+
 }
 
 class Context {
