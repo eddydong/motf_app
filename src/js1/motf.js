@@ -339,7 +339,7 @@ class Chorder {
 		this.from = from_layer,
 		this.to = to_layer,
 		this.pattern = [ 
-			[0,1,2,1,3,1,2,1]
+			[[0,2],[1,1],[2,1],[3,2],[2,2]]
 		],
 		this.fill(guitarSwipe)
 	}
@@ -552,19 +552,20 @@ class Chorder {
 			for (var k=0+chordBase; k<24+chordBase; k++) if (chords[i].mask[k % 12]==1){
 				chord.push(k);
 			};
-
+			var pos = 0;
 			for (var k=0; k<this.pattern[0].length; k++) { 
 				var newNote={
-					x: Work.global.bpMeas / Work.global.bpNote * 8 * (i + 0.125 * k),
-					y: 27 + chord[this.pattern[0][k]],
-					d: Work.global.bpMeas / Work.global.bpNote * 8 * 0.125 , //6, 
+					x: Work.global.bpMeas / Work.global.bpNote * 8 * (i + pos / 8),
+					y: 27 + chord[this.pattern[0][k][0]],
+					d: Work.global.bpMeas / Work.global.bpNote * 8 * this.pattern[0][k][1]/8 , //6, 
 					s: 0, 
-					v: 0.5 + (3-(k % 4)) / 3, 
+					v: 0.5 + (3-(pos % 4)) / 3, 
 					l: 3, //Work.global.layer_sel,
 					t: 1, // type: 0: normal note; 1: just improvised	
 					p: 1	
 				};
 				this.proll.addNote(newNote);
+				pos+=this.pattern[0][k][1];
 			}
 		};	
 	}
