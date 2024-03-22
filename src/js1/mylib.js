@@ -117,7 +117,8 @@ function getMaxIndex(arr){
 }
 
 myLib.animQueue=[];
-function ramp(object, property, from, to, inSeconds=0.15){
+function ramp(object, property, from, to, inSeconds=0.25){
+	
 	for (var i=0; i<myLib.animQueue.length; i++)
 	if (myLib.animQueue[i][0]===object && myLib.animQueue[i][1]===property
 		&& myLib.animQueue[i][2] != null){

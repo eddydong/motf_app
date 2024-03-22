@@ -169,7 +169,8 @@ var Improviser1={};
                     s: 1, 
                     v: 1, 
                     l: 4, //j,
-                    t: 0 // type: 0: normal note; 1: just improvised			
+                    t: 0, // type: 0: normal note; 1: just improvised			
+                    p: 0.95
             });
             pos += Improviser1.basicbass[i].pick[j].len;
         }
@@ -184,7 +185,8 @@ var Improviser1={};
                     s: 0, 
                     v: 0.3, 
                     l: 2, //j,
-                    t: 2 // type: 0: normal note; 1: just improvised			
+                    t: 2, // type: 0: normal note; 1: just improvised			
+                    p: 1
             });
             pianoroll.addNote({
                 x: pos,
@@ -193,7 +195,8 @@ var Improviser1={};
                 s: 0, 
                 v: 1, 
                 l: 2, //j,
-                t: 2 // type: 0: normal note; 1: just improvised			
+                t: 2, // type: 0: normal note; 1: just improvised			
+                p: 1
             });
             pos += Improviser1.meline1[i].len;
         }
@@ -214,7 +217,8 @@ var Improviser1={};
                     s: 0, 
                     v: 1, 
                     l: 0, //j,
-                    t: 0 // type: 0: normal note; 1: just improvised			
+                    t: 0, // type: 0: normal note; 1: just improvised			
+                    p: 1
                 });
                 prevNote = Work.global.seqXY[Work.global.seqXY.length-1];
             };
@@ -230,7 +234,8 @@ var Improviser1={};
                 s: 0, 
                 v: 1, 
                 l: 0, //j,
-                t: 0 // type: 0: normal note; 1: just improvised			
+                t: 0, // type: 0: normal note; 1: just improvised			
+                p: 1
             }); 
             pianoroll.addNote({
                 x: start - lastNote1.len - lastNote2.len,
@@ -239,7 +244,8 @@ var Improviser1={};
                 s: 0, 
                 v: 1, 
                 l: 0, //j,
-                t: 0 // type: 0: normal note; 1: just improvised			
+                t: 0, // type: 0: normal note; 1: just improvised		
+                p: 1
             }); 
         } else if (lastNote1.len <= 12) {
             pianoroll.addNote({
@@ -249,7 +255,8 @@ var Improviser1={};
                 s: 0, 
                 v: 1, 
                 l: 0, //j,
-                t: 0 // type: 0: normal note; 1: just improvised			
+                t: 0, // type: 0: normal note; 1: just improvised			
+                p: 1
             }); 
         };
 
@@ -267,7 +274,8 @@ var Improviser1={};
                     s: 0, 
                     v: 1, 
                     l: 1, //j,
-                    t: 0 // type: 0: normal note; 1: just improvised			
+                    t: 0, // type: 0: normal note; 1: just improvised
+                    p: 1		
             });
             pos += Improviser1.melody2[i].pick[j].len;
         };
@@ -295,7 +303,8 @@ var Improviser1={};
                     s: 0, 
                     v: 1, 
                     l: 5, //j,
-                    t: 2 // type: 0: normal note; 1: just improvised			
+                    t: 2, // type: 0: normal note; 1: just improvised			
+                    p: 0.68
             });
             pos += Improviser1.walkingbass[i].pick[j].len;
         };

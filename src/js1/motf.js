@@ -11,6 +11,7 @@ var color = {
 		purple: [255,160,255],
 		yellow: [255,255,150],
 		white: [255,255,255],
+		grey: [100,100,100],
 		black: [0,0,0],
 	},
 	get(name, opacity){
@@ -74,7 +75,8 @@ var improviser = {
 		leadingToNext: true
 	},
 	vocal:{
-		rhythm:[[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3]],
+		rhythm:[[2,2,2,2],[3,2,1,2],[3,2,2,1],[2,1,2,3],[2,3,1,2],[2,1,3,2],[4,2,1,1],[4,4/3,4/3,4/3],
+				[2,2,4], [3,1,4],[1,1,6],[2,6],[1,1,1,5],[2,1,1,4]],
 		rhythm_alter:[[6,1,1],[6, 2],[4,4],[8]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
 				   chances: [ 0.5,  0.9,  0.9,   0.4,  0.4,  0.6,  0.6,  0.3,  0.3]},
@@ -256,7 +258,8 @@ class Drumer {
 					s: 0, 
 					v: i % 4 == 0 ? 1 : 0.5, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised			
+					p: 0.95
 			});
 			if (i % 64 == 16)
 			pianoroll.addNote({
@@ -266,7 +269,8 @@ class Drumer {
 					s: 0, 
 					v: 1, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised			
+					p: 1
 			});	
 			if (i % 32 == 10)
 			pianoroll.addNote({
@@ -276,7 +280,8 @@ class Drumer {
 					s: 0, 
 					v: 1, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised			
+					p: 1
 			});
 			if (i % 16 == 0)
 			pianoroll.addNote({
@@ -286,7 +291,8 @@ class Drumer {
 					s: 0, 
 					v: 1, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised			
+					p: 0.95
 			});
 			if (i % 128 == 12)
 			pianoroll.addNote({
@@ -296,7 +302,8 @@ class Drumer {
 					s: 0, 
 					v: 2, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised		
+					p: 1	
 			});
 			if (i % 128 == 14)
 			pianoroll.addNote({
@@ -306,7 +313,8 @@ class Drumer {
 					s: 0, 
 					v: 2, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised			
+					p: 1
 			});
 			if (i % 8 == 4)
 			pianoroll.addNote({
@@ -316,7 +324,8 @@ class Drumer {
 					s: 0, 
 					v: 1, 
 					l: this.layer,
-					t: 0 // type: 0: normal note; 1: just improvised			
+					t: 0, // type: 0: normal note; 1: just improvised	
+					p: 0.95	
 			});
 		}
 	}	
@@ -542,7 +551,8 @@ class Chorder {
 					s: 0, 
 					v: 1, 
 					l: 3, //Work.global.layer_sel,
-					t: 1 // type: 0: normal note; 1: just improvised			
+					t: 1, // type: 0: normal note; 1: just improvised	
+					p: 1		
 				};
 				// var newNote2={
 				// 	x: Work.global.bpMeas / Work.global.bpNote * 8 * i + 6 + ((c-1)*guitarSwipe),

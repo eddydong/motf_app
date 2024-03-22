@@ -61,7 +61,8 @@ function Pianoroll(){
 		blackKeysAlt: 0.2,		
 		altMeasAlt: 0.08		
 	};
- 	
+	this.dimDuration = 0.5;
+
  	var self=this, ctx=this.ctx;
 
 	this.canvas.onmousemove=function(e){
@@ -189,6 +190,7 @@ function Pianoroll(){
 				d: Tone.Time(self.newNote).toSeconds()/Tone.Time("16n").toSeconds(), 
 				s: 1, 
 				v: 0.5, 
+				p: 1,
 				l: Work.global.layer_sel
 			});
 			self.newNote=null;
@@ -790,6 +792,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		};
 		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
 			colorF = motf.color.get("red", this.outFocusNoteOpacity);
+		if (this.layer[Work.global.seqXY[i].l].channel.muted)
+			colorF = motf.color.get("grey", this.outFocusNoteOpacity);
 
 		// if (Work.global.seqXY[i].t==1) {
 		// 	colorF="rgba(120,255,255,"+this.outFocusNoteOpacity+")";	
@@ -891,6 +895,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		};
 		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
 			colorF = motf.color.get("red", 0.9);
+			if (this.layer[Work.global.seqXY[i].l].channel.muted)
+			colorF = motf.color.get("grey", 0.9);
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
@@ -1602,15 +1608,15 @@ Pianoroll.prototype.stop=function(){
 }
 
 Pianoroll.prototype.dim=function(){
-	myLib.ramp(this.rollScheme, 'whiteKeysAlt', this.rollScheme.whiteKeys, this.rollScheme.whiteKeys-0.15);
-	myLib.ramp(this.rollScheme, 'blackKeysAlt', this.rollScheme.blackKeys, this.rollScheme.blackKeys-0.15);
-	myLib.ramp(this.rollScheme, 'altMeasAlt',  this.rollScheme.altMeas, this.rollScheme.altMeas-0.05);
+	myLib.ramp(this.rollScheme, 'whiteKeysAlt', this.rollScheme.whiteKeys, this.rollScheme.whiteKeys-0.15,this.dimDuration);
+	myLib.ramp(this.rollScheme, 'blackKeysAlt', this.rollScheme.blackKeys, this.rollScheme.blackKeys-0.15,this.dimDuration);
+	myLib.ramp(this.rollScheme, 'altMeasAlt',  this.rollScheme.altMeas, this.rollScheme.altMeas-0.05,this.dimDuration);
 }
 
 Pianoroll.prototype.unDim=function(){
-	myLib.ramp(this.rollScheme, 'whiteKeysAlt', this.rollScheme.whiteKeys-0.15, this.rollScheme.whiteKeys);
-	myLib.ramp(this.rollScheme, 'blackKeysAlt', this.rollScheme.blackKeys-0.15, this.rollScheme.blackKeys);
-	myLib.ramp(this.rollScheme, 'altMeasAlt',  this.rollScheme.altMeas-0.05, this.rollScheme.altMeas);
+	myLib.ramp(this.rollScheme, 'whiteKeysAlt', this.rollScheme.whiteKeys-0.15, this.rollScheme.whiteKeys,this.dimDuration);
+	myLib.ramp(this.rollScheme, 'blackKeysAlt', this.rollScheme.blackKeys-0.15, this.rollScheme.blackKeys,this.dimDuration);
+	myLib.ramp(this.rollScheme, 'altMeasAlt',  this.rollScheme.altMeas-0.05, this.rollScheme.altMeas,this.dimDuration);
 }
 
 Pianoroll.prototype.play=function(){
@@ -1702,7 +1708,8 @@ Pianoroll.prototype.playNext=function(t){
 
 	if (Work.global.seqIJ[currentTick] && Work.global.seqIJ[currentTick].notes.length>0) 
 	for (var i=0; i<Work.global.seqIJ[currentTick].notes.length; i++){
-		if (sel==0 || (sel>0 && Work.global.seqIJ[currentTick].notes[i].sel==1))
+		if ((sel==0 || (sel>0 && Work.global.seqIJ[currentTick].notes[i].sel==1))
+		&& Math.random()<Work.global.seqIJ[currentTick].notes[i].prob)
 		{
 			var ins=this.layer[Work.global.seqIJ[currentTick].notes[i].layer].instrument;
 			var pedal=0;
@@ -2091,6 +2098,7 @@ Pianoroll.prototype.improvise=function(params){
 					d: notes[j].l, 
 					s:1, 
 					v:1,
+					p: 1,
 					l: Work.global.layer_sel, 
 					t: 1 // type: 0: normal note; 1: just improvised
 				},
@@ -2239,6 +2247,7 @@ Pianoroll.prototype.autoSimpleChordByKey_1=function(){
 				d: Work.global.bpMeas / Work.global.bpNote * 16, 
 				s: 1, 
 				v: 1, 
+				p: 1,
 				l: Work.global.layer_sel,
 				t: 1 // type: 0: normal note; 1: just improvised			
 		});

@@ -145,7 +145,7 @@ Global.updateMeter=()=>{
 
 	for (var i=0; i<128; i++){
 		fft_ctx.fillStyle = motf.color.get('white', meterAlpha);
-		fft_ctx.fillRect(i*2, 12, 2, -vf[i]*1000);	
+		fft_ctx.fillRect(i*2, 12, 2, -vf[i]*500);	
 	}
 };
 
@@ -189,7 +189,8 @@ Global.XYtoIJ=()=>{
 		vel: Work.global.seqXY[i].v,
 		layer: Work.global.seqXY[i].l,
 		sel: Work.global.seqXY[i].s,				
-		type: Work.global.seqXY[i].t
+		type: Work.global.seqXY[i].t,
+		prob: Work.global.seqXY[i].p
 	})};
 	
 	// push in rhythm notes
