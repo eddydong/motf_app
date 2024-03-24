@@ -794,7 +794,7 @@ function getVirtualURL(url, instruId, noteId){
 
       Instruments.progress =Math.round(Instruments.sampleLoaded / Instruments.totalSamples *100);
 
-      document.getElementById("progress").innerHTML=Instruments.progress+"%";
+      document.getElementById("splash_text").innerHTML = "LOADING "+Instruments.progress+"%";
 
       checkLoadStatus();
     });
