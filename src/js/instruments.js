@@ -665,6 +665,9 @@ for (var i=0; i<samplerParams.length; i++){
   samplerParams[i].vUrls.push("");
 }
 
+
+Instruments.samples=[];
+
 var updateSample = function(){
   var newInstru = false;
   for (var i=0; i<Work.layer.length; i++)
@@ -684,11 +687,15 @@ var updateSample = function(){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
 //    console.log("loading remote "+i);
+
+    Instruments.samples[i]=[];
+
     for (var j=0; j<Object.values(samplerParams[i].urls).length; j++)
       getVirtualURL(samplerParams[i].baseUrl
                     +Object.values(samplerParams[i].urls)[j], i, j);
   };  
-}
+};
+
 updateSample();
 
 function getVirtualURL(url, instruId, noteId){
@@ -699,6 +706,9 @@ function getVirtualURL(url, instruId, noteId){
       return response.blob();
     })
     .then((response) => {
+
+      Instruments.samples[instruId].push({noteId: noteId, blob:response});
+
       samplerParams[instruId].vUrls[noteId]=URL.createObjectURL(response);
       checkLoadStatus();
     });
@@ -724,6 +734,8 @@ function checkLoadStatus(){
 }
 
 Instruments.onDefaultLoaded=()=>{
+  db.put({key: "Samples", value: Instruments.samples});
+
   for (var i=0; i<Work.layer.length; i++) 
     if (pianoroll.layer[i].instrument ==null
     || pianoroll.layer[i].instrument.instrumentName

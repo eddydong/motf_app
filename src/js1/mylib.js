@@ -145,6 +145,26 @@ function ramp(object, property, from, to, inSeconds=0.25){
 	},10)]);
 }
 
+function reshuffle(arr){ // TBI
+	var res = [], flag = [];
+	for (var i=0; i < arr.length; i++) flag.push(0);
+	for (var i=0; i < arr.length; i++){
+		var idx = Math.floor(Math.random() * arr.length);
+		while (flag[idx]==1) idx = Math.floor(Math.random() * arr.length);
+		res.push(arr[idx]);
+		flag[idx] = 1;
+	}
+	return res;
+}
+
+function retro(arr){
+	console.log(arr);
+	var res=[];
+	for (var i=0; i<arr.length; i++) res.push(arr[arr.length-1-i]);
+	console.log(res);
+	return res;
+}
+
 // Export
 
 myLib.deepCopy = deepCopy;
@@ -159,5 +179,7 @@ myLib.arrayDel = arrayDel;
 myLib.pick = pick;
 myLib.getMaxIndex = getMaxIndex;
 myLib.ramp = ramp;
+myLib.reshuffle = reshuffle;
+myLib.retro = retro;
 
 })();

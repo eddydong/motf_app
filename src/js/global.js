@@ -218,7 +218,7 @@ Global.XYtoIJ=()=>{
 	// 	};
 	// };
 
-	Work.global.seqIJ=res;
+	pianoroll.seqIJ=res;
 	
 	pianoroll.updateEndTick();
 	

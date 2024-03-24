@@ -147,7 +147,7 @@ var Controls= {};
 				for (i=0; i<ls.length; i++) ls[i].style.background=Global.color.btn_inactive;
 				ls[Work.global.layer_sel].style.background=Global.color.btn_active;
 				//pianoroll.autoZoom("y");
-				if (!Work.global.through) pianoroll.updateChords();
+				//if (!Work.global.through) pianoroll.updateChords();
 			};
 			
 			let mw=Work.global.bpMeas / Work.global.bpNote * 16;
@@ -267,8 +267,9 @@ var Controls= {};
 
 			// C for showChord
 			if (e.keyCode==67) {
-				// Chord.print();
-				pianoroll.autoSimpleChordByKey(0.08);
+				document.querySelector("#btn_add_layer").onclick(3);
+				var chorder = new motf.Chorder(pianoroll, 4, Work.layer.length-1, 0);
+				pianoroll.deSelectAll();
 			};
 			
 			// S for showCanvas (Stroke)
@@ -279,8 +280,6 @@ var Controls= {};
 			
 			// H for random Chord generation
 			if (e.keyCode==72) {
-			//	Chord.update();
-				pianoroll.updateChords();
 			};
 
 			// P for print stroke onto the scores
@@ -528,7 +527,7 @@ var Controls= {};
 			Work = JSON.parse(res);
 			pianoroll.historyPush("Open motf File");
 			pianoroll.updateEndTick();
-			pianoroll.updateChords();
+		//	pianoroll.updateChords();
 			pianoroll.autoZoom();
 			pianoroll.scroll("beginning");
 			Composer.init();
@@ -1102,11 +1101,11 @@ var Controls= {};
 		pianoroll.autoZoom();
 	}
 
-	document.querySelector("#btn_add_layer").onclick=()=>{
-		Work.layer.push(copyObj(newWork.layer[0]));
+	document.querySelector("#btn_add_layer").onclick=(e, copyLayer=0)=>{
+		Work.layer.push(copyObj(newWork.layer[copyLayer]));
 		init();
 		Instruments.onDefaultLoaded();
-		pianoroll.historyPush("Before Add Layer");
+//		pianoroll.historyPush("Before Add Layer");
 
 		var ls = document.querySelectorAll(".layer-name");
 		for (i=0; i<ls.length; i++) ls[i].style.background=Global.color.btn_inactive;
@@ -1134,31 +1133,34 @@ var Controls= {};
 	};
 	
 Controls.saveTemp=function(){
-    try {
-		window.localStorage.setItem("tempwork", JSON.stringify(Work));
-		console.log("saved to localstorage");
-    } catch(e) {
-    	// error means local storage is full...
-		window.localStorage.clear();
-		window.localStorage.setItem("tempwork", JSON.stringify(Work));
-    }
+    // try {
+	// 	window.localStorage.setItem("tempwork", JSON.stringify(Work));
+	// 	console.log("saved to localstorage");
+    // } catch(e) {
+    // 	// error means local storage is full...
+	// 	window.localStorage.clear();
+	// 	window.localStorage.setItem("tempwork", JSON.stringify(Work));
+    // }
+	db.put({key:"Work", value:Work});
 }
 	
 Controls.loadTemp=function(){
 	pianoroll.stop();
-	var work = JSON.parse(window.localStorage.getItem("tempwork"));
-	if (work) {
-		Work=work;
-		pianoroll.historyPush("Load from localStorage");
-		pianoroll.updateEndTick();
-		pianoroll.updateChords();
-		pianoroll.autoZoom();
-		pianoroll.scroll("beginning");
-		Composer.init();
-		init();
-		Instruments.updateSample();		
-	};
-	console.log("loaded from localstorage");
+	//var work = JSON.parse(window.localStorage.getItem("tempwork"));
+	db.get("Work", (work)=>{
+		if (work) {
+			Work=work;
+			pianoroll.historyPush("Load from localStorage");
+			pianoroll.updateEndTick();
+			pianoroll.updateChords();
+			pianoroll.autoZoom();
+			pianoroll.scroll("beginning");
+			Composer.init();
+			init();
+			Instruments.updateSample();		
+		};
+		console.log("loaded from localstorage");	
+	});
 }
 
 function updateSoloMute(){
@@ -1263,6 +1265,8 @@ function init(){
 		
 		var lds=document.querySelectorAll(".layer-del");
 		for (var i=0; i<lds.length; i++) lds[i].onclick=(e)=>{
+			pianoroll.stop();
+
 			pianoroll.layer[e.target.dataset.i].channel.solo=0;		
 			
 			var ii=parseInt(e.target.dataset.i);

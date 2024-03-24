@@ -62,6 +62,7 @@ function Pianoroll(){
 		altMeasAlt: 0.08		
 	};
 	this.dimDuration = 0.5;
+	this.seqIJ=[];
 
  	var self=this, ctx=this.ctx;
 
@@ -264,12 +265,12 @@ Pianoroll.prototype.selectMeas=function(x1,x2, through){
 		x1=x2;
 		x2=tx;
 	};
-	if (x2>Work.global.seqIJ.length-1) x2=Work.global.seqIJ.length-1;
-	if (x1<=Work.global.seqIJ.length-1)
-	for (var i=x1; i<=x2; i++) Work.global.seqIJ[i].sel=1;
+	if (x2>this.seqIJ.length-1) x2=this.seqIJ.length-1;
+	if (x1<=this.seqIJ.length-1)
+	for (var i=x1; i<=x2; i++) this.seqIJ[i].sel=1;
 }
 Pianoroll.prototype.deSelectMeas=function(){
-	for (var i=0; i<Work.global.seqIJ.length; i++) Work.global.seqIJ[i].sel=0;
+	for (var i=0; i<this.seqIJ.length; i++) this.seqIJ[i].sel=0;
 }
 
 Pianoroll.prototype.addNote=function(note, cause){
@@ -287,7 +288,7 @@ Pianoroll.prototype.updateEndTick=function(){
 	this.startTick=Infinity;
 
 	for (var i=0; i<Work.global.seqXY.length; i++) 
-	if (Work.layer[Work.global.seqXY[i].l].type != "chord" 
+	if (Work.layer[Work.global.seqXY[i].l] && Work.layer[Work.global.seqXY[i].l].type != "chord" 
 	&& Work.layer[Work.global.seqXY[i].l].type != "percussion") {
 		if ((Work.global.seqXY[i].x+Work.global.seqXY[i].d) - this.endTick > precision)
 			this.endTick = (Work.global.seqXY[i].x+Work.global.seqXY[i].d);
@@ -792,9 +793,9 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0)
 				colorF=motf.color.get("yellow", this.outFocusNoteOpacity);
 		};
-		if (Work.layer[Work.global.seqXY[i].l].type=="percussion")
+		if (Work.layer[Work.global.seqXY[i].l] && Work.layer[Work.global.seqXY[i].l].type=="percussion")
 			colorF = motf.color.get("red", this.outFocusNoteOpacity);
-		if (this.layer[Work.global.seqXY[i].l].channel.muted)
+		if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].channel.muted)
 			colorF = motf.color.get("grey", this.outFocusNoteOpacity);
 
 		// if (Work.global.seqXY[i].t==1) {
@@ -816,7 +817,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		this.ctx.fill();
 
 		if ((Work.global.seqXY[i].s==1 && !this.isPlaying) 
-		|| ((!this.layer[Work.global.seqXY[i].l].channel.muted &&
+		|| ((this.layer[Work.global.seqXY[i].l] && !this.layer[Work.global.seqXY[i].l].channel.muted &&
 			this.isPlaying && this.playhead>=Work.global.seqXY[i].x && 
 			this.playhead<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
 			(sel==0 || (sel>0 && Work.global.seqXY[i].s==1)))) { 
@@ -834,7 +835,9 @@ Pianoroll.prototype.drawPianoRoll=function(){
 // 			if (this.isPlaying)
 // 				if (Math.round(Tone.now()*1000) % 2 == 0) velH=velH*0.96;
 			
-			var glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*5;
+			var glow = 1;
+			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter) 
+				this.layer[Work.global.seqXY[i].l].meter.getValue()*5;
 			
 			if (this.isPlaying)
 			velH = velH * glow;
@@ -926,7 +929,9 @@ Pianoroll.prototype.drawPianoRoll=function(){
 // 			if (this.isPlaying)
 // 				if (Math.round(Tone.now()*1000) % 2 == 0) velH=velH*0.96;
 			
-			var glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*10;
+			var glow = 1;
+			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter)
+				this.layer[Work.global.seqXY[i].l].meter.getValue()*10;
 				
 			if (this.isPlaying)
 				velH = velH * glow;
@@ -1039,8 +1044,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 	};
 	
 	// draw select measures
-	for (var i=0; i<Work.global.seqIJ.length;i++)
-	if (Work.global.seqIJ[i].sel===1) {
+	for (var i=0; i<this.seqIJ.length;i++)
+	if (this.seqIJ[i].sel===1) {
 		this.ctx.fillStyle="rgba(255,255,255,0.4)";
 		this.ctx.fillRect(
 			w*(i-this.viewportL),
@@ -1460,8 +1465,8 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 	};
 	
 	// draw select measures
-	for (var i=0; i<Work.global.seqIJ.length;i++)
-	if (Work.global.seqIJ[i].sel===1) {
+	for (var i=0; i<this.seqIJ.length;i++)
+	if (this.seqIJ[i].sel===1) {
 		this.ctx.fillStyle="rgba(255,255,255,0.4)";
 		this.ctx.fillRect(
 			w*(i-this.viewportL),
@@ -1556,7 +1561,7 @@ Pianoroll.prototype.animloop = function(){
 
 		if (this.autoScrollingPaused== undefined || Tone.now()-this.autoScrollingPaused>1){
 			// auto scrolling
-			if (!this.mouseDown && this.viewportW<Work.global.seqIJ.length+1){
+			if (!this.mouseDown && this.viewportW<this.seqIJ.length+1){
 
 				var autoScrollOffset = -this.viewportW/2;	
 				
@@ -1564,11 +1569,11 @@ Pianoroll.prototype.animloop = function(){
 					this.viewportL = this.playhead + autoScrollOffset;
 
 				if (this.viewportL < 0) this.viewportL=0;
-				if (this.viewportL > Work.global.seqIJ.length-this.viewportW+1) 
-					this.viewportL = Work.global.seqIJ.length-this.viewportW+1;
+				if (this.viewportL > this.seqIJ.length-this.viewportW+1) 
+					this.viewportL = this.seqIJ.length-this.viewportW+1;
 
 				if (this.viewportL > 0
-				&& this.viewportL< Work.global.seqIJ.length-this.viewportW+1)
+				&& this.viewportL< this.seqIJ.length-this.viewportW+1)
 					this.autoScrolling = 1;
 				else 
 					this.autoScrolling = 0;
@@ -1585,6 +1590,7 @@ Pianoroll.prototype.animloop = function(){
 
 Pianoroll.prototype.stop=function(){
 	for (var i=0; i<this.layer.length; i++)
+	if (this.layer[i] && this.layer[i].instrument)
 		this.layer[i].instrument.releaseAll();
 
 	if (this.isPlaying) { 
@@ -1710,34 +1716,35 @@ Pianoroll.prototype.playNext=function(t){
 				Instruments.drum3.triggerAttackRelease(0.003, t, Global.metroVolume);
 	};	
 
-	if (Work.global.seqIJ[currentTick] && Work.global.seqIJ[currentTick].notes.length>0) 
-	for (var i=0; i<Work.global.seqIJ[currentTick].notes.length; i++){
-		if ((sel==0 || (sel>0 && Work.global.seqIJ[currentTick].notes[i].sel==1))
-		&& Math.random()<Work.global.seqIJ[currentTick].notes[i].prob)
+	if (this.seqIJ[currentTick] && this.seqIJ[currentTick].notes.length>0) 
+	for (var i=0; i<this.seqIJ[currentTick].notes.length; i++){
+		if ((sel==0 || (sel>0 && this.seqIJ[currentTick].notes[i].sel==1))
+		&& Math.random()<this.seqIJ[currentTick].notes[i].prob)
 		{
-			var ins=this.layer[Work.global.seqIJ[currentTick].notes[i].layer].instrument;
+			var ins=this.layer[this.seqIJ[currentTick].notes[i].layer].instrument;
 			var pedalOn=null;
-			var pedal = Work.layer[Work.global.seqIJ[currentTick].notes[i].layer].pedal;
+			var pedal = Work.layer[this.seqIJ[currentTick].notes[i].layer].pedal;
 			if (pedal){
 				for (var p=0; p<pedal.length; p++)
-				if (pedal[p].tick <= currentTick)
+				if (pedal[p].tick+this.leadTick <= currentTick)
 					pedalOn = pedal[p].onOff;
 				if (!pedalOn) ins.releaseAll();
 			};
 			if (pedalOn) {		
 				if (ins!=null) ins.triggerAttack(
-					Global.chromatic_scale[Work.global.seqIJ[currentTick].notes[i].note], 
-					t+(Work.global.seqIJ[currentTick].notes[i].offset||0)*Tone.Time("16n")
+					Global.chromatic_scale[this.seqIJ[currentTick].notes[i].note], 
+					t+(this.seqIJ[currentTick].notes[i].offset||0)*Tone.Time("16n")
 					 +Math.random()*Tone.Time("16n")*0.6*Work.global.human_tem,
-					Work.global.seqIJ[currentTick].notes[i].vel * this.volumeScale * (1+(Math.random()-0.5)*Work.global.human_vel)
+					this.seqIJ[currentTick].notes[i].vel * this.volumeScale * (1+(Math.random()-0.5)*Work.global.human_vel)
 				);
 			} else {
+				ins.releaseAll();
 				if (ins!=null) ins.triggerAttackRelease(
-					Global.chromatic_scale[Work.global.seqIJ[currentTick].notes[i].note], 
-					Tone.Time("16n").toSeconds()*Work.global.seqIJ[currentTick].notes[i].len, 
-					t+(Work.global.seqIJ[currentTick].notes[i].offset||0)*Tone.Time("16n")
+					Global.chromatic_scale[this.seqIJ[currentTick].notes[i].note], 
+					Tone.Time("16n").toSeconds()*this.seqIJ[currentTick].notes[i].len, 
+					t+(this.seqIJ[currentTick].notes[i].offset||0)*Tone.Time("16n")
 					 +Math.random()*Tone.Time("16n")*0.6*Work.global.human_tem,
-					Work.global.seqIJ[currentTick].notes[i].vel * this.volumeScale * (1+(Math.random()-0.5)*Work.global.human_vel)
+					this.seqIJ[currentTick].notes[i].vel * this.volumeScale * (1+(Math.random()-0.5)*Work.global.human_vel)
 				);
 			};
 		};	
@@ -1956,15 +1963,15 @@ Pianoroll.prototype.getOctListFromSel=function(){
 	var selC=this.selCount();
 	if (selC==0) return;
 	Global.XYtoIJ();
-	for (var i=0; i<Work.global.seqIJ.length; i++) {
+	for (var i=0; i<this.seqIJ.length; i++) {
 		var noteC=0;
-		for (var j=0; j<Work.global.seqIJ[i].notes.length; j++)
-			if (Work.global.seqIJ[i].notes[j].sel==1) {
+		for (var j=0; j<this.seqIJ[i].notes.length; j++)
+			if (this.seqIJ[i].notes[j].sel==1) {
 				noteC++;
 				seeds.push({
 					x: i, 
-					y: Work.global.seqIJ[i].notes[j].note, 
-					l: Work.global.seqIJ[i].notes[j].len
+					y: this.seqIJ[i].notes[j].note, 
+					l: this.seqIJ[i].notes[j].len
 				});
 			};
 		if (noteC>1) return [];
@@ -2233,11 +2240,6 @@ Pianoroll.prototype.autoSimpleChordByKey=function(guitarSwipe){
 	// 		// this.addNote(newNote2);
 	// 	}
 	// };
-	var chorder = new motf.Chorder(this, 4, 3, 0);
-
-	this.autoZoom("y");
-	//this.updateChords();
- 	this.historyPush("auto chord simple"); 	
 }
 
 // generate chords according to Work.global.chord (pre-defined, not according to current melody)
