@@ -33,7 +33,7 @@ class Idb {
     get (key, success=()=>{}) {
         var store = this.db.transaction("store", "readwrite").objectStore("store");
         store.get(key).onsuccess=(e)=>{ 
-            success(e.target.result.value); // return undefined if no match found
+            success(e.target.result); // return undefined if no match found
         };
     }
     del (key, success=()=>{}) {
@@ -45,7 +45,7 @@ class Idb {
     getAll (success=()=>{}){
         var store = this.db.transaction("store", "readwrite").objectStore("store");
         store.getAll().onsuccess=(e)=>{ 
-            success(e.target.result.value);
+            success(e.target.result);
         }        
     }
     getSampleURL (){

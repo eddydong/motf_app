@@ -86,6 +86,7 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
 		urls: {
 			A0: "A0.mp3",
 // 			C1: "C1.mp3",
@@ -126,6 +127,7 @@ var samplerParams=[
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
 		urls: {
         'A0': 'A0.mp3',
         'A1': 'A1.mp3',
@@ -222,6 +224,7 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
     urls: {
 			'E3': 'E3.mp3',
 			'E4': 'E4.mp3',
@@ -266,7 +269,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'A3': 'A3.mp3',
         'A4': 'A4.mp3',
         'A5': 'A5.mp3',
@@ -290,6 +294,7 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
     urls: {
         'F4': 'F4.mp3',
         'F#2': 'Fs2.mp3',
@@ -337,7 +342,8 @@ var samplerParams=[
     timeOffset: 0,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'F#2': 'Fs2.mp3',
         'F#3': 'Fs3.mp3',
         'F#4': 'Fs4.mp3',
@@ -376,6 +382,7 @@ var samplerParams=[
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
     urls: {
         'C6': 'C6.mp3',
         'D5': 'D5.mp3',
@@ -397,7 +404,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'A#3': 'As3.mp3',
         'C3': 'C3.mp3',
         'C4': 'C4.mp3',
@@ -424,7 +432,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'C5': 'C5.mp3',
         'D2': 'D2.mp3',
         'D4': 'D4.mp3',
@@ -457,7 +466,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'D#3': 'Ds3.mp3',
         'D#4': 'Ds4.mp3',
         'D#5': 'Ds5.mp3',
@@ -484,7 +494,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'C2': 'C2.mp3',
         'C#3': 'Cs3.mp3',
         'D2': 'D2.mp3',
@@ -507,7 +518,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'A6': 'A6.mp3',
         'C4': 'C4.mp3',
         'C5': 'C5.mp3',
@@ -527,7 +539,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'D3': 'D3.mp3',
         'D5': 'D5.mp3',
         'D#2': 'Ds2.mp3',
@@ -547,7 +560,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'A#1': 'As1.mp3',
         'A#2': 'As2.mp3',
         'A#3': 'As3.mp3',
@@ -574,6 +588,7 @@ var samplerParams=[
     volumeCorrection: 0,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
     vUrls: [],
 		urls: {
         'A4': 'A4.mp3',
@@ -595,7 +610,8 @@ var samplerParams=[
     loadByDefault: false,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'D4': 'D4.mp3',
         'D5': 'D5.mp3',
         'D6': 'D6.mp3',
@@ -616,7 +632,8 @@ var samplerParams=[
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
-		urls: {
+    blobs: [],
+    urls: {
         'E2': 'E2.wav',
         'A2': 'A2.wav',
         'D3': 'D3.wav',
@@ -633,6 +650,7 @@ var samplerParams=[
     loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
+    blobs: [],
     urls: {    
       'C2': 'hihat.mp3',
       'C#2': 'kick.mp3',
@@ -656,8 +674,8 @@ var samplerParams=[
   }
 ];
 Instruments.samplerParams = samplerParams;
-Instruments.defaultLoaded = false;
-Instruments.onDefaultLoaded=()=>{console.log("all loaded")};
+//Instruments.defaultLoaded = false;
+//Instruments.onDefaultLoaded=()=>{console.log("all loaded")};
 
 // init vUrls
 for (var i=0; i<samplerParams.length; i++){
@@ -665,30 +683,88 @@ for (var i=0; i<samplerParams.length; i++){
   samplerParams[i].vUrls.push("");
 }
 
+// function allDownloaded(){
+//   for (var i=0; i<samplerParams.length; i++){
+//     if (!samplerParams[i].loadByDefault) continue;
+//     for (var j=0; j<samplerParams[i].vUrls.length; j++)
+//       if (samplerParams[i].vUrls[j].length==0)
+//         return false;
+//   };
+//   return true;
+//   //Instruments.defaultLoaded = true;
+//   // for (var i=0; i<samplerParams.length; i++){
+//   //   if (!samplerParams[i].loadByDefault) continue;
+//   //   samplerParams[i].baseUrl="";
 
-Instruments.samples=[];
+//   //   for (var j=0; j<samplerParams[i].vUrls.length; j++) 
+//   //     samplerParams[i].urls[Object.keys(samplerParams[i].urls)[j]]
+//   //       =samplerParams[i].vUrls[j];
+//   // } 
+//   //Instruments.onDefaultLoaded();
+// }
+
+// var samples=[];
+// function loadInstruments(){
+//   db.get("Samples",(e)=>{
+//     if (e) samples = e.value;
+//     for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].loadByDefault) {
+//       if (!samples[i]) {
+//         for (var j=0; j<samplerParams[i].urls.length; j++){
+//           fetch(new Request(samplerParams[i].baseUrl+Object.values(samplerParams[i].urls)[j]))
+//           .then((response) => {
+//             if (!response.ok) 
+//               throw new Error(`HTTP error! Status: ${response.status}`);
+//             return response.blob();
+//           })
+//           .then((response) => {
+//             samplerParams[i].blobs[j] = response;    
+//             samplerParams[i].vUrls[j]=URL.createObjectURL(response);
+//             checkLoadStatus();
+//           });  
+//         }
+//         samples[i]=sample;
+//       }  
+//     }
+//   });
+// }
+
+// console.log(loadInstruments());
+
+var samplesChanged = false;
+Instruments.refresh = function(){
+  db.get("Samples",(e)=>{
+    if (e) {
+      samplerParams = e.value;
+      for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].baseUrl==""){
+        for (var j=0; j<Object.values(samplerParams[i].urls).length; j++){
+            samplerParams[i].vUrls[j] = URL.createObjectURL(samplerParams[i].blobs[j]);
+        };
+      };
+      Instruments.onDefaultLoaded();
+      console.log("Samples loaded from local.")
+    } else {
+      updateSample();
+    }
+  });
+}
+
+Instruments.refresh();
 
 var updateSample = function(){
   var newInstru = false;
   for (var i=0; i<Work.layer.length; i++)
-    if (Instruments.samplerParams[Work.layer[i].instrument].baseUrl!=""){
-      Instruments.samplerParams[Work.layer[i].instrument].loadByDefault=true;
+    if (samplerParams[Work.layer[i].instrument].baseUrl!=""){
+      samplerParams[Work.layer[i].instrument].loadByDefault=true;
       newInstru = true;
     };
-    
   if (!newInstru) {
     Instruments.onDefaultLoaded();
     return;
   };
-
-  console.log("Downloading instruments to cache...")
-
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
 //    console.log("loading remote "+i);
-
-    Instruments.samples[i]=[];
 
     for (var j=0; j<Object.values(samplerParams[i].urls).length; j++)
       getVirtualURL(samplerParams[i].baseUrl
@@ -696,9 +772,8 @@ var updateSample = function(){
   };  
 };
 
-updateSample();
-
 function getVirtualURL(url, instruId, noteId){
+  console.log("Downloading sample #"+instruId+" to cache...")
   fetch(new Request(url))
     .then((response) => {
       if (!response.ok) 
@@ -707,7 +782,9 @@ function getVirtualURL(url, instruId, noteId){
     })
     .then((response) => {
 
-      Instruments.samples[instruId].push({noteId: noteId, blob:response});
+      samplesChanged = true;
+
+      samplerParams[instruId].blobs[noteId]=response;
 
       samplerParams[instruId].vUrls[noteId]=URL.createObjectURL(response);
       checkLoadStatus();
@@ -715,35 +792,40 @@ function getVirtualURL(url, instruId, noteId){
 };
 
 function checkLoadStatus(){
-  for (var i=0; i<samplerParams.length; i++){
-    if (!samplerParams[i].loadByDefault) continue;
+  for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].loadByDefault){
     for (var j=0; j<samplerParams[i].vUrls.length; j++)
-      if (samplerParams[i].vUrls[j].length==0)
+      if (!(samplerParams[i].vUrls[j].length>0))
         return false;
   };
-  Instruments.defaultLoaded = true;
-  for (var i=0; i<samplerParams.length; i++){
-    if (!samplerParams[i].loadByDefault) continue;
+  console.log("all downloaded");
+  for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].loadByDefault)
     samplerParams[i].baseUrl="";
-
-    for (var j=0; j<samplerParams[i].vUrls.length; j++) 
-      samplerParams[i].urls[Object.keys(samplerParams[i].urls)[j]]
-        =samplerParams[i].vUrls[j];
-  } 
   Instruments.onDefaultLoaded();
 }
 
 Instruments.onDefaultLoaded=()=>{
-  db.put({key: "Samples", value: Instruments.samples});
+//  Instruments.defaultLoaded = true;
+  for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].loadByDefault){
+    samplerParams[i].baseUrl="";
+    for (var j=0; j<samplerParams[i].vUrls.length; j++) {
+      samplerParams[i].urls[Object.keys(samplerParams[i].urls)[j]]
+        = samplerParams[i].vUrls[j];
+    }
+  } 
+
+  if (samplesChanged) {
+//    for (var i=0; i<samplerParams.length;i++) samplerParams[i].vUrls=[];
+    db.put({key: "Samples", value: samplerParams});
+  };
 
   for (var i=0; i<Work.layer.length; i++) 
     if (pianoroll.layer[i].instrument ==null
     || pianoroll.layer[i].instrument.instrumentName
-    !=Instruments.samplerParams[Work.layer[i].instrument].name) {
+    !=samplerParams[Work.layer[i].instrument].name) {
       Instruments.newSampler(Work.layer[i].instrument, i);
     };
+
   Controls.hideWaiting();
-  console.log("Instruments loaded from cache.");
 }
 
       // save the virtual lnk's somewhere!!!

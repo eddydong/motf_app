@@ -1241,10 +1241,9 @@ function init(){
 				//pianoroll.stop();
 				showWaiting();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
-				if (Instruments.samplerParams[e.target.selectedIndex].baseUrl==""){
+				if (Instruments.samplerParams[e.target.selectedIndex].loadByDefault){
 					Instruments.onDefaultLoaded();
 				} else {
-					showWaiting();
 					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
 					Instruments.updateSample();
 				};
