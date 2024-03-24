@@ -291,7 +291,7 @@ var samplerParams=[
 	{//4
 		name:"Steel Guitar",
 		timeOffset: 0,
-    loadByDefault: false,
+    loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
     blobs: [],
@@ -463,7 +463,7 @@ var samplerParams=[
 	{//9
 		name: "Electric Guitar",
 		timeOffset: 0,
-    loadByDefault: false,
+    loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
     blobs: [],
@@ -491,7 +491,7 @@ var samplerParams=[
 	{//10
 		name: "Contrabass",
 		timeOffset: 0,
-    loadByDefault: false,
+    loadByDefault: true,
     volumeCorrection: 0,
     vUrls: [],
     blobs: [],
@@ -759,19 +759,23 @@ var updateSample = function(){
     Instruments.onDefaultLoaded();
     return;
   };
+  Instruments.totalSamples = 0;
+  Instruments.sampleLoaded = 0;
   for (var i=0; i<samplerParams.length; i++){
     if (!samplerParams[i].loadByDefault || samplerParams[i].baseUrl=="") 
       continue;
 //    console.log("loading remote "+i);
 
-    for (var j=0; j<Object.values(samplerParams[i].urls).length; j++)
+    for (var j=0; j<Object.values(samplerParams[i].urls).length; j++){
       getVirtualURL(samplerParams[i].baseUrl
                     +Object.values(samplerParams[i].urls)[j], i, j);
+      Instruments.totalSamples++;
+    }
   };  
 };
 
 function getVirtualURL(url, instruId, noteId){
-  console.log("Downloading sample #"+instruId+" to cache...")
+  //console.log("Downloading sample #"+instruId+" to cache...")
   fetch(new Request(url))
     .then((response) => {
       if (!response.ok) 
@@ -785,6 +789,13 @@ function getVirtualURL(url, instruId, noteId){
       samplerParams[instruId].blobs[noteId]=response;
 
       samplerParams[instruId].vUrls[noteId]=URL.createObjectURL(response);
+
+      Instruments.sampleLoaded++;
+
+      Instruments.progress =Math.round(Instruments.sampleLoaded / Instruments.totalSamples *100);
+
+      document.getElementById("progress").innerHTML=Instruments.progress+"%";
+
       checkLoadStatus();
     });
 };
