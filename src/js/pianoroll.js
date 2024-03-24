@@ -10,7 +10,7 @@ function Pianoroll(){
 	this.height = this.canvas.height;
  	this.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
  	this.maxW= Work.global.bpMeas * 32 * (16 / Work.global.bpNote)+1;
-	this.viewportL = 0;  // left most column position in timeline
+	this.viewportL = this.leadTick-2;  // left most column position in timeline
 	this.viewportW = this.maxW; // number of columns / 8n's
 	this.viewportH = vH(); // height of viewport in rows (key's)
 	this.viewportB = 0; // bottom row key on piano
@@ -341,13 +341,14 @@ Pianoroll.prototype.scroll=function(dir, step){
 	if (dir=="top") this.viewportB=vH()-this.viewportH;
 	if (dir=="bottom") this.viewportB=0;
 	if (dir=="beginning") {
-		this.viewportL=0;
+		this.viewportL = Math.min(this.leadTick, this.startTick)-2;
 		this.playhead=this.startTick;
 		this.playTick=0;
 	};
 	if (dir=="end") {
 		var h=this.endTick-this.viewportW+1;
-		this.viewportL= h>=0 ? h : 0;
+		this.viewportL= h>=Math.min(this.leadTick, this.startTick)-2 ? h 
+			: Math.min(this.leadTick, this.startTick)-2;
 		this.playhead=this.endTick;
 	};
 	Navbar.updateLR();
@@ -837,7 +838,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			
 			var glow = 1;
 			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter) 
-				this.layer[Work.global.seqXY[i].l].meter.getValue()*5;
+			 	glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*5;
 			
 			if (this.isPlaying)
 			velH = velH * glow;
@@ -931,7 +932,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			
 			var glow = 1;
 			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter)
-				this.layer[Work.global.seqXY[i].l].meter.getValue()*10;
+				glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*10;
 				
 			if (this.isPlaying)
 				velH = velH * glow;
@@ -1543,7 +1544,7 @@ Pianoroll.prototype.animloop = function(){
 			this.playTick=this.selStart;
 			this.playhead=this.playTick;
 			//this.playingFromT=Tone.now();
-			this.viewportL=0;
+			this.viewportL = this.leadTick-2;
 			this.startT= Tone.now();
 
 			// if (this.recorder.state=="started") {
@@ -1568,12 +1569,12 @@ Pianoroll.prototype.animloop = function(){
 				if (this.playhead-this.viewportL>this.viewportW/2)
 					this.viewportL = this.playhead + autoScrollOffset;
 
-				if (this.viewportL < 0) this.viewportL=0;
-				if (this.viewportL > this.seqIJ.length-this.viewportW+1) 
-					this.viewportL = this.seqIJ.length-this.viewportW+1;
+				if (this.viewportL < 0) this.viewportL = 0;
+				if (this.viewportL > this.seqIJ.length-this.viewportW+2) 
+					this.viewportL = this.seqIJ.length-this.viewportW+2;
 
 				if (this.viewportL > 0
-				&& this.viewportL< this.seqIJ.length-this.viewportW+1)
+				&& this.viewportL< this.seqIJ.length-this.viewportW+2)
 					this.autoScrolling = 1;
 				else 
 					this.autoScrolling = 0;
@@ -1660,7 +1661,6 @@ Pianoroll.prototype.play=function(){
 		
 		this.playTick=Math.floor(this.playhead);
 		
-		//this.playingFromT = Tone.now();
 		this.isPlaying = true;  
 		
 		Tone.Transport.start();
@@ -1914,7 +1914,8 @@ Pianoroll.prototype.autoZoom=function(xy){
 	if (xy=="xy" || xy=="y") {
 		var Ymax=-99999, Ymin=99999;
 		for (var i=0; i<Work.global.seqXY.length; i++)
-		if ((Work.global.seqXY[i].l==Work.global.layer_sel || Work.global.through))
+		if ((Work.global.seqXY[i].l==Work.global.layer_sel || Work.global.through)
+			&& !this.layer[Work.global.seqXY[i].l].channel.muted)
 		{
 			var yy= Work.global.scaledKeyboard ? scaleY(Work.global.seqXY[i].y).key :Work.global.seqXY[i].y;
 			if (yy!=null && Ymax<yy) Ymax=yy;
@@ -1943,10 +1944,11 @@ Pianoroll.prototype.autoZoom=function(xy){
 		};
 		if (Xmax==-Infinity) Xmax= Work.global.bpMeas * 4 * (16 / Work.global.bpNote);
 		if (Xmin==Infinity) Xmin= 0;
-		this.viewportL = 0; // Math.floor(Xmin)-1;
-		this.viewportW = Math.ceil(Xmax)+16;
+		this.viewportL = Math.min(this.leadTick, this.startTick)-2;
+		this.viewportW = this.endTick - this.startTick+4;
+		console.log(this.viewportL, this.viewportW);
  		if (this.viewportW< this.minW) 
- 			this.viewportW=this.minW;
+ 			this.viewportW=this.minW +2;
  		if (this.viewportW> this.maxW) 
  			this.viewportW=this.maxW;
 //		Navbar.updateLR();
