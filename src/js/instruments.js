@@ -748,8 +748,6 @@ Instruments.refresh = function(){
   });
 }
 
-Instruments.refresh();
-
 var updateSample = function(){
   var newInstru = false;
   for (var i=0; i<Work.layer.length; i++)

@@ -21,6 +21,7 @@ class Idb {
         request.onsuccess = (event) => {
             console.log("IndexedDB initialized.");
             this.db =event.target.result;
+            Instruments.refresh();
         };
         request.onupgradeneeded = (event) => {
             event.target.result.createObjectStore("store", { keyPath: "key" });
