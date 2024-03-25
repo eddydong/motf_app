@@ -567,11 +567,12 @@ var Controls= {};
 //		Work.global.chord=[];
 		pianoroll.chord=[];
 //		Global.XYtoIJ();
-		pianoroll.autoZoom();
+//		pianoroll.autoZoom();
 		Composer.init();
+		pianoroll.updateEndTick();
 		init();
 		Instruments.onDefaultLoaded();
-		pianoroll.historyPush("New");
+//		pianoroll.historyPush("New");
 		//Controls.saveTemp();
 	};
 	
