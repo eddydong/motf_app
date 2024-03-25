@@ -310,7 +310,6 @@ var Improviser1={};
     
         pianoroll.deSelectAll();
         drumer.fill();
-        pianoroll.autoZoom("xy");
     };    
 
     Improviser1.tryBuild = (ctx) => { 

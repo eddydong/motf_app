@@ -1436,14 +1436,15 @@ pianoroll.canvas.addEventListener('wheel', (e) => {
 		pianoroll.viewportH = (pianoroll.viewportH 
 							- e.deltaY*hstep/(pianoroll.height/pianoroll.viewportH));
 		var vH=Work.global.scaledKeyboard?Composer.scale.length:88;
+
 		if (pianoroll.viewportH > vH) pianoroll.viewportH= vH;
 		if (pianoroll.viewportB+pianoroll.viewportH>vH) pianoroll.viewportB=vH-pianoroll.viewportH;
-		if (pianoroll.viewportH < 24) pianoroll.viewportH=24;
+		if (pianoroll.viewportH < pianoroll.minH) pianoroll.viewportH = pianoroll.minH;
 
 		pianoroll.viewportW = (pianoroll.viewportW 
 							+ e.deltaX*wstep/(pianoroll.width/pianoroll.viewportW));
-		if (pianoroll.viewportW >1024) pianoroll.viewportW=1024;
-		if (pianoroll.viewportW < 32) pianoroll.viewportW=32;
+		if (pianoroll.viewportW > pianoroll.maxW) pianoroll.viewportW=pianoroll.maxW;
+		if (pianoroll.viewportW < pianoroll.minW) pianoroll.viewportW=pianoroll.minW;
 	} else {  // pan
 		let hstep=0.0016, wstep=0.0008;
 		//if (!pianoroll.autoScrolling) 
