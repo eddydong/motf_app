@@ -35,24 +35,24 @@ var improviser = {
 		rhythm: [[2,2,2,2]],
 		rhythm_alter:[[2,2,2,2]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-				   chances: [ 0.3,    1,    1,     0,    0,  0.3,  0.7,  0.7,  0.3]},
+				   chances: [ 0.4,    1,    1,     0,    0,  0.3,  0.7,  0.7,  0.3]},
 		pitchRange:[-12, 12],
 		leadingToNext: true
 	},
 	bassBasic:{
-		rhythm: [[2,2,2,1,1]],
-		rhythm_alter:[[2,2,2,1,1]],
+		rhythm: [[3,1,3,1]],
+		rhythm_alter:[[2,1,1,2,1,1]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-				   chances: [   1,  0.9,  0.9,   0.5,  0.5,  0.7,  0.3,  0.7,  0.3]},
-		pitchRange:[-12, 12],
+				   chances: [   1,    1,    1,   0.5,  0.5,  0.7,  0.3,  0.7,  0.3]},
+		pitchRange:[-7, 7],
 		leadingToNext: true
 	},
 	bassWalking:{
 		rhythm: [[2,1,1,2,1,1,],[2,1,2,1,2],[3,2,1,1,1]],
 		rhythm_alter:[[3,2,1,2],[5,1,1,1]],
 		pitchStep: {values: [   0,   -1,    1,    -2,    2,   -3,    3,   -4,    4], 
-				   chances: [ 0.6,  0.7,  0.7,   0.4,  0.4,  0.7,  0.3,  0.7,  0.3]},
-		pitchRange:[-15, 15],
+				   chances: [ 0.6,  0.9,  0.9,   0.4,  0.4,  0.7,  0.3,  0.7,  0.3]},
+		pitchRange:[-12, 12],
 		leadingToNext: true
 	},
 	jazz:{
@@ -335,6 +335,17 @@ class Drumer {
 			this.proll.addNote({
 					x: i,
 					y: 37 - 21,
+					d: 1, 
+					s: 0, 
+					v: 1, 
+					l: this.layer,
+					t: 0, // type: 0: normal note; 1: just improvised			
+					p: 1
+			});
+			if (i % 32 == 11)
+			this.proll.addNote({
+					x: i,
+					y: 38 - 21,
 					d: 1, 
 					s: 0, 
 					v: 1, 
@@ -759,33 +770,225 @@ class ImpNote {
 }
 
 var motif = {
-	search: [{v:0,p:0.2},{v:-1,p:1},{v:1,p:1},{v:-2,p:0.1},{v:2,p:0.1},
-			 {v:-3,p:0.1},{v:3,p:0.4},{v:-4,p:0.4},{v:4,p:0.1}],
+	search: [{v:0,p:0.3},{v:-1,p:1},{v:1,p:1},{v:-2,p:0.3},{v:2,p:0.3},
+			 {v:-3,p:0.3},{v:3,p:0.4},{v:-4,p:0.4},{v:4,p:0.3}],
 	bank: [
 		// x, d-duration: in 1/8 parent.len; y: diatonic step from last note;
-		[{x:0,d:1,y:0},{x:1,d:1,y:0},{x:2,d:1,y:1},{x:3,d:1,y:1},{x:4,d:1,y:0},{x:5,d:1,y:-1},{x:6,d:1,y:-1},{x:7,d:1,y:-1},
-		 {x:8,d:1,y:-1},{x:9,d:1,y:0},{x:10,d:1,y:1},{x:11,d:1,y:1},{x:12,d:1.5,y:0},{x:13.5,d:0.5,y:-1},{x:14,d:2,y:0}],
-   
-		[{x:0,d:2,y:0},{x:2,d:1,y:-2},{x:3,d:1,y:1},{x:4,d:2,y:1},{x:6,d:1,y:-2},{x:7,d:1,y:1},
-		 {x:8,d:1,y:null},{x:9,d:1,y:null},{x:10,d:1,y:null},{x:11,d:1,y:null},{x:12,d:1,y:null},
-		 {x:13,d:1,y:null},{x:14,d:1,y:null},{x:15,d:1,y:null}],
-//		[{x:-2,d:2,y:0},{x:0,d:1,y:-2},{x:1,d:1,y:1},{x:2,d:2,y:1},{x:4,d:1,y:-2},{x:5,d:1,y:1}],
-//		[{x:0,d:4,y:null},{x:4,d:4,y:null},{x:8,d:4,y:null},{x:12,d:4,y:null}],
-//		[{x:0,d:2,y:null},{x:2,d:1,y:null},{x:3,d:1,y:null},{x:4,d:2,y:null},{x:6,d:2,y:null}],
-		[{x:-2,d:2,y:null},{x:0,d:2,y:null},{x:2,d:2,y:null},{x:4,d:2,y:null},{x:6,d:2,y:null},{x:8,d:2,y:null},{x:10,d:2,y:null},{x:12,d:2,y:null}],
-		[{x:0,d:10,y:null},{x:10,d:2,y:null},{x:12,d:2,y:null},{x:14,d:2,y:null}]
+		{
+			name: null,
+			owner: null,
+			uploader: null,
+			uploadTime: null,
+			KSM: null,
+			firstNoteY: null,
+			len: 8,
+			seq: [{x:0,d:6,y:0},{x:6,d:1,y:1},{x:7,d:1,y:-1}],
+			genre: null,
+			density: null,
+			range: null,
+			upNdown: null,
+			minDuration: null,
+			maxDuration: null,
+			restRate: null,
+			syncopationRate: null,
+			triplet: null,
+		},
+		{
+			name: null,
+			owner: null,
+			uploader: null,
+			uploadTime: null,
+			KSM: null,
+			firstNoteY: null,
+			len: 8,
+			seq: [{x:0,d:1,y:null},{x:1,d:2,y:null},{x:3,d:1,y:null},
+				  {x:4,d:1,y:null},{x:5,d:2,y:null},{x:7,d:1,y:null}],
+			genre: null,
+			density: null,
+			range: null,
+			upNdown: null,
+			minDuration: null,
+			maxDuration: null,
+			restRate: null,
+			syncopationRate: null,
+			triplet: null,
+		},
+		{
+			name: null,
+			owner: null,
+			uploader: null,
+			uploadTime: null,
+			KSM: null,
+			firstNoteY: null,
+			len: 8,
+			seq: [{x:0,d:1,y:0},{x:1,d:1,y:2},{x:2,d:1,y:-1},{x:3,d:1,y:-1},
+				  {x:4,d:1,y:null},{x:5,d:1,y:null},{x:6,d:1,y:null},{x:7,d:1,y:null}],
+			genre: null,
+			density: null,
+			range: null,
+			upNdown: null,
+			minDuration: null,
+			maxDuration: null,
+			restRate: null,
+			syncopationRate: null,
+			triplet: null,
+		},
+		{
+			name: null,
+			owner: null,
+			uploader: null,
+			uploadTime: null,
+			KSM: null,
+			firstNoteY: null,
+			len: 8,
+			seq: [{x:0,d:2,y:0},{x:3,d:1,y:0},{x:5,d:1,y:-3},{x:6,d:1,y:3}],
+			genre: null,
+			instrument: "bass",
+			density: null,
+			range: null,
+			upNdown: null,
+			minDuration: null,
+			maxDuration: null,
+			restRate: null,
+			syncopationRate: null,
+			triplet: null,
+		},
+		{
+			name: null,
+			owner: null,
+			uploader: null,
+			uploadTime: null,
+			KSM: null,
+			firstNoteY: null,
+			len: 8,
+			seq: [{x:0,d:2,y:0},{x:3,d:1,y:0},{x:5,d:1,y:-3},{x:6,d:1,y:3},{x:7,d:1,y:null}],
+			genre: null,
+			instrument: "bass",
+			density: null,
+			range: null,
+			upNdown: null,
+			minDuration: null,
+			maxDuration: null,
+			restRate: null,
+			syncopationRate: null,
+			triplet: null,
+		},
+
+		// {
+		// 	name: null,
+		// 	owner: null,
+		// 	uploader: null,
+		// 	uploadTime: null,
+		// 	KSM: null,
+		// 	firstNoteY: null,
+		// 	len: 8,
+		// 	seq: [{x:0,d:4,y:null},{x:4,d:2,y:null},{x:6,d:2,y:null}],
+		// 	genre: null,
+		// 	density: null,
+		// 	range: null,
+		// 	upNdown: null,
+		// 	minDuration: null,
+		// 	maxDuration: null,
+		// 	restRate: null,
+		// 	syncopationRate: null,
+		// 	triplet: null,
+		// },
+		// {
+		// 	name: null,
+		// 	owner: null,
+		// 	uploader: null,
+		// 	uploadTime: null,
+		// 	KSM: null,
+		// 	firstNoteY: null,
+		// 	len: 8,
+		// 	seq: [{x:0,d:3,y:0},{x:3,d:1,y:2},{x:4,d:2,y:-1},{x:6,d:2,y:-1}],
+		// 	genre: null,
+		// 	density: null,
+		// 	range: null,
+		// 	upNdown: null,
+		// 	minDuration: null,
+		// 	maxDuration: null,
+		// 	restRate: null,
+		// 	syncopationRate: null,
+		// 	triplet: null,
+		// },
+		// {
+		// 	name: null,
+		// 	owner: null,
+		// 	uploader: null,
+		// 	uploadTime: null,
+		// 	KSM: null,
+		// 	firstNoteY: null,
+		// 	len: 8,
+		// 	seq: [{x:0,d:2,y:null},{x:2,d:1,y:null},{x:3,d:1,y:null},{x:4,d:2,y:null},{x:6,d:2,y:null}],
+		// 	genre: null,
+		// 	density: null,
+		// 	range: null,
+		// 	upNdown: null,
+		// 	minDuration: null,
+		// 	maxDuration: null,
+		// 	restRate: null,
+		// 	syncopationRate: null,
+		// 	triplet: null,
+		// },   
 	],
+
+	learn(selection){ // must be a phrase, x starting from the first down beat at 0, unit in 16th, so next down beats are 4, 8, 12... x can be negative
+		if (!selection || selection.length==0) return;
+
+		var notes = [];
+		for (var i=0; i<selection.length; i++) notes.push(Work.global.seqXY[selection[i]]);
+
+		console.log(notes);
+
+		var mot = {
+			name: null,
+			owner: null,
+			uploader: null,
+			uploadTime: null,
+			KSM: [0,23,0],
+			tickPerNote: 16,
+			tickPerBeat: 4,
+			firstNoteY: null,
+			len: 8,
+		};
+
+		mot.seq = [{x:0,d:1,y:0},{x:0,d:0.25,y:-2},{x:1,d:1,y:0},{x:2,d:1,y:1},{x:3,d:1,y:1},{x:4,d:1,y:0},{x:5,d:1,y:-1},{x:6,d:1,y:-1},{x:7,d:1,y:-1},
+		 		{x:8,d:1,y:-1},{x:9,d:1,y:0},{x:10,d:1,y:1},{x:11,d:1,y:1},{x:12,d:1.5,y:0},{x:13.5,d:0.5,y:-1},{x:14,d:2,y:0}];
+			
+		mot.eval = {genre: null,
+			density: null,
+			range: null,
+			upNdown: null,
+			minDuration: null,
+			maxDuration: null,
+			restRate: null,
+			syncopationRate: null,
+			triplet: null,
+			slope: null,
+		};
+
+		this.bank.push(mot);
+		db.put(({key: "Motifs", value: this.bank}));
+	},
+
 	getById(id, mutate=0){
 		var mot = myLib.deepCopy(this.bank[id]);
 
 		// if just a rhythm (not a motif), then return it without mutation
-		if (this.bank[id][0].y==null) return mot;
+		// if (this.bank[id].seq[0].y==null) return mot;
 
-		for (var i=mot.length-1; i>0; i--){
-			var prob = i / mot.length * mutate;
-			if (Math.random()<prob) mot[i].y += Math.floor(Math.random()*3)-1;
-		}
+		// for (var i=mot.seq.length-1; i>0; i--){
+		// 	var prob = i / mot.length * mutate;
+		// 	if (Math.random()<prob) mot[i].y += Math.floor(Math.random()*3)-1;
+		// }
 		return mot;
+	},
+
+	load(){
+		db.get("Motifs", (motifs)=>{
+			if (motifs) this.bank = motifs.value;
+		});		
 	}
 }
 
@@ -796,13 +999,14 @@ class ImpNote1 {
 		// this.range = improviser[gen].pitchRange;
 		// this.leading = improviser[gen].leadingToNext;
 		this.gen = gen;
-		this.motif = motif.getById(mot, mutate);
+		this.motif = motif.getById(mot);
 		this.stepParent = motif.search;//myLib.reshuffle(motif.search);
 		this.ctx = ctx;  
 		this.parent = parent;
 		this.home = home;
-		this.draft = [{note: this.ctx.getNoteByScaleMove(this.parent.note, this.motif[0].y), 
-			len: this.motif[0].d / 16 * this.parent.len, x: this.motif[0].x / 16 * this.parent.len}];
+		this.zoom = this.parent.len / this.motif.len;
+		this.draft = [{note: this.ctx.getNoteByScaleMove(this.parent.note, this.motif.seq[0].y), 
+			len: this.motif.seq[0].d * this.zoom, x: this.motif.seq[0].x * this.zoom}];
 		this.variant = [];
 		this.search(1);
 		this.pick = null;
@@ -810,32 +1014,32 @@ class ImpNote1 {
 	}
 	// populat the variant(s) list
 	search(n, inMotif){
-		if (n == this.motif.length) {
+		if (n == this.motif.seq.length) {
 			if (//(inMotif) || 
-				(this.draft[n-1].note == this.home || 
+				(
+				//this.draft[n-1].note == this.home || 
 				this.draft[n-1].note == this.home - 5 ||
-			//	this.draft[n-1].note == this.home - 12 ||
+				//this.draft[n-1].note == this.home - 12 ||
 				this.ctx.getNoteByScaleMove(this.draft[n-1].note,  1) == this.home ||
-				this.ctx.getNoteByScaleMove(this.draft[n-1].note, -1) == this.home )) {
+				this.ctx.getNoteByScaleMove(this.draft[n-1].note, -1) == this.home )
+				){
 					this.variant.push(myLib.deepCopy(this.draft));
 				};
 		} else {
 			this.steps = myLib.deepCopy(this.stepParent);
 			var inMotif = false;
-			if (this.motif[n].y != null) {
-				this.steps.splice(0,0,{v:this.motif[n].y, p:1});
+			if (this.motif.seq[n].y != null) {
+				this.steps.splice(0,1,{v:this.motif.seq[n].y, p:1});
 				inMotif=true;
 			};
-			var short = (this.motif[n].d<=1);
+			var short = (this.motif.seq[n].d<=1);
 			for (var i = 0; i < this.steps.length; i++) 
-			if (this.variant.length < 50 && Math.random()<this.steps[i].p &&
-				(!short || Math.abs(this.steps[i].v)<=1)) { 
+			if (this.variant.length < 1 && Math.random()<this.steps[i].p) { 
 				var targetY = this.ctx.getNoteByScaleMove(this.draft[n-1].note, this.steps[i].v);
-				this.draft.push({note: targetY, len: this.motif[n].d, x: this.motif[n].x});
+				this.draft.push({note: targetY, len: this.motif.seq[n].d * this.zoom, x: this.motif.seq[n].x * this.zoom});
 				this.search(n+1, (inMotif && i==0) ? true : false);
 				this.draft.pop();	
 			};
-
 			// for (var i=1; i<this.motif.length; i++) {
 				
 			// 	if (targetY > this.ctx.root + this.range[1]) continue;
@@ -897,6 +1101,7 @@ class ImpNote1 {
 
 motf.color = color;
 motf.theory = theory;
+motf.motif = motif;
 motf.Context = Context;
 motf.Drumer = Drumer;
 motf.Chorder = Chorder;

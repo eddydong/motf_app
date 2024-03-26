@@ -22,6 +22,7 @@ class Idb {
             console.log("IndexedDB initialized.");
             this.db =event.target.result;
             Instruments.refresh();
+            motf.motif.load();
         };
         request.onupgradeneeded = (event) => {
             event.target.result.createObjectStore("store", { keyPath: "key" });

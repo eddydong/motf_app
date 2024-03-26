@@ -40,8 +40,10 @@ var Improviser1={};
         // // verse.pick.push(verse.pick[0],verse.pick[1]);
 
         var root = Work.global.key + 60;
-        verse = {pick:[{note: root, len: 64},
-                       {note: root, len: 64}], 
+        verse = {pick:[{note: root, len: 32},
+                       {note: root, len: 32},
+                       {note: root, len: 32},
+                       {note: root, len: 32}], 
                  home: root};
 
         phrase = [];
@@ -51,7 +53,7 @@ var Improviser1={};
             if (p.pick == null) return false;
             phrase.push(p);
         };
-        // repeat
+        //repeat
         // for (var i=0; i<verse.pick.length/2; i++) {
         //     phrase.push(phrase[i]);
         // };
@@ -108,7 +110,7 @@ var Improviser1={};
         //     {note: 60, len: 8},{note: 55, len: 8},{note: 60, len: 8},{note: 62, len: 8}
         // ];
 
-        note1 = []; var mutAuto = [0,1,1,3, 0,1,1,3, 0,1,1,3, 0,1,1,3];
+        note1 = []; var mutAuto = [2,1,1,0, 2,1,1,0, 2,1,1,0, 2,1,1,0];
         for (var i=0; i<phrase1.length; i++){
             var home = (i==phrase1.length-1) ? phrase1[0].note : phrase1[i+1].note;
             var n = new motf.ImpNote1(ctx, phrase1[i], home, "piano", i % 4 == 3, (i % 8) / 16, mutAuto[i]);
@@ -137,7 +139,7 @@ var Improviser1={};
         for (var i=0; i<phrase.length; i++)
         for (var j=0; j<phrase[i].pick.length; j++){
                 var home = (j==phrase[i].pick.length-1) ? phrase[i].home : phrase[i].pick[j+1].note;
-                var n = new motf.ImpNote(ctx, phrase[i].pick[j], home, "bassBasic", j % 4 == 3);
+                var n = new motf.ImpNote1(ctx, phrase[i].pick[j], home, "piano", i % 4 == 3, (i % 8) / 16, (j==3)?4:3);
                 if (n.pick == null) return false;
                 basic.push(n);    
         };   
@@ -158,21 +160,22 @@ var Improviser1={};
 
         // bass
         pos = start;
-        for (var i=0; i<Improviser1.basicbass.length; i++)
-        for (var j=0; j<Improviser1.basicbass[i].pick.length; j++){	
-            if (Improviser1.basicbass[i].pick[j].note!=null)
-                pianoroll.addNote({
-                    x: pos,
-                    y: Improviser1.basicbass[i].pick[j].note - 21 - 12,
-                    d: Improviser1.basicbass[i].pick[j].len, 
-                    s: 1, 
-                    v: 1, 
-                    l: 4, //j,
-                    t: 0, // type: 0: normal note; 1: just improvised			
-                    p: 0.95
-            });
-            pos += Improviser1.basicbass[i].pick[j].len;
-        }
+        for (var i=0; i<Improviser1.basicbass.length; i++){
+            for (var j=0; j<Improviser1.basicbass[i].pick.length; j++){	
+                if (Improviser1.basicbass[i].pick[j].note!=null)
+                    pianoroll.addNote({
+                        x: pos + Improviser1.basicbass[i].pick[j].x,
+                        y: Improviser1.basicbass[i].pick[j].note - 21 - 12,
+                        d: Improviser1.basicbass[i].pick[j].len, 
+                        s: 1, 
+                        v: 1, 
+                        l: 4, //j,
+                        t: 0, // type: 0: normal note; 1: just improvised			
+                        p: 1
+                });
+            }
+            pos += Improviser1.basicbass[i].parent.len;
+        }   
 
         // meline / melody baseline -> purple on chord page
         pos = start;
@@ -210,11 +213,11 @@ var Improviser1={};
         if (Improviser1.melody1[i].pick[j]) {
             if (Improviser1.melody1[i].pick[j].note!=null)
                 pianoroll.addNote({
-                    x: pos + Improviser1.melody1[i].pick[j].x / 16 * Improviser1.melody1[i].parent.len,
+                    x: pos + Improviser1.melody1[i].pick[j].x,
                     y: Improviser1.melody1[i].pick[j].note - 21,
-                    d: Improviser1.melody1[i].pick[j].len / 16 * Improviser1.melody1[i].parent.len, 
+                    d: Improviser1.melody1[i].pick[j].len, 
                     s: 0, 
-                    v: 0.8 + Math.max(Improviser1.melody1[i].pick[j].len / 16, 0.5), 
+                    v: 0.8 + Math.max(Improviser1.melody1[i].pick[j].len / Improviser1.melody1[i].parent.len, 0.5), 
                     l: 0, //j,
                     t: 0, // type: 0: normal note; 1: just improvised			
                     p: 1

@@ -208,9 +208,11 @@ var Controls= {};
 			if (e.keyCode == 83) Controls.saveTemp();
 			
 			// Ctrl + L: load seq from local storage	
-			if (e.keyCode == 76) Controls.loadTemp();
+			if (e.code == "KeyL") Controls.loadTemp();
 
 		} else {			
+			if (e.code == "KeyL") motf.motif.learn(pianoroll.selection);
+
 			if (e.code == "KeyS"){
 				pianoroll.layer[Work.global.layer_sel].channel.solo = 
 					!pianoroll.layer[Work.global.layer_sel].channel.solo;
@@ -1115,11 +1117,15 @@ var Controls= {};
 	};
 
 	document.getElementById("input_bpm").onchange=()=>{
-		Tone.Transport.bpm.rampTo(document.getElementById("input_bpm").value);
+		Tone.Transport.bpm.value = document.getElementById("input_bpm").value;
 		Work.global.bpm=document.getElementById("input_bpm").value;
 		if (pianoroll.isPlaying) {
-			pianoroll.selStart = pianoroll.playhead;		
+			pianoroll.playTick=Math.floor(pianoroll.playhead);	
+			pianoroll.playhead=pianoroll.playTick;
+			pianoroll.selStart = pianoroll.playTick;
 			pianoroll.startT = Tone.now();
+			Tone.Transport.stop();
+			Tone.Transport.start();
 		};
 	};
 	
@@ -1150,7 +1156,7 @@ Controls.loadTemp=function(){
 	//var work = JSON.parse(window.localStorage.getItem("tempwork"));
 	db.get("Work", (work)=>{
 		if (work) {
-			Work=work;
+			Work=work.value;
 			pianoroll.historyPush("Load from localStorage");
 			pianoroll.updateEndTick();
 			pianoroll.updateChords();
@@ -1159,8 +1165,8 @@ Controls.loadTemp=function(){
 			Composer.init();
 			init();
 			Instruments.updateSample();		
+			console.log("loaded from localstorage");	
 		};
-		console.log("loaded from localstorage");	
 	});
 }
 
@@ -1241,6 +1247,7 @@ function init(){
 			sis[i].onchange=(e)=>{
 				//pianoroll.stop();
 				showWaiting();
+				pianoroll.layer[e.target.dataset.i].instrument.releaseAll();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
 				if (Instruments.samplerParams[e.target.selectedIndex].loadByDefault){
 					Instruments.onDefaultLoaded();

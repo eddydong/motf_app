@@ -1,13 +1,13 @@
 function Pianoroll(){
 	this.anim;
 	this.resolution="16n";
-	this.leadTick=16;
 	this.canvas=document.getElementById("canvas-main");
 	this.ctx = this.canvas.getContext("2d");
 	this.left = 0;
 	this.top = 0;
 	this.width = this.canvas.width;
 	this.height = this.canvas.height;
+
  	this.minW= Work.global.bpMeas * 1 * (16 / Work.global.bpNote)+1;
  	this.maxW= Work.global.bpMeas * 128 * (16 / Work.global.bpNote)+1;
 	this.minH= 12;
@@ -15,6 +15,12 @@ function Pianoroll(){
 	this.viewportW = Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1; // number of columns / 8n's
 	this.viewportH = 24; // height of viewport in rows (key's)
 	this.viewportB = 0; // bottom row key on piano
+
+	this.leadTick=16;
+	this.repeatRange = [this.leadTick, this.leadTick + 16 * 8];
+	this.repeat = true;
+	this.workRange = [this.leadTick, this.leadTick + 16 * 8];
+
 	this.isMetronomeOn=1;
 	this.playhead=0; // for visual
 	this.playTick=0; // for actual play control
@@ -234,10 +240,14 @@ function Pianoroll(){
 				);
 			} else {
 				self.playhead=(x/w)+self.viewportL;		
-				self.playTick=Math.floor(self.playhead);	
+				
 				if (self.isPlaying) {
-					self.selStart = self.playhead;		
+					self.playTick=Math.floor(self.playhead);	
+					self.playhead=self.playTick;
+					self.selStart = self.playTick;
 					self.startT = Tone.now();
+					Tone.Transport.stop();
+					Tone.Transport.start();		
 				};
 			
 				if (!self.isPlaying && (Controls.tempDrag=="" ? self.dragType : Controls.tempDrag)!="audi") {
@@ -280,6 +290,7 @@ Pianoroll.prototype.addNote=function(note, cause){
 	if (cause!=undefined) this.historyPush(cause);
 //	pianoroll.updateChords();
 //	Controls.saveTemp();	
+	Global.XYtoIJ();
 }
 
 Pianoroll.prototype.updateEndTick=function(){
@@ -538,12 +549,13 @@ Pianoroll.prototype.deSelectAll=function(){
 //	Controls.saveTemp();	
 };
 Pianoroll.prototype.selCount=function(){
-	var c=0;
+	var r=[];
 	for (var i=0; i<Work.global.seqXY.length; i++)
 		if (Work.global.seqXY[i].s==1) {
-			c++;
+			r.push(i);
 	};
-	return c;
+	this.selection = r;
+	return r.length;
 };
 Pianoroll.prototype.selectedNotes=function(){
 	var r=[];
@@ -551,6 +563,7 @@ Pianoroll.prototype.selectedNotes=function(){
 		if (Work.global.seqXY[i].s==1) {
 			r.push(i);
 	};
+	this.selection = r;
 	return r;
 };
 Pianoroll.prototype.trisect=function(){
@@ -730,7 +743,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		this.ctx.restore();
 
 		// draw starting and ending lines
-		if (i == this.startMeas || i == this.endMeas) {
+		if (i == this.repeatRange[0] || i == this.repeatRange[1]) {
 			this.ctx.save();
 			this.ctx.lineWidth=3;
 			this.ctx.strokeStyle = "rgba(255,255,150,0.8)";
@@ -802,7 +815,6 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			colorF;			
 			
 		var sel=this.selCount();
- 		var sel=this.selCount();
 
 		 if (Work.global.seqXY[i].t==1) {
 			colorF=motf.color.get("indigo", this.outFocusNoteOpacity);	
@@ -1570,18 +1582,18 @@ Pianoroll.prototype.animloop = function(){
 	if (this.isPlaying) {
 		
 		// for playhead position calculation, use Tone.now
-		if (this.startT == undefined) this.startT=Tone.now();
+		if (this.startT == undefined) this.startT = Tone.now();
 		let now = Tone.now();
 
 		this.playhead = (now-this.startT) / Tone.Time(this.resolution) + this.selStart;
 
 		if (this.playhead>this.selEnd) {
-			if (sel==0) this.selStart=this.leadTick;	
-			this.playTick=this.selStart;
-			this.playhead=this.playTick;
-			//this.playingFromT=Tone.now();
-			this.viewportL = this.leadTick-1;
-			this.startT= Tone.now();
+			// if (sel==0) this.selStart=this.startMeas;	
+			// this.playTick=this.selStart;
+			// this.playhead=this.playTick;
+			// //this.playingFromT=Tone.now();
+			// this.viewportL = this.leadTick-1;
+			// this.startT= Tone.now();
 
 			// if (this.recorder.state=="started") {
 			// 	this.stop();
@@ -1598,23 +1610,34 @@ Pianoroll.prototype.animloop = function(){
 
 		if (this.autoScrollingPaused== undefined || Tone.now()-this.autoScrollingPaused>1){
 			// auto scrolling
-			if (!this.mouseDown && this.viewportW<this.seqIJ.length+1){
+			if (//!this.mouseDown && 
+			//this.viewportW < this.endMeas-this.startMeas
+			1){
 
 				var autoScrollOffset = -this.viewportW/2;	
+
+				//var playLen = this.endMeas-this.startMeas;
 				
-				if (this.playhead-this.viewportL>this.viewportW/2)
+				if (this.playhead - this.viewportL > this.viewportW/2 
+					&& this.viewportL < this.endMeas-this.viewportW+1)
 					this.viewportL = this.playhead + autoScrollOffset;
 
-				if (this.viewportL < 0) this.viewportL = 0;
-				if (this.viewportL > this.seqIJ.length-this.viewportW+2 && 
-					!(this.selStart>this.viewportL && this.selEnd < this.viewportW+this.viewportL)) 
-					this.viewportL = this.seqIJ.length-this.viewportW+2;
+				//if (this.viewportL < 0) this.viewportL = 0;
+				// if (this.viewportL < this.startMeas) this.viewportL = this.startMeas;
+				// if (this.viewportL > playLen
+				// 	//this.seqIJ.length
+				// 	-this.viewportW+2) 
+				// 	this.viewportL = playLen
+				// 	//this.seqIJ.length
+				// 	-this.viewportW+2;
 
-				if (this.viewportL > 0 && !(this.selStart>this.viewportL && this.selEnd < this.viewportW+this.viewportL)
-				&& this.viewportL< this.seqIJ.length-this.viewportW+2)
-					this.autoScrolling = 1;
-				else 
-					this.autoScrolling = 0;
+// 				if (this.viewportL > 0 &&
+// //					 !(this.startMeas > this.viewportL && this.endMeas < this.viewportW+this.viewportL) && 
+// 					this.viewportL< this.endMeas-this.viewportW+2)
+// //					&& this.viewportL< this.seqIJ.length-this.viewportW+2)
+// 					this.autoScrolling = 1;
+// 				else 
+// 					this.autoScrolling = 0;
 			
 				Navbar.updateLR();
 			};
@@ -1670,7 +1693,7 @@ Pianoroll.prototype.unDim=function(){
 Pianoroll.prototype.play=function(){
 	this.autoScrolling=0;
 
-	if (Work.global.seqXY.length==0) return;
+	//if (Work.global.seqXY.length==0) return;
 
 	if (!this.isPlaying) { 
 
@@ -1679,6 +1702,9 @@ Pianoroll.prototype.play=function(){
 			this.unsaved = false;
 //		};
 		
+		this.playTick=Math.floor(this.playhead);
+		this.playhead=this.playTick;
+
 		sel=this.selCount();
 		if (sel>0){
 			this.selEnd = -Infinity;
@@ -1692,11 +1718,9 @@ Pianoroll.prototype.play=function(){
 				};
 			this.playhead=this.selStart;
 		} else {
-			this.selEnd = this.endTick;
+			this.selEnd = this.repeatRange[1];
 			this.selStart = this.playhead;
 		};
-		
-		this.playTick=Math.floor(this.playhead);
 		
 		this.isPlaying = true;  
 		
@@ -1717,10 +1741,13 @@ Pianoroll.prototype.record=()=>{
 Pianoroll.prototype.playNext=function(t){ 
 	var sel=this.selCount();
 
-	if (this.playTick>this.selEnd) {
-		if (sel==0) this.selStart=this.leadTick;	
+	if (this.playTick>=this.selEnd) {
+		if (sel==0) this.selStart=this.repeatRange[0];
 		this.playTick=this.selStart;
 		this.playhead=this.selStart;
+		this.startT = Tone.now();
+		if (!(this.startMeas > this.viewportL && this.endMeas < this.viewportW+this.viewportL))
+			this.viewportL = this.selStart - 2;
 
 		//this.playingFromT=Tone.now();
 
@@ -1746,11 +1773,11 @@ Pianoroll.prototype.playNext=function(t){
 		var tt=(this.playTick % tickPerMeas);
  		if (tt==0 && this.playTick<this.selEnd) 
 			//Instruments.metronome[0].start();
-			Instruments.drum2.triggerAttackRelease(0.01, t, Global.metroVolume);
+			Instruments.drum2.triggerAttackRelease(0.01, Tone.now(), Global.metroVolume);
  		for (i=1; i<Work.global.bpMeas; i++)
 			if (tt == tickPerBeat * i) 
 				//Instruments.metronome[1].start();
-				Instruments.drum3.triggerAttackRelease(0.003, t, Global.metroVolume);
+				Instruments.drum3.triggerAttackRelease(0.01, Tone.now(), Global.metroVolume);
 	};	
 
 	if (this.seqIJ[currentTick] && this.seqIJ[currentTick].notes.length>0) 
@@ -1961,11 +1988,11 @@ Pianoroll.prototype.autoZoom=function(xy){
 		var keyN = Work.global.scaledKeyboard ? Composer.scale.length : 88;
 		if (Ymax==-Infinity) Ymax= Math.round(keyN * 5 / 8);
 		if (Ymin==Infinity) Ymin= Math.round(keyN * 3 / 8);
-		this.viewportH = Ymax - Ymin -1;// + 1 + 4;
+		this.viewportH = Ymax - Ymin + 1 + 2;// + 1 + 4;
 		if (Work.global.scaledKeyboard && this.viewportH>Composer.scale.length)
 			this.viewportH=Composer.scale.length;
 		if (this.viewportH<12) this.viewportH=12;
-		this.viewportB = Ymin - Math.ceil((this.viewportH-(Ymax-Ymin)) / 2);
+		this.viewportB = Ymin - Math.ceil((this.viewportH-(Ymax-Ymin)) / 2) + 1;
 		if (this.viewportB<0) this.viewportB=0;
 
 		if (Work.global.scaledKeyboard && this.viewportH>(Composer.scale.length-this.viewportB)){
