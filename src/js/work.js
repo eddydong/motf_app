@@ -10,7 +10,7 @@ Work.global= {
 	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
 	mode: 0,
-	bpm: 85,
+	bpm: 60,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
@@ -370,10 +370,10 @@ Work.layer= [  // T01..T10
 	{
 		name: "Melody 1", //0
 		type: "melody",
-		instrument: 1,
+		instrument: 4,
 		mute: false,
 		solo: false,
-		volume: -3,
+		volume: -6,
 		pan: 0.5,
 		// pedal: [{tick:0, onOff:1},{tick:7, onOff:0},{tick:8, onOff:1},{tick:15, onOff:0},
 		// 		{tick:16, onOff:1},{tick:23, onOff:0},{tick:24, onOff:1},{tick:31, onOff:0},
@@ -387,10 +387,10 @@ Work.layer= [  // T01..T10
 	{
 		name: "Melody 2", //1
 		type: "melody",
-		instrument: 9,
+		instrument: 4,
 		mute: false,
 		solo: false,
-		volume: -6,
+		volume: -9,
 		pan: -0.5,
 		// pedal: [{tick:0, onOff:1},{tick:7, onOff:0},{tick:8, onOff:1},{tick:15, onOff:0},
 		// 	{tick:16, onOff:1},{tick:23, onOff:0},{tick:24, onOff:1},{tick:31, onOff:0},
@@ -412,7 +412,7 @@ Work.layer= [  // T01..T10
 		instrument: 4,
 		mute: false,		
 		solo: false,
-		volume: -10,
+		volume: -7,
 		pan: -0.3,
 		pedal: [{tick:0, onOff:1}]//,{tick:7, onOff:0},{tick:8, onOff:1},{tick:15, onOff:0},
 		// 	{tick:16, onOff:1},{tick:23, onOff:0},{tick:24, onOff:1},{tick:31, onOff:0},
@@ -425,7 +425,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: false,		
 		solo: false,
-		volume: -1,
+		volume: -5,
 		pan: 0.3
 	},
 	{
@@ -434,7 +434,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: true,		
 		solo: false,
-		volume: -2,
+		volume: -5,
 		pan: -0.7
 	},
 	{
@@ -443,7 +443,7 @@ Work.layer= [  // T01..T10
 		instrument: 17,
 		mute: false,		
 		solo: false,
-		volume: -8,
+		volume: -11,
 		pan: -0.2,
 		pedal: [{tick:0, onOff:1}]
 	}

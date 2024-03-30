@@ -1387,7 +1387,7 @@ function showWaiting(){
 
 		Tone.loaded().then(()=>{
 //			console.log("all loaded");
-			//hideWaiting();	
+			//hideWaiting();				
 		});
 
 }

@@ -300,8 +300,10 @@ Pianoroll.prototype.updateEndTick=function(){
 	this.startTick=Infinity;
 
 	for (var i=0; i<Work.global.seqXY.length; i++) 
-	if (Work.layer[Work.global.seqXY[i].l] && Work.layer[Work.global.seqXY[i].l].type != "chord" 
-	&& Work.layer[Work.global.seqXY[i].l].type != "percussion") {
+	if (Work.layer[Work.global.seqXY[i].l] 
+	// 	&& Work.layer[Work.global.seqXY[i].l].type != "chord" 
+	// && Work.layer[Work.global.seqXY[i].l].type != "percussion"
+	) {
 		if ((Work.global.seqXY[i].x+Work.global.seqXY[i].d) - this.endTick > precision)
 			this.endTick = (Work.global.seqXY[i].x+Work.global.seqXY[i].d);
 		if (this.startTick - Work.global.seqXY[i].x > precision)
@@ -311,15 +313,15 @@ Pianoroll.prototype.updateEndTick=function(){
 	if (this.endTick == -Infinity) this.endTick = this.leadTick;
 	if (this.startTick ==  Infinity) this.startTick = this.leadTick;
 
-	if (Math.abs(this.endTick-Math.round(this.endTick))<0.01) this.endTick = Math.round(this.endTick);
-	if (Math.abs(this.startTick-Math.round(this.startTick))<0.01) this.startTick = Math.round(this.startTick);
+	// if (Math.abs(this.endTick-Math.round(this.endTick))<0.01) this.endTick = Math.round(this.endTick);
+	// if (Math.abs(this.startTick-Math.round(this.startTick))<0.01) this.startTick = Math.round(this.startTick);
 
 	// this.endTick= (this.endTick % 1 == 0 ? this.endTick : Math.floor(this.endTick));
 	// this.startTick= (this.startTick % 1 == 0 ? this.startTick : Math.floor(this.startTick)+1);
 
 	var measLen = Work.global.bpMeas / Work.global.bpNote * 16;
 	this.startMeas = Math.floor(this.startTick / measLen) * measLen;			
-	this.endMeas = (Math.floor(this.endTick / measLen)) * measLen;
+	this.endMeas = (Math.ceil(this.endTick / measLen)) * measLen;
 	
 	var emptyLen = measLen * 2;
 	if (this.endMeas-this.startMeas < emptyLen ) this.endMeas= this.startMeas + emptyLen;		
@@ -1737,7 +1739,6 @@ Pianoroll.prototype.record=()=>{
 	pianoroll.play();
 };
 
-
 Pianoroll.prototype.playNext=function(t){ 
 	var sel=this.selCount();
 
@@ -1783,8 +1784,8 @@ Pianoroll.prototype.playNext=function(t){
 	if (this.seqIJ[currentTick] && this.seqIJ[currentTick].notes.length>0) 
 	for (var i=0; i<this.seqIJ[currentTick].notes.length; i++){
 		if ((sel==0 || (sel>0 && this.seqIJ[currentTick].notes[i].sel==1))
-		&& Math.random()<this.seqIJ[currentTick].notes[i].prob)
-		{
+		//&& Math.random()<this.seqIJ[currentTick].notes[i].prob
+		){
 			var ins=this.layer[this.seqIJ[currentTick].notes[i].layer].instrument;
 			var pedalOn=null;
 			var pedal = Work.layer[this.seqIJ[currentTick].notes[i].layer].pedal;
@@ -1799,7 +1800,8 @@ Pianoroll.prototype.playNext=function(t){
 					Global.chromatic_scale[this.seqIJ[currentTick].notes[i].note], 
 					t+(this.seqIJ[currentTick].notes[i].offset||0)*Tone.Time("16n")
 					 +Math.random()*Tone.Time("16n")*0.6*Work.global.human_tem,
-					this.seqIJ[currentTick].notes[i].vel * this.volumeScale * (1+(Math.random()-0.5)*Work.global.human_vel)
+					this.seqIJ[currentTick].notes[i].vel * this.volumeScale 
+					* (1+(Math.random()-0.5) * parseFloat(Work.global.human_vel))
 				);
 			} else {
 				ins.releaseAll();
@@ -1808,7 +1810,8 @@ Pianoroll.prototype.playNext=function(t){
 					Tone.Time("16n").toSeconds()*this.seqIJ[currentTick].notes[i].len, 
 					t+(this.seqIJ[currentTick].notes[i].offset||0)*Tone.Time("16n")
 					 +Math.random()*Tone.Time("16n")*0.6*Work.global.human_tem,
-					this.seqIJ[currentTick].notes[i].vel * this.volumeScale * (1+(Math.random()-0.5)*Work.global.human_vel)
+					this.seqIJ[currentTick].notes[i].vel * this.volumeScale
+					* (1+(Math.random()-0.5) * parseFloat(Work.global.human_vel))
 				);
 			};
 		};	

@@ -47,16 +47,16 @@ var Improviser1={};
                  home: root};
 
         phrase = [];
-        for (var i=0; i<verse.pick.length; i++) {
+        for (var i=0; i<verse.pick.length/2; i++) {
             var home = (i==verse.pick.length-1) ? verse.home : verse.pick[i+1].note;
             var p = new motf.ImpNote(ctx, verse.pick[i], home, "bassline");
             if (p.pick == null) return false;
             phrase.push(p);
         };
-        //repeat
-        // for (var i=0; i<verse.pick.length/2; i++) {
-        //     phrase.push(phrase[i]);
-        // };
+       // repeat
+        for (var i=0; i<verse.pick.length/2; i++) {
+            phrase.push(phrase[i]);
+        };
 
         // phrase1 = [];
         // for (var i=0; i<verse.pick.length/2; i++) {
@@ -82,7 +82,7 @@ var Improviser1={};
         // ];
 
         phrase1 = []; 
-        for (var i=0; i<phrase.length; i++) {
+        for (var i=0; i<phrase.length/2; i++) {
             for (var j=0; j<phrase[i].pick.length; j++) {
                 var choices = [0];
                 if (ctx.inScale(phrase[i].pick[j].note+7))
@@ -96,12 +96,12 @@ var Improviser1={};
                     len:phrase[i].pick[j].len});    
             }
         };
+        // repeat
+        for (var i=0; i<phrase1.length/2; i++) {
+            phrase1.push(phrase1[i]);
+        };   
         phrase1[phrase1.length-1].home = verse.home;
         for (var i=phrase1.length-2; i>=0; i--) phrase1[i].home=phrase1[i+1].note;
-        // repeat
-        // for (var i=0; i<phrase1.length/2; i++) {
-        //     phrase1.push(phrase1[i]);
-        // };   
 
         // phrase1 =[
         //     {note: 67, len: 8},{note: 62, len: 8},{note: 64, len: 8},{note: 59, len: 8},

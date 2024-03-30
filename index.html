@@ -567,8 +567,34 @@
 //{"x":0,"y":3,"d":64,"v":1,"l":0,"s":1,"t":0}
 
 //localStorage.clear();
-Tone.context.lookAhead = 0;
+Tone.context.lookAhead = 0.1;
 pianoroll.init();
+
+
+// const distortion = new Tone.Distortion(0.8).toDestination();
+// const feedbackDelay = new Tone.FeedbackDelay(0.5, 0.8).toDestination();
+
+//pianoroll.layer[0].instrument.triggerAttackRelease(["Eb4", "G4", "Bb4"], 4);
+// osc.frequency.rampTo("C2", 2);
+// // start the oscillator for 2 seconds
+// osc.start().stop("+2");
+
+// const sampler = new Tone.Sampler({
+// 	urls: {
+// 		"C4": "C4.mp3",
+// 		"D#4": "Ds4.mp3",
+// 		"F#4": "Fs4.mp3",
+// 		"A4": "A4.mp3",
+// 	},
+// 	release: 1,
+// 	baseUrl: "./src/sample/piano_yamaha/",
+// }).toDestination();
+
+// Tone.loaded().then(() => {
+// 	sampler.triggerAttackRelease("C4", 2);
+// 	sampler.frequency.rampTo("C3", 1);
+// })
+
 
 // function improvise(){
 // 	var et = pianoroll.endTick;
