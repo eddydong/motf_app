@@ -373,7 +373,7 @@ Work.layer= [  // T01..T10
 		instrument: 4,
 		mute: false,
 		solo: false,
-		volume: -6,
+		volume: -7,
 		pan: 0.5,
 		// pedal: [{tick:0, onOff:1},{tick:7, onOff:0},{tick:8, onOff:1},{tick:15, onOff:0},
 		// 		{tick:16, onOff:1},{tick:23, onOff:0},{tick:24, onOff:1},{tick:31, onOff:0},
@@ -390,7 +390,7 @@ Work.layer= [  // T01..T10
 		instrument: 4,
 		mute: false,
 		solo: false,
-		volume: -9,
+		volume: -10,
 		pan: -0.5,
 		// pedal: [{tick:0, onOff:1},{tick:7, onOff:0},{tick:8, onOff:1},{tick:15, onOff:0},
 		// 	{tick:16, onOff:1},{tick:23, onOff:0},{tick:24, onOff:1},{tick:31, onOff:0},
@@ -403,7 +403,7 @@ Work.layer= [  // T01..T10
 		instrument: 10,
 		mute: false,
 		solo: false,
-		volume: -12,
+		volume: -16,
 		pan: 0.4,
 	},
 	{
@@ -412,7 +412,7 @@ Work.layer= [  // T01..T10
 		instrument: 4,
 		mute: false,		
 		solo: false,
-		volume: -7,
+		volume: -8,
 		pan: -0.3,
 		pedal: [{tick:0, onOff:1}]//,{tick:7, onOff:0},{tick:8, onOff:1},{tick:15, onOff:0},
 		// 	{tick:16, onOff:1},{tick:23, onOff:0},{tick:24, onOff:1},{tick:31, onOff:0},
@@ -425,7 +425,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: false,		
 		solo: false,
-		volume: -5,
+		volume: -10,
 		pan: 0.3
 	},
 	{
@@ -434,7 +434,7 @@ Work.layer= [  // T01..T10
 		instrument: 16,
 		mute: true,		
 		solo: false,
-		volume: -5,
+		volume: -10,
 		pan: -0.7
 	},
 	{
