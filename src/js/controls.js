@@ -52,12 +52,12 @@ var Controls= {};
 		
 		if (pianoroll.vKeyboardOn) {
 					
-			// Enter for PLAY
-			if (e.keyCode==13){ 
-				if (pianoroll.isPlaying) {
-					document.getElementById("btn_stop").onclick();
+			// Space for PLAY
+			if (e.code=="Space"){ 
+				if (Tone.Transport.state=="started") {
+					pianoroll.pause();
 				} else {
-					document.getElementById("btn_play").onclick();
+					pianoroll.play();
 				};
 			};
 
@@ -213,6 +213,12 @@ var Controls= {};
 		} else {			
 			if (e.code == "KeyL") motf.motif.learn(pianoroll.selection);
 
+			if (e.code == "KeyD") {
+				var drumer = new motf.Drumer(pianoroll, 6);
+				drumer.improvise();
+				pianoroll.autoZoom("xy");
+			}
+
 			if (e.code == "KeyS"){
 				pianoroll.layer[Work.global.layer_sel].channel.solo = 
 					!pianoroll.layer[Work.global.layer_sel].channel.solo;
@@ -225,12 +231,12 @@ var Controls= {};
 				updateSoloMute();
 			}
 	
-			// Enter for PLAY
-			if (e.keyCode==13){ 
-				if (pianoroll.isPlaying) {
-					document.getElementById("btn_stop").onclick();
+			// Space for PLAY
+			if (e.code=="Space"){ 
+				if (Tone.Transport.state=="started") {
+					pianoroll.pause();
 				} else {
-					document.getElementById("btn_play").onclick();
+					pianoroll.play();
 				};
 			};
 
@@ -1119,14 +1125,14 @@ var Controls= {};
 	document.getElementById("input_bpm").onchange=()=>{
 		Tone.Transport.bpm.value = document.getElementById("input_bpm").value;
 		Work.global.bpm=document.getElementById("input_bpm").value;
-		if (pianoroll.isPlaying) {
-			pianoroll.playTick=Math.floor(pianoroll.playhead);	
-			pianoroll.playhead=pianoroll.playTick;
-			pianoroll.selStart = pianoroll.playTick;
-			pianoroll.startT = Tone.now();
-			Tone.Transport.stop();
-			Tone.Transport.start();
-		};
+		// if (pianoroll.isPlaying) {
+		// 	pianoroll.playTick=Math.floor(pianoroll.playhead);	
+		// 	pianoroll.playhead=pianoroll.playTick;
+		// 	pianoroll.selStart = pianoroll.playTick;
+		// 	pianoroll.startT = Tone.now();
+		// 	Tone.Transport.stop();
+		// 	Tone.Transport.start();
+		// };
 	};
 	
 	// record current project and save to local webm file 
