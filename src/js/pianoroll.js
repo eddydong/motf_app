@@ -877,7 +877,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			
 			var glow = 1;
 			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter) 
-			 	glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*5;
+			 	glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*3;
 			
 			if (Tone.Transport.state=="started")
 			velH = velH * glow;
@@ -971,7 +971,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			
 			var glow = 1;
 			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter)
-				glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*10;
+				glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*3;
 				
 			if (Tone.Transport.state=="started")
 				velH = velH * glow;
@@ -1672,8 +1672,8 @@ Pianoroll.prototype.stop=function(){
 
 Pianoroll.prototype.pause=function(){
 	Tone.Transport.pause();
-	this.silence();
-	this.autoScrolling=0;
+//	this.silence();
+//	this.autoScrolling=0;
 }
 
 Pianoroll.prototype.stop1=function(){
@@ -1731,7 +1731,7 @@ Pianoroll.prototype.schedule=function(){
 		};
 		Work.global.seqXY[i].pedal = pedalOn;
 		const note = Work.global.seqXY[i];
-		Tone.Transport.scheduleOnce(function(time){
+		Tone.Transport.schedule(function(time){
 			if (note.pedal) {
 				note.ins.triggerAttack(
 					Global.chromatic_scale[note.y],

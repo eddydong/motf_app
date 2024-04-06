@@ -1125,6 +1125,14 @@ var Controls= {};
 	document.getElementById("input_bpm").onchange=()=>{
 		Tone.Transport.bpm.value = document.getElementById("input_bpm").value;
 		Work.global.bpm=document.getElementById("input_bpm").value;
+
+		if (Tone.Transport.state=="started"){
+			pianoroll.pause();
+			pianoroll.play();
+		};
+
+		//Tone.Transport.position = Tone.Time(Tone.Transport.seconds).toBarsBeatsSixteenths();
+
 		// if (pianoroll.isPlaying) {
 		// 	pianoroll.playTick=Math.floor(pianoroll.playhead);	
 		// 	pianoroll.playhead=pianoroll.playTick;
@@ -1299,8 +1307,6 @@ function init(){
 			if (Work.global.layer_sel>=Work.layer.length) 
 				Work.global.layer_sel=Work.layer.length-1;
 
-			Global.XYtoIJ();
-			
 			pianoroll.historyPush("Delete Layer");
 			//Controls.saveTemp();			
 		};

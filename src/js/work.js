@@ -10,6 +10,7 @@ Work.global= {
 	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
 	mode: 0,
+	layer_sel: 6,
 	bpm: 120,
 	bpMeas: 4,
 	bpNote: 4,
@@ -25,7 +26,6 @@ Work.global= {
 	through: 1,
 	tempo_auto:[ // 0..seq.length/16 (resolution: 1 measure)
 	],
-	layer_sel: 0,
 	imp_pre_sel: 0,
 	// 1..10
 	imp_pre: [ 

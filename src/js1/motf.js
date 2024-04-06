@@ -415,15 +415,19 @@ class Drumer {
 		}
 	}
 	improvise(){
-		var prob = [1,0.9,0.7,0.7,0.7,0.7,0.5,0.9];
-		for (var i=0; i<8; i++) if (Math.random()<prob[i]) {
-			//var repeat = Math.floor(Math.random()*cycle);
-			for (var j=0; j<4; j++) {
-				var cycle = Math.pow(2, Math.floor(Math.random()*4)+3);
-				var offset = Math.floor(Math.random()*cycle/2);
+		Work.global.seqXY=[];
+		pianoroll.stop();
+		var prob = [0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8];
+		for (var i=0; i<8; i++) if (Math.random()<prob[i]) 
+		{
+			var repeat = 1; //Math.floor(Math.random()*3)+1;
+			for (var j=0; j<repeat; j++) {
+				var cycle = Math.pow(2, i + 1);
+				var offset = Math.floor(Math.random() * cycle / 2);
 				this.put(cycle, offset, i+36);
 			} 
 		};
+		pianoroll.play();
 	}
 }
 
