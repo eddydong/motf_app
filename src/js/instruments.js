@@ -844,6 +844,7 @@ var samplerParams=[
       volumeCorrection: 0,
       vUrls: [],
       blobs: [],
+      // drum mapping: https://magenta.tensorflow.org/datasets/groove
       urls: {    
         //KD
         36: "36.mp3",
@@ -867,11 +868,14 @@ var samplerParams=[
         42: "42.mp3",
         22: "22.mp3",
         44: "44.mp3",
+
+        //
+        54: "54.mp3",
   
         //Crash
         49: "49.mp3",
-        55: "55.mp3",
-        57: "57.mp3",
+        55: "55.wav",
+        57: "57.wav",
         52: "52.mp3",
   
         //Ride

@@ -77,8 +77,11 @@ var midiToSeqXY=(sample)=>{
 		ch++;
 		if (ch>maxch) break;
 	
-		Work.layer.push(copyObj(newWork.layer[0]));
-		Work.layer[Work.layer.length-1].instrument=getInstrumentCode(sample.tracks[i].instrument.number);
+		var layer=0;
+		if (sample.tracks[i].instrument.percussion) layer=6;
+		Work.layer.push(copyObj(newWork.layer[layer]));
+		if (!sample.tracks[i].instrument.percussion)
+			Work.layer[Work.layer.length-1].instrument = getInstrumentCode(sample.tracks[i].instrument.number);
 	
 		for (var j=0; j<sample.tracks[i].notes.length; j++)
 		if (sample.tracks[i].notes[j].midi-21<88 && sample.tracks[i].notes[j].midi-21>=0)
@@ -123,7 +126,7 @@ function parseFile(file) {
 		// pianoroll.updateChords();	
 		// pianoroll.detectKeyScale();
 //		pianoroll.scroll("beginning");
-//		console.log(midi);
+		console.log(midi);
 	};
 	reader.readAsArrayBuffer(file);
 }
