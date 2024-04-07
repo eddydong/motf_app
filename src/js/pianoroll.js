@@ -7,6 +7,7 @@ function Pianoroll(){
 	this.top = 0;
 	this.width = this.canvas.width;
 	this.height = this.canvas.height;
+	this.max_vel_height = 1;
 
  	this.minW= Work.global.bpMeas * 1 * (16 / Work.global.bpNote)+1;
  	this.maxW= Work.global.bpMeas * 128 * (16 / Work.global.bpNote)+1;
@@ -58,7 +59,7 @@ function Pianoroll(){
 	this.lastPedal=0;	
 	this.recording=1;
 	this.vKeyboardOn=0;
-	this.volumeScale = 2;
+	this.volumeScale = 3;
 	this.outFocusNoteOpacity = 0.2;
 	this.rollScheme ={
 		whiteKeys: 0.25,
@@ -252,7 +253,7 @@ function Pianoroll(){
 				// 	Tone.Transport.start();		
 				// };
 			
-				if (!Tone.Transport.state=="started" && (Controls.tempDrag=="" ? self.dragType : Controls.tempDrag)!="audi") {
+				if (Tone.Transport.state!="started" && (Controls.tempDrag=="" ? self.dragType : Controls.tempDrag)!="audi") {
 					// pre-audi current key
 					var ins=self.layer[Work.global.layer_sel].instrument;
 					if (ins) ins.triggerAttackRelease(
@@ -801,8 +802,6 @@ Pianoroll.prototype.drawPianoRoll=function(){
 // 		this.ctx.restore();
 // 	};
 
-	const max_vel_height=12;
-	
 	if (Work.global.through) {
 	// draw notes in out-focus layers
 	for (var i=0; i<Work.global.seqXY.length; i++)
@@ -856,7 +855,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		this.ctx.rect(left, top, width-1, height-1);
 		this.ctx.fill();
 
-		if ((Work.global.seqXY[i].s==1 && !Tone.Transport.state=="started") 
+		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
 		|| ((this.layer[Work.global.seqXY[i].l] && !this.layer[Work.global.seqXY[i].l].channel.muted &&
 			Tone.Transport.state=="started" && Tone.Transport.seconds/Tone.Time("16n")>=Work.global.seqXY[i].x && 
 			Tone.Transport.seconds/Tone.Time("16n")<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
@@ -871,16 +870,16 @@ Pianoroll.prototype.drawPianoRoll=function(){
 			};	
 
 
- 			var velH=h*max_vel_height*Work.global.seqXY[i].v/3;
+ 			var velH = h * this.max_vel_height * Work.global.seqXY[i].v;
 // 			if (this.isPlaying)
 // 				if (Math.round(Tone.now()*1000) % 2 == 0) velH=velH*0.96;
 			
 			var glow = 1;
 			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter) 
-			 	glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*3;
+			 	glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*12;
 			
 			if (Tone.Transport.state=="started")
-			velH = velH * glow;
+				velH = velH * glow;
 
 			var grd=this.ctx.createLinearGradient(0,top-velH,0,top);
 			grd.addColorStop(0, motf.color.get(colorF, 0));
@@ -948,7 +947,7 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		this.ctx.rect(left, top, width-1, height-1);
 		this.ctx.fill();
 
-		if ((Work.global.seqXY[i].s==1 && !Tone.Transport.state=="started") 
+		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
 		|| ((!this.layer[Work.global.seqXY[i].l].channel.muted &&
 			Tone.Transport.state=="started" && Tone.Transport.seconds/Tone.Time("16n")>=Work.global.seqXY[i].x && 
 			Tone.Transport.seconds/Tone.Time("16n")<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
@@ -965,13 +964,13 @@ Pianoroll.prototype.drawPianoRoll=function(){
 				colorF = "red";	
 			};	
 
- 			var velH=h*max_vel_height*Work.global.seqXY[i].v/3;
+ 			var velH = h * this.max_vel_height * Work.global.seqXY[i].v;
 // 			if (this.isPlaying)
 // 				if (Math.round(Tone.now()*1000) % 2 == 0) velH=velH*0.96;
 			
 			var glow = 1;
 			if (this.layer[Work.global.seqXY[i].l] && this.layer[Work.global.seqXY[i].l].meter)
-				glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*3;
+				glow = this.layer[Work.global.seqXY[i].l].meter.getValue()*12;
 				
 			if (Tone.Transport.state=="started")
 				velH = velH * glow;
@@ -996,14 +995,13 @@ Pianoroll.prototype.drawPianoRoll=function(){
 
 		if (Work.global.seqXY[i].s===1){
 			colorB = motf.color.get("white", 0.8)
-			lineW=Math.ceil(512/this.viewportW);
+			lineW=Math.ceil(280/this.viewportW);
 			if (lineW<1) lineW=1;
 			if (lineW>4) lineW=4;
 
 			this.ctx.strokeStyle = colorB;
 			this.ctx.lineWidth=lineW;
 			this.ctx.stroke();	
-
 		}
 	};
 
@@ -1255,8 +1253,6 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 	};
 
 //	this.ctx.globalCompositeOperation = 'xor';
-
-	const max_vel_height=12;
 	
 	if (Work.global.through){
 	// draw notes in other layers
@@ -1293,7 +1289,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 		this.ctx.rect(left, top, width-1, height-1);
 		this.ctx.fill();
 
-		if ((Work.global.seqXY[i].s==1 && !Tone.Transport.state=="started") 
+		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
 		|| ((!this.layer[Work.global.seqXY[i].l].channel.muted &&
 			Tone.Transport.state=="started" && Tone.Transport.seconds/Tone.Time("16n")>=Work.global.seqXY[i].x && 
 			Tone.Transport.seconds/Tone.Time("16n")<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
@@ -1304,7 +1300,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 
 //			this.ctx.globalCompositeOperation = 'lighter';
 
- 			var velH=h*max_vel_height*Work.global.seqXY[i].v/3;
+ 			var velH = h * this.max_vel_height * Work.global.seqXY[i].v;
 
 			colorF = "rgba(220,255,220,";
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0){
@@ -1387,7 +1383,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 		this.ctx.rect(left, top, width-1, height-1);
 		this.ctx.fill();
 
-		if ((Work.global.seqXY[i].s==1 && !Tone.Transport.state=="started") 
+		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
 		|| ((!this.layer[Work.global.seqXY[i].l].channel.muted &&
 			Tone.Transport.state=="started" && Tone.Transport.seconds/Tone.Time("16n")>=Work.global.seqXY[i].x && 
 			Tone.Transport.seconds/Tone.Time("16n")<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
@@ -1398,7 +1394,7 @@ Pianoroll.prototype.drawScaledPianoRoll=function(){
 
 //			this.ctx.globalCompositeOperation = 'lighter';
 
- 			var velH=h*max_vel_height*Work.global.seqXY[i].v/3;
+ 			var velH = h * this.max_vel_height * Work.global.seqXY[i].v;
 
 			if (Composer.diatonic_mask[Work.global.seqXY[i].y]==0){
 				colorF = "rgba(255,220,220,";	
@@ -1721,7 +1717,6 @@ Pianoroll.prototype.unDim=function(){
 
 Pianoroll.prototype.schedule=function(){
 	for (var i = 0; i < Work.global.seqXY.length; i++){
-		Work.global.seqXY[i].ins = pianoroll.layer[Work.global.seqXY[i].l].instrument;
 		var pedal = Work.layer[Work.global.seqXY[i].l].pedal;
 		var pedalOn = null;
 		if (pedal){
@@ -1731,16 +1726,17 @@ Pianoroll.prototype.schedule=function(){
 		};
 		Work.global.seqXY[i].pedal = pedalOn;
 		const note = Work.global.seqXY[i];
+		const ins = pianoroll.layer[Work.global.seqXY[i].l].instrument;
 		Tone.Transport.schedule(function(time){
 			if (note.pedal) {
-				note.ins.triggerAttack(
+				ins.triggerAttack(
 					Global.chromatic_scale[note.y],
 					time,
 					note.v * pianoroll.volumeScale
 				);
 			} else {	
-				note.ins.releaseAll();
-				note.ins.triggerAttackRelease(
+				ins.releaseAll();
+				ins.triggerAttackRelease(
 					Global.chromatic_scale[note.y], 
 					note.d * Tone.Time("16n"), time, 
 					note.v * pianoroll.volumeScale

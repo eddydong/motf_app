@@ -644,34 +644,243 @@ var samplerParams=[
 		},
 		baseUrl: projectURL+"/sample/upright_bass/"
 	},
-  {//17
-		name: "Drum Set",
-		timeOffset: 0,
-    loadByDefault: true,
-    volumeCorrection: 0,
-    vUrls: [],
-    blobs: [],
-    urls: {    
-      'C2': 'hihat.mp3',
-      'C#2': 'kick.mp3',
-      'D2': 'snare.mp3',
-      'D#2': 'tom1.mp3',
-      'E2': 'tom2.mp3',
-      'F2': 'tom3.mp3',
-      'F#2': 'extra1.mp3',
-      'G2': 'extra2.mp3',
+  // {//17
+	// 	name: "Drum Set",
+	// 	timeOffset: 0,
+  //   loadByDefault: true,
+  //   volumeCorrection: 0,
+  //   vUrls: [],
+  //   blobs: [],
+  //   urls: {    
+  //     'C2': 'hihat.mp3',
+  //     'C#2': 'kick.mp3',
+  //     'D2': 'snare.mp3',
+  //     'D#2': 'tom1.mp3',
+  //     'E2': 'tom2.mp3',
+  //     'F2': 'tom3.mp3',
+  //     'F#2': 'extra1.mp3',
+  //     'G2': 'extra2.mp3',
     
-      'G#2': 'hihat.mp3',
-      'A2': 'kick.mp3',
-      'A#2': 'snare.mp3',
-      'B2': 'tom1.mp3',
-      'C3': 'tom2.mp3',
-      'C#3': 'tom3.mp3',
-      'D3': 'extra1.mp3',
-      'D#3': 'extra2.mp3',
-		},
-		baseUrl: projectURL+"/sample/acoustic-kit/"    
-  }
+  //     'G#2': 'hihat.mp3',
+  //     'A2': 'kick.mp3',
+  //     'A#2': 'snare.mp3',
+  //     'B2': 'tom1.mp3',
+  //     'C3': 'tom2.mp3',
+  //     'C#3': 'tom3.mp3',
+  //     'D3': 'extra1.mp3',
+  //     'D#3': 'extra2.mp3',
+	// 	},
+	// 	baseUrl: projectURL+"/sample/acoustic-kit/"    
+  // }
+  // {//17
+	// 	name: "Drum Set",
+	// 	timeOffset: 0,
+  //   loadByDefault: true,
+  //   volumeCorrection: 0,
+  //   vUrls: [],
+  //   blobs: [],
+  //   urls: {    
+  //     36: "Techno Kick 02.wav",
+  //     38: "Techno Snare 03.wav",
+  //     40: "Techno Snare 03.wav",
+  //     37: "Techno Snare 03.wav",
+  //     48: "Techno Tom 03.wav",
+  //     50: "Techno Tom 03.wav",
+  //     45: "Techno Tom 01.wav",
+  //     47: "Techno Tom 01.wav",
+  //     43: "Techno Tom 04.wav",
+  //     58: "Techno Tom 04.wav",
+  //     46: "Techno Open Hat 03.wav",
+  //     26: "Techno Open Hat 03.wav",
+  //     42: "Techno Closed Hat 01.wav",
+  //     22: "Techno Closed Hat 01.wav",
+  //     44: "Techno Closed Hat 01.wav",
+  //     49: "Techno Cymbal 01.wav",
+  //     55: "Techno Cymbal 01.wav",
+  //     57: "Techno Cymbal 01.wav",
+  //     52: "Techno Cymbal 01.wav",
+  //     51: "Techno Cymbal 02.wav",
+  //     59: "Techno Cymbal 02.wav",
+  //     53: "Techno Cymbal 02.wav",
+	// 	},
+	// 	baseUrl: projectURL+"/sample/drum-kit/techno/"    
+  // }  
+  // {//17
+	// 	name: "Drum Set",
+	// 	timeOffset: 0,
+  //   loadByDefault: true,
+  //   volumeCorrection: 0,
+  //   vUrls: [],
+  //   blobs: [],
+  //   urls: {    
+  //     //KD
+  //     36: "Urban Kick 02.wav",
+
+  //     //SD
+  //     38: "Urban Snare 01.wav",
+  //     40: "Urban Snare 02.wav",
+  //     37: "Urban Snare 03.wav",
+
+  //     //TT
+  //     50: "Urban Rimshot 02.wav",
+  //     48: "Urban Tom 01.wav",
+  //     47: "Urban Tom 01.wav",
+  //     45: "Urban Tom 02.wav",
+  //     43: "Urban Sub 01.wav",
+  //     58: "Urban Rimshot 01.wav",
+
+  //     //HH
+  //     46: "Urban Open Hat 01.wav",
+  //     26: "Urban Open Hat 02.wav",
+  //     42: "Urban Closed Hat 01.wav",
+  //     22: "Urban Closed Hat 02.wav",
+  //     44: "Urban Open Hat 01.wav",
+
+  //     //Crash
+  //     49: "Urban Cymbal 02.wav",
+  //     55: "Urban Cymbal 02.wav",
+  //     57: "Urban Cymbal 02.wav",
+  //     52: "Urban Cymbal 01.wav",
+
+  //     //Ride
+  //     51: "Urban Shaker 01.wav",
+  //     59: "Urban Shaker 02.wav",
+  //     53: "Urban Tamb 02.wav",
+	// 	},
+	// 	baseUrl: projectURL+"/sample/drum-kit/urban/"    
+  // }    
+  // {//17
+	// 	name: "Drum Set",
+	// 	timeOffset: 0,
+  //   loadByDefault: true,
+  //   volumeCorrection: 0,
+  //   vUrls: [],
+  //   blobs: [],
+  //   urls: {    
+  //     //KD
+  //     36: "Main Room Kick 01.wav",
+
+  //     //SD head/rim/stick
+  //     38: "Main Room Snare 01.wav",
+  //     40: "Main Room Snare 02.wav",
+  //     37: "Main Room Snare 03.wav",
+
+  //     //TT t1/t1r t2/t2r t3/t3r
+  //     48: "Main Room Stacked Hit 01.wav",
+  //     50: "Main Room Stacked Hit 01.wav",
+  //     45: "Main Room Stacked Hit 02.wav",
+  //     47: "Main Room Stacked Hit 02.wav",
+  //     43: "Main Room Stacked Hit 03.wav",
+  //     58: "Main Room Stacked Hit 03.wav",
+
+  //     //HH open/open-edge closed/closed-edge pedalHH
+  //     46: "Main Room Open Hat 02.wav",
+  //     26: "Main Room Open Hat 01.wav",
+  //     42: "Main Room Closed Hat 02.wav",
+  //     22: "Main Room Closed Hat 01.wav",
+  //     44: "Main Room Closed Hat 04.wav",
+
+  //     //Crash
+  //     49: "Main Room Cymbal 02.wav",
+  //     55: "Main Room Cymbal 03.wav",
+  //     57: "Main Room Cymbal 04.wav",
+  //     52: "Main Room Cymbal 01.wav",
+
+  //     //Ride
+  //     51: "Main Room Closed Hat 03.wav",
+  //     59: "Main Room Shaker 01.wav",
+  //     53: "Main Room Clap 03.wav",
+	// 	},
+	// 	baseUrl: projectURL+"/sample/drum-kit/mainroom/"    
+  // }  
+    // {//17
+    //   name: "Drum Set",
+    //   timeOffset: 0,
+    //   loadByDefault: true,
+    //   volumeCorrection: 0,
+    //   vUrls: [],
+    //   blobs: [],
+    //   urls: {    
+    //     //KD
+    //     36: "Hand Bass Drum.wav",
+  
+    //     //SD head/rim/stick
+    //     38: "Hand Bongo 02.wav",
+    //     40: "Hand Bongo 03.wav",
+    //     37: "Hand Bongo 01.wav",
+  
+    //     //TT t1/t1r t2/t2r t3/t3r
+    //     48: "Hand Djmbe 01.wav",
+    //     50: "Hand Djmbe 02.wav",
+    //     45: "Hand Hide Drum 01.wav",
+    //     47: "Hand Hide Drum 02.wav",
+    //     43: "Hand Udu 01.wav",
+    //     58: "Hand Udu 02.wav",
+  
+    //     //HH open/open-edge closed/closed-edge pedalHH
+    //     46: "Hand Talking Drum 01.wav",
+    //     26: "Hand Talking Drum 02.wav",
+    //     42: "Hand Talking Drum 01.wav",
+    //     22: "Hand Talking Drum 02.wav",
+    //     44: "Hand Dumbek.wav",
+  
+    //     //Crash
+    //     49: "Hand Cajon 01.wav",
+    //     55: "Hand Cajon 01.wav",
+    //     57: "Hand Cajon 02.wav",
+    //     52: "Hand Dumbek.wav",
+  
+    //     //Ride
+    //     51: "Hand Tabla 01.wav",
+    //     59: "Hand Tabla 02.wav",
+    //     53: "Hand Tabla 03.wav",
+    //   },
+    //   baseUrl: projectURL+"/sample/drum-kit/handdrum/"    
+    // }      
+    {//17
+      name: "Drum Set",
+      timeOffset: 0,
+      loadByDefault: true,
+      volumeCorrection: 0,
+      vUrls: [],
+      blobs: [],
+      urls: {    
+        //KD
+        36: "36.mp3",
+  
+        //SD head/rim/stick
+        38: "38.wav",
+        40: "40.wav",
+        37: "37.wav",
+  
+        //TT t1/t1r t2/t2r t3/t3r
+        48: "48.mp3",
+        50: "50.mp3",
+        45: "45.mp3",
+        47: "47.mp3",
+        43: "43.mp3",
+        58: "58.wav",
+  
+        //HH open/open-edge closed/closed-edge pedalHH
+        46: "46.mp3",
+        26: "26.mp3",
+        42: "42.mp3",
+        22: "22.mp3",
+        44: "44.mp3",
+  
+        //Crash
+        49: "49.mp3",
+        55: "55.mp3",
+        57: "57.mp3",
+        52: "52.mp3",
+  
+        //Ride
+        51: "51.mp3",
+        59: "59.wav",
+        53: "53.mp3",
+      },
+      baseUrl: projectURL+"/sample/drum-kit/selected/"    
+    }       
 ];
 Instruments.samplerParams = samplerParams;
 //Instruments.defaultLoaded = false;

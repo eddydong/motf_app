@@ -1198,7 +1198,6 @@ function updateSoloMute(){
 }
 
 function init(){
-	
 		// Instruments.releaseAll();
 			
 		Work.global.imp_pre=default_params;
@@ -1244,12 +1243,14 @@ function init(){
 		};
 
 		var lns=document.querySelectorAll(".layer-name");
-		for (var i=0; i<lns.length; i++) 
-		lns[i].onclick=(e)=>{
-			for (i=0; i<lns.length; i++) lns[i].style.background=Global.color.btn_inactive;
-			Work.global.layer_sel=parseInt(e.target.dataset.i);
-			e.target.style.background=Global.color.btn_active;
-		};
+		for (var i=0; i<lns.length; i++) {
+			const ii = i;
+			lns[i].onclick=(e)=>{
+				for (i=0; i<lns.length; i++) lns[i].style.background=Global.color.btn_inactive;
+				Work.global.layer_sel= ii; 
+				lns[ii].style.background=Global.color.btn_active;
+			};
+		}
 
 		var sis=document.querySelectorAll(".select_instrument");
 		for (var i=0; i<sis.length; i++) {
@@ -1314,7 +1315,6 @@ function init(){
 			document.querySelector(".layer-del").style.display="none";
 		else
 			document.querySelector(".layer-del").style.display="display";
-		
 
 		var lms=document.querySelectorAll(".mute");
 		for (var i=0; i<lms.length; i++) 
@@ -1390,7 +1390,7 @@ function init(){
 		
 		document.getElementById("select_new_note_length").options.selectedIndex=2;
 	
-		lns[0].click();	
+		lns[Work.global.layer_sel].onclick();	
 };
 
 function showWaiting(){

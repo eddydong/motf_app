@@ -305,7 +305,8 @@ class Context {
 class Drumer {
 	constructor(proll, layer){
 		this.proll = proll,
-		this.layer = layer
+		this.layer = layer,
+		this.model = {}
 	}
 	fill(){
 		for (var i=16; i< this.proll.endTick; i++) {
@@ -417,12 +418,13 @@ class Drumer {
 	improvise(){
 		Work.global.seqXY=[];
 		pianoroll.stop();
+
 		var prob = [0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8];
 		for (var i=0; i<8; i++) if (Math.random()<prob[i]) 
 		{
-			var repeat = 1; //Math.floor(Math.random()*3)+1;
+			var repeat = 2; //Math.floor(Math.random()*3)+1;
 			for (var j=0; j<repeat; j++) {
-				var cycle = Math.pow(2, i + 1);
+				var cycle = Math.pow(2, i * Math.floor(Math.random()*4+1));
 				var offset = Math.floor(Math.random() * cycle / 2);
 				this.put(cycle, offset, i+36);
 			} 
