@@ -1721,7 +1721,7 @@ Pianoroll.prototype.schedule=function(){
 		var pedalOn = null;
 		if (pedal){
 			for (var p = 0; p < pedal.length; p++)
-				if (pedal[p].tick + pianoroll.leadTick <= Work.global.seqXY[i].x)
+				if (pedal[p].tick <= Work.global.seqXY[i].x)
 					pedalOn = pedal[p].onOff;
 		};
 		Work.global.seqXY[i].pedal = pedalOn;
@@ -1735,7 +1735,7 @@ Pianoroll.prototype.schedule=function(){
 					note.v * pianoroll.volumeScale
 				);
 			} else {	
-				ins.releaseAll();
+				ins.triggerRelease(Global.chromatic_scale[note.y]);
 				ins.triggerAttackRelease(
 					Global.chromatic_scale[note.y], 
 					note.d * Tone.Time("16n"), time, 

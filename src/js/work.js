@@ -15,7 +15,7 @@ Work.global= {
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
-	roomsize: 3,
+	roomsize: 0.5,
 	metro_vol: -10, 	
 	rhythm_vol: -10, 	
 	human_vel: 1.0,

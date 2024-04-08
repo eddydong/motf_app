@@ -846,12 +846,17 @@ var samplerParams=[
       blobs: [],
       // drum mapping: https://magenta.tensorflow.org/datasets/groove
       urls: {    
+        //metronome
+        33: "33.mp3",
+        34: "34.mp3",
+
         //KD
+        35: "35.mp3",
         36: "36.mp3",
   
         //SD head/rim/stick
-        38: "38.wav",
-        40: "40.wav",
+        38: "38.mp3",
+        40: "40.mp3",
         37: "37.wav",
   
         //TT t1/t1r t2/t2r t3/t3r
@@ -860,7 +865,11 @@ var samplerParams=[
         45: "45.mp3",
         47: "47.mp3",
         43: "43.mp3",
-        58: "58.wav",
+        41: "41.mp3",
+
+        39: "39.mp3",
+        58: "58.mp3",
+        56: "56.mp3",
   
         //HH open/open-edge closed/closed-edge pedalHH
         46: "46.mp3",
@@ -879,8 +888,8 @@ var samplerParams=[
         52: "52.mp3",
   
         //Ride
-        51: "51.mp3",
-        59: "59.wav",
+        51: "51.wav",
+        59: "59.mp3",
         53: "53.mp3",
       },
       baseUrl: projectURL+"/sample/drum-kit/selected/"    
