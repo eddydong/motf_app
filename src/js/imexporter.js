@@ -22,6 +22,10 @@ var midiToSeqXY=(sample)=>{
 		song.bpNote= 4;
 	};
 
+	if (sample.header.ppq){
+		song.ppq = sample.header.ppq;
+	}
+
 	var tickL= 60/ (song.bpm / song.bpNote) /16; // len of a 16n in second
 
 // 	function getSimilarInstrument(s){
@@ -47,7 +51,7 @@ var midiToSeqXY=(sample)=>{
 // 	}
 	
 	function getInstrumentCode(n){
-		const default_piano = 0;
+		const default_piano = 1;
 		if (n<=7) return default_piano; //piano
 		else if (n<=15) return 8; // music box etc.
 		else if (n<=23) return 12; // organ
@@ -69,6 +73,20 @@ var midiToSeqXY=(sample)=>{
 		return null;
 	}
 
+	function getPedal(track, tick){
+		if (!sample.tracks[track].controlChanges['64']){
+			return false;
+		}
+		var res=null; 
+		for (var i=0; i<sample.tracks[track].controlChanges['64'].length; i++){
+			if (sample.tracks[track].controlChanges['64'][i].ticks<=tick) 
+				res = sample.tracks[track].controlChanges['64'][i].value;
+			else
+				break;
+		};
+		return res;
+	}
+
 	Work.layer=[];
 
 	var ch=-1;
@@ -87,12 +105,13 @@ var midiToSeqXY=(sample)=>{
 		if (sample.tracks[i].notes[j].midi-21<88 && sample.tracks[i].notes[j].midi-21>=0)
 		{	song.notes.push({
 				y: sample.tracks[i].notes[j].midi - 21, 
-				x: sample.tracks[i].notes[j].time / tickL, 
+				x: sample.tracks[i].notes[j].ticks / song.ppq * 4, //+ pianoroll.leadTick, 
 				d: sample.tracks[i].notes[j].duration / tickL, 
 				v: sample.tracks[i].notes[j].velocity, 
 				l: ch, 
 				s: 0,
-				p: 1
+				p: 1,
+				pedal: getPedal(i, sample.tracks[i].notes[j].ticks)
 			});
 //			console.log(sample.tracks[i].notes[j].velocity);
 		}
@@ -103,6 +122,7 @@ var midiToSeqXY=(sample)=>{
 	Work.global.bpNote=song.bpNote;
 	Work.global.workname=song.name;
 	Work.global.bpm=song.bpm;
+	Work.global.ppq=song.ppq;
 };
 	
 //	res.global.bpm=Math.round(song.bpm);
@@ -119,7 +139,7 @@ function parseFile(file) {
 		pianoroll.updateEndTick();
 		Composer.init();
 		Controls.init();	
-		Instruments.onDefaultLoaded();
+		Instruments.refresh();
  		pianoroll.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
  		pianoroll.maxW= Work.global.bpMeas * 16 * (16 / Work.global.bpNote)+1;
 		pianoroll.autoZoom();

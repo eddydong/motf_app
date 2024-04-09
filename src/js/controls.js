@@ -555,6 +555,7 @@ var Controls= {};
 	fileloader2.accept = ".mid";
 	fileloader2.style.display ="none";
 	fileloader2.onchange=(e)=>{
+		showWaiting();
 		var file = e.target.files[0];
 		ImExporter.parseFile(file);	
 		e.target.value="";		
@@ -1126,10 +1127,10 @@ var Controls= {};
 		Tone.Transport.bpm.value = document.getElementById("input_bpm").value;
 		Work.global.bpm=document.getElementById("input_bpm").value;
 
-		if (Tone.Transport.state=="started"){
-			pianoroll.pause();
-			pianoroll.play();
-		};
+		// if (Tone.Transport.state=="started"){
+		// 	pianoroll.pause();
+		// 	pianoroll.play();
+		// };
 
 		//Tone.Transport.position = Tone.Time(Tone.Transport.seconds).toBarsBeatsSixteenths();
 
@@ -1370,6 +1371,7 @@ function init(){
 
 		document.getElementById("input_bpm").value=Work.global.bpm;
 		Tone.Transport.bpm.value=Work.global.bpm;
+		Tone.Transport.PPQ = Work.global.ppq;
 
 		pianoroll.master.volume.volume.value=Work.global.volume;
 		document.getElementById("input_master_volume").value=Work.global.volume;

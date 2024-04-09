@@ -953,7 +953,7 @@ for (var i=0; i<samplerParams.length; i++){
 // console.log(loadInstruments());
 
 var samplesChanged = false;
-Instruments.refresh = function(){
+var refresh = function(){
   db.get("Samples",(e)=>{
     if (e) {
       samplerParams = e.value;
@@ -962,7 +962,7 @@ Instruments.refresh = function(){
             samplerParams[i].vUrls[j] = URL.createObjectURL(samplerParams[i].blobs[j]);
         };
       };
-      Instruments.onDefaultLoaded();
+      onDefaultLoaded();
       console.log("Samples loaded from local.")
     } else {
       updateSample();
@@ -1034,7 +1034,7 @@ function checkLoadStatus(){
   Instruments.onDefaultLoaded();
 }
 
-Instruments.onDefaultLoaded=()=>{
+var onDefaultLoaded=()=>{
 //  Instruments.defaultLoaded = true;
   for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].loadByDefault){
     samplerParams[i].baseUrl="";
@@ -1053,7 +1053,7 @@ Instruments.onDefaultLoaded=()=>{
     if (pianoroll.layer[i].instrument ==null
     || pianoroll.layer[i].instrument.instrumentName
     !=samplerParams[Work.layer[i].instrument].name) {
-      Instruments.newSampler(Work.layer[i].instrument, i);
+      newSampler(Work.layer[i].instrument, i);
     };
 
   Controls.hideWaiting();
@@ -1143,7 +1143,7 @@ const snareDrum2 = new Tone.NoiseSynth({
 // }
 
 // load a new instrument #i, save it to bank, and assign to layer(channel) #ch
-Instruments.newSampler=(i, ch)=>{
+var newSampler=(i, ch)=>{
 	var s=new Tone.Sampler(
 		samplerParams[i].urls,
 		function(){
@@ -1179,6 +1179,6 @@ Instruments.newSampler=(i, ch)=>{
 Instruments.drum2=snareDrum1;
 Instruments.drum3=snareDrum2;
 
-Instruments.updateSample=updateSample;
+Instruments.refresh = refresh;
 
 }())

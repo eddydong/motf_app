@@ -240,7 +240,7 @@ function Pianoroll(){
 					Tone.now(), Work.global.seqXY[theNote].v * self.volumeScale
 				);
 			} else {
-				Tone.Transport.seconds = ((x/w)+self.viewportL) * Tone.Time("16n");
+				Tone.Transport.ticks = ((x/w)+self.viewportL) / 4 * Work.global.ppq;
 				//console.log("playhead: "+Tone.Transport.position);
 				//self.playhead=(x/w)+self.viewportL;		
 				
@@ -338,7 +338,7 @@ Pianoroll.prototype.selectNotes=function(x1,y1,x2,y2,through){
 	var right = x1 < x2 ? x2 : x1;
 	var top = y1 < y2 ? y2 : y1;
 	var bottom = y1 < y2 ? y1 : y2;
-	Tone.Transport.seconds = left * Tone.Time("16n");
+	Tone.Transport.ticks = left / 4 * Work.global.ppq;
 	var tickL= 60/ (Work.global.bpm / Work.global.bpNote) /16; // len of a 16n in second
 
 	for (var i=0; i<Work.global.seqXY.length; i++)
@@ -367,14 +367,14 @@ Pianoroll.prototype.scroll=function(dir, step){
 	if (dir=="bottom") this.viewportB=0;
 	if (dir=="beginning") {
 		this.viewportL = Math.min(this.leadTick, this.startTick)-1;
-		Tone.Transport.seconds = Tone.Time("16n") * this.startTick;
+		Tone.Transport.ticks = this.startTick / 4 * Work.global.ppq;
 		this.playTick=0;
 	};
 	if (dir=="end") {
 		var h=this.endTick-this.viewportW+1;
 		this.viewportL= h>=Math.min(this.leadTick, this.startTick)-1 ? h 
 			: Math.min(this.leadTick, this.startTick)-1;
-			Tone.Transport.seconds = Tone.Time("16n") * this.endTick;
+			Tone.Transport.ticks = this.endTick / 4 * Work.global.ppq;
 	};
 	Navbar.updateLR();
 };
@@ -857,8 +857,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 
 		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
 		|| ((this.layer[Work.global.seqXY[i].l] && !this.layer[Work.global.seqXY[i].l].channel.muted &&
-			Tone.Transport.state=="started" && Tone.Transport.seconds/Tone.Time("16n")>=Work.global.seqXY[i].x && 
-			Tone.Transport.seconds/Tone.Time("16n")<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
+			Tone.Transport.state=="started" && Tone.Transportv>=Work.global.seqXY[i].x && 
+			Tone.Transport.ticks/Work.global.ppq*4<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
 			(sel==0 || (sel>0 && Work.global.seqXY[i].s==1)))) { 
 			
 			this.ctx.save()
@@ -949,8 +949,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 
 		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
 		|| ((!this.layer[Work.global.seqXY[i].l].channel.muted &&
-			Tone.Transport.state=="started" && Tone.Transport.seconds/Tone.Time("16n")>=Work.global.seqXY[i].x && 
-			Tone.Transport.seconds/Tone.Time("16n")<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
+			Tone.Transport.state=="started" && Tone.Transport.ticks/Work.global.ppq*4>=Work.global.seqXY[i].x && 
+			Tone.Transport.ticks/Work.global.ppq*4<(Work.global.seqXY[i].x+Work.global.seqXY[i].d)) &&
 			(sel==0 || (sel>0 && Work.global.seqXY[i].s==1)))) 
 		{
 			
@@ -1010,8 +1010,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 		this.ctx.beginPath();
 		this.ctx.lineWidth=3;
 		this.ctx.strokeStyle = "rgba(255,255,255,1)";
-		this.ctx.moveTo(w * (- this.viewportL + Tone.Transport.seconds/Tone.Time("16n")), 0);
-		this.ctx.lineTo(w * (- this.viewportL + Tone.Transport.seconds/Tone.Time("16n")), this.height);
+		this.ctx.moveTo(w * (- this.viewportL + Tone.Transport.ticks / Work.global.ppq * 4), 0);
+		this.ctx.lineTo(w * (- this.viewportL + Tone.Transport.ticks / Work.global.ppq * 4), this.height);
 		this.ctx.stroke();
 	this.ctx.restore();
 
@@ -1587,7 +1587,7 @@ Pianoroll.prototype.animloop = function(){
 
 		// this.playhead = (now-this.startT) / Tone.Time(this.resolution) + this.selStart;
 
-		if (Tone.Transport.seconds > this.endTick * Tone.Time("16n")) {
+		if (Tone.Transport.ticks > this.endTick / 4 * Work.global.ppq) {
 			this.stop();
 			// if (sel==0) this.selStart=this.startMeas;	
 			// this.playTick=this.selStart;
@@ -1619,9 +1619,9 @@ Pianoroll.prototype.animloop = function(){
 
 				//var playLen = this.endMeas-this.startMeas;
 				
-				if (Tone.Transport.seconds/Tone.Time("16n") - this.viewportL > this.viewportW/2 
+				if (Tone.Transport.ticks / Work.global.ppq * 4 - this.viewportL > this.viewportW/2 
 					&& this.viewportL < this.endMeas - this.viewportW + 1)
-					this.viewportL = Tone.Transport.seconds/Tone.Time("16n") + autoScrollOffset;
+					this.viewportL = Tone.Transport.ticks / Work.global.ppq * 4 + autoScrollOffset;
 
 				//if (this.viewportL < 0) this.viewportL = 0;
 				// if (this.viewportL < this.startMeas) this.viewportL = this.startMeas;
@@ -1659,11 +1659,23 @@ Pianoroll.prototype.silence=function(){
 
 Pianoroll.prototype.stop=function(){
 	Tone.Transport.stop();
-	Tone.Transport.cancel(0);	
 	this.silence();
 	this.viewportL = Tone.Transport.seconds/Tone.Time("16n");
 	this.autoScrolling=0;
 	this.unDim();
+
+	if (this.recorder.state=="started") {
+		async function saveWhenRecordingDone(){ 
+			const recording = await pianoroll.recorder.stop(); 
+			const url = URL.createObjectURL(recording);
+			const anchor = document.createElement("a");
+			// Chrome only support .webm; Safari support .mp3!
+			anchor.download = "recording.webm"; 
+			anchor.href = url;
+			anchor.click();
+		};
+		saveWhenRecordingDone();
+	}
 }
 
 Pianoroll.prototype.pause=function(){
@@ -1716,15 +1728,8 @@ Pianoroll.prototype.unDim=function(){
 //var synth = new Tone.Synth().toMaster();
 
 Pianoroll.prototype.schedule=function(){
+	Tone.Transport.cancel(0);
 	for (var i = 0; i < Work.global.seqXY.length; i++){
-		var pedal = Work.layer[Work.global.seqXY[i].l].pedal;
-		var pedalOn = null;
-		if (pedal){
-			for (var p = 0; p < pedal.length; p++)
-				if (pedal[p].tick <= Work.global.seqXY[i].x)
-					pedalOn = pedal[p].onOff;
-		};
-		Work.global.seqXY[i].pedal = pedalOn;
 		const note = Work.global.seqXY[i];
 		const ins = pianoroll.layer[Work.global.seqXY[i].l].instrument;
 		Tone.Transport.schedule(function(time){
@@ -1749,9 +1754,10 @@ Pianoroll.prototype.schedule=function(){
 Pianoroll.prototype.play=function(){
 	//this.isPlaying = true;  		
 	//console.log("playing at "+Tone.now()+" "+Tone.Transport.position);
-	if (Tone.Transport.state=="paused")
+	if (Tone.Transport.state=="paused") {
+		this.schedule();
 		Tone.Transport.start(Tone.now(), Tone.Transport.position);
-	else {
+	} else if (Tone.Transport.state=="stopped") {
 		this.autoScrolling=0;
 		this.schedule();
 		Tone.Transport.start(Tone.now(), this.startTick * Tone.Time("16n"));
