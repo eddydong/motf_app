@@ -954,6 +954,7 @@ for (var i=0; i<samplerParams.length; i++){
 
 var samplesChanged = false;
 var refresh = function(){
+  pianoroll.ready=false;
   db.get("Samples",(e)=>{
     if (e) {
       samplerParams = e.value;
@@ -1057,6 +1058,8 @@ var onDefaultLoaded=()=>{
     };
 
   Controls.hideWaiting();
+
+  pianoroll.ready=true;
 }
 
       // save the virtual lnk's somewhere!!!

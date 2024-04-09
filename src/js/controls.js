@@ -529,9 +529,7 @@ var Controls= {};
 		
 		reader.onload = function(){
 			var res=this.result;
-
 //			res=unzip(res);
-		
 			Work = JSON.parse(res);
 			pianoroll.historyPush("Open motf File");
 			pianoroll.updateEndTick();

@@ -9,6 +9,8 @@ function Pianoroll(){
 	this.height = this.canvas.height;
 	this.max_vel_height = 1;
 
+	this.ready=false;
+
  	this.minW= Work.global.bpMeas * 1 * (16 / Work.global.bpNote)+1;
  	this.maxW= Work.global.bpMeas * 32 * (16 / Work.global.bpNote)+1;
 	this.minH= 12;
@@ -1734,7 +1736,7 @@ Pianoroll.prototype.schedule=function(){
 	for (var i = 0; i < Work.global.seqXY.length; i++){
 		const note = Work.global.seqXY[i];
 		const ins = pianoroll.layer[Work.global.seqXY[i].l].instrument;
-		Tone.Transport.schedule(function(time){
+		if (ins) Tone.Transport.schedule(function(time){
 			if (note.pedal || Work.layer[note.l].type=="percussion") {
 				ins.triggerAttack(
 					Global.chromatic_scale[note.y],
@@ -1754,8 +1756,8 @@ Pianoroll.prototype.schedule=function(){
 };
 
 Pianoroll.prototype.play=function(){
-	//this.isPlaying = true;  		
-	//console.log("playing at "+Tone.now()+" "+Tone.Transport.position);
+	if (!this.ready) return;
+
 	if (Tone.Transport.state=="paused") {
 		this.schedule();
 		Tone.Transport.start(Tone.now(), Tone.Transport.position);
@@ -1763,7 +1765,6 @@ Pianoroll.prototype.play=function(){
 		this.autoScrolling=0;
 		this.schedule();
 		Tone.Transport.start(Tone.now(), this.startTick * Tone.Time("16n"));
-		//this.startT = Tone.now();
 		this.dim();
 	}
 }
