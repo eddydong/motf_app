@@ -11,12 +11,12 @@ Work.global= {
 	key: 0, // 0-11 / offset from C, in chromatic scale
 	scale_id: 23,
 	mode: 0,
-	layer_sel: 6,
-	bpm: 120,
+	layer_sel: 0,
+	bpm: 60,
 	bpMeas: 4,
 	bpNote: 4,
 	volume: -10,
-	roomsize: 0.5,
+	roomsize: 3,
 	metro_vol: -10, 	
 	rhythm_vol: -10, 	
 	human_vel: 1.0,
@@ -400,7 +400,7 @@ Work.layer= [  // T01..T10
 		instrument: 4,
 		mute: false,		
 		solo: false,
-		volume: -8,
+		volume: -11,
 		pan: -0.3
 	},
 	{
@@ -427,7 +427,7 @@ Work.layer= [  // T01..T10
 		instrument: 17,
 		mute: false,		
 		solo: false,
-		volume: -11,
+		volume: -20,
 		pan: -0.2
 	}
 ]
