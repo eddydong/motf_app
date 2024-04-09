@@ -1765,9 +1765,10 @@ Pianoroll.prototype.schedule=function(){
 	for (var i=0; i<Work.layer[l].volumes.length; i++){
 		const ii = i, ll = l;
 		Tone.Transport.schedule(function(time){
-			pianoroll.layer[ll].channel.volume.value = Work.layer[ll].volumes[ii].value;		
-			Work.layer[ll].volume = Work.layer[ll].volumes[ii].value;	
-			document.querySelectorAll(".input_layer_volume")[ll].value = Work.layer[ll].volumes[ii].value;
+			var db = 10 * Math.log10(Work.layer[ll].volumes[ii].value / 2);
+			pianoroll.layer[ll].channel.volume.value = db;		
+			Work.layer[ll].volume = db;	
+			document.querySelectorAll(".input_layer_volume")[ll].value = db;
 		}, Work.layer[l].volumes[i].time);
 	}
 };

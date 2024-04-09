@@ -1222,7 +1222,7 @@ function init(){
 		// re-build channels for pianoroll
 		pianoroll.layer=[];
 		for (var i=0; i<Work.layer.length; i++){
-			document.querySelector("#div-layer-container").innerHTML+="<span><button class=\"mute\" data-i="+i+">M</button></span><span><button class=\"solo\" data-i="+i+">S</button></span><span><button id=\"btn_layer_"+i+"\" class= \"layer-name\" data-i="+i+">"+Work.layer[i].name+"</button></span><span><select id=\"select_instrument_"+i+"\" class=\"select_instrument\" data-i="+i+"></select></span><span>Vol<input class=\"input_layer_volume\" data-i="+i+" type=\"range\" min=-30 max=10 step=1 value="+Work.layer[i].volume+"></input></span><span>Pan<input class=\"input_layer_pan\" data-i="+i+" type=\"range\" min=-1 max=1 step=0.1 value="+Work.layer[i].pan+"></input></span><span><button class=\"layer-del\" data-i="+i+">Del</button></span><br>";
+			document.querySelector("#div-layer-container").innerHTML+="<span><button class=\"mute\" data-i="+i+">M</button></span><span><button class=\"solo\" data-i="+i+">S</button></span><span><button id=\"btn_layer_"+i+"\" class= \"layer-name\" data-i="+i+">"+Work.layer[i].name+"</button></span><span><select id=\"select_instrument_"+i+"\" class=\"select_instrument\" data-i="+i+"></select></span><span>Vol<input class=\"input_layer_volume\" data-i="+i+" type=\"range\" min=-30 max=10 step=0.01 value="+Work.layer[i].volume+"></input></span><span>Pan<input class=\"input_layer_pan\" data-i="+i+" type=\"range\" min=-1 max=1 step=0.1 value="+Work.layer[i].pan+"></input></span><span><button class=\"layer-del\" data-i="+i+">Del</button></span><br>";
 			var layerChannel ={
 				channel: new Tone.Channel().connect(pianoroll.master.reverb),
 				instrument: null
