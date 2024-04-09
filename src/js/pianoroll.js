@@ -10,7 +10,7 @@ function Pianoroll(){
 	this.max_vel_height = 1;
 
  	this.minW= Work.global.bpMeas * 1 * (16 / Work.global.bpNote)+1;
- 	this.maxW= Work.global.bpMeas * 128 * (16 / Work.global.bpNote)+1;
+ 	this.maxW= Work.global.bpMeas * 64 * (16 / Work.global.bpNote)+1;
 	this.minH= 12;
 	this.viewportL = this.leadTick-1;  // left most column position in timeline
 	this.viewportW = Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1; // number of columns / 8n's
@@ -852,7 +852,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
-		this.ctx.rect(left, top, width-1, height-1);
+		var wid = (width-1 < 1) ? 1 : width-1;
+		this.ctx.rect(left, top, wid, height-1);
 		this.ctx.fill();
 
 		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
@@ -944,7 +945,8 @@ Pianoroll.prototype.drawPianoRoll=function(){
 
 		this.ctx.beginPath();
 		this.ctx.fillStyle= colorF;
-		this.ctx.rect(left, top, width-1, height-1);
+		var wid = (width-1 < 1) ? 1 : width-1;
+		this.ctx.rect(left, top, wid, height-1);
 		this.ctx.fill();
 
 		if ((Work.global.seqXY[i].s==1 && Tone.Transport.state!="started") 
@@ -1733,7 +1735,7 @@ Pianoroll.prototype.schedule=function(){
 		const note = Work.global.seqXY[i];
 		const ins = pianoroll.layer[Work.global.seqXY[i].l].instrument;
 		Tone.Transport.schedule(function(time){
-			if (note.pedal) {
+			if (note.pedal || Work.layer[note.l].type=="percussion") {
 				ins.triggerAttack(
 					Global.chromatic_scale[note.y],
 					time,

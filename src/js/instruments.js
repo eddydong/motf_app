@@ -1031,7 +1031,7 @@ function checkLoadStatus(){
   console.log("all downloaded");
   for (var i=0; i<samplerParams.length; i++) if (samplerParams[i].loadByDefault)
     samplerParams[i].baseUrl="";
-  Instruments.onDefaultLoaded();
+  onDefaultLoaded();
 }
 
 var onDefaultLoaded=()=>{
@@ -1180,5 +1180,6 @@ Instruments.drum2=snareDrum1;
 Instruments.drum3=snareDrum2;
 
 Instruments.refresh = refresh;
+//Instruments.onDefaultLoaded = onDefaultLoaded;
 
 }())

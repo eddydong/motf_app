@@ -541,7 +541,7 @@ var Controls= {};
 			Composer.init();
 			init();
 			showWaiting();
-			Instruments.updateSample();
+			Instruments.refresh();
 		};			
 	}
 	Controls.btn_open.onclick=()=>{
@@ -1261,29 +1261,30 @@ function init(){
 				sis[i].appendChild(opt);
 			};			
 			sis[i].onchange=(e)=>{
-				//pianoroll.stop();
+				if (Tone.Transport.state=="started") pianoroll.pause();
 				showWaiting();
 				pianoroll.layer[e.target.dataset.i].instrument.releaseAll();
 				Work.layer[e.target.dataset.i].instrument=e.target.selectedIndex;
-				if (Instruments.samplerParams[e.target.selectedIndex].loadByDefault){
-					Instruments.onDefaultLoaded();
-				} else {
-					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
-					Instruments.updateSample();
-				};
+//				if (Instruments.samplerParams[e.target.selectedIndex].loadByDefault){
+//					Instruments.onDefaultLoaded();
+//				} else {
+//					Instruments.samplerParams[e.target.selectedIndex].loadByDefault=true;
+					Instruments.refresh();
+//				};
 				//Controls.saveTemp();						
 			};
 		};
 
 		var lvs=document.querySelectorAll(".input_layer_volume");
 		for (var i=0; i<lvs.length; i++) lvs[i].oninput=(e)=>{
-			pianoroll.layer[e.target.dataset.i].channel.volume.value=parseInt(e.target.value);
+			pianoroll.layer[e.target.dataset.i].channel.volume.value=parseFloat(e.target.value);
 			updateSoloMute();
 		};
 		
 		var lps=document.querySelectorAll(".input_layer_pan");
 		for (var i=0; i<lps.length; i++) lps[i].oninput=(e)=>{
-			pianoroll.layer[e.target.dataset.i].channel.pan.value=parseInt(e.target.value);
+			pianoroll.layer[e.target.dataset.i].channel.pan.value=parseFloat(e.target.value);
+			updateSoloMute();
 		};
 		
 		var lds=document.querySelectorAll(".layer-del");

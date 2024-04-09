@@ -75,7 +75,7 @@ var midiToSeqXY=(sample)=>{
 
 	function getPedal(track, tick){
 		if (!sample.tracks[track].controlChanges['64']){
-			return false;
+			return 0;
 		}
 		var res=null; 
 		for (var i=0; i<sample.tracks[track].controlChanges['64'].length; i++){
@@ -140,8 +140,6 @@ function parseFile(file) {
 		Composer.init();
 		Controls.init();	
 		Instruments.refresh();
- 		pianoroll.minW= Work.global.bpMeas * 2 * (16 / Work.global.bpNote)+1;
- 		pianoroll.maxW= Work.global.bpMeas * 16 * (16 / Work.global.bpNote)+1;
 		pianoroll.autoZoom();
 		// pianoroll.updateChords();	
 		// pianoroll.detectKeyScale();
