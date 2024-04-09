@@ -1753,18 +1753,33 @@ Pianoroll.prototype.schedule=function(){
 			};
 		}, Work.global.seqXY[i].x * Tone.Time("16n"));	
 	};
+	if (Work.global.tempos) for (var i=0; i<Work.global.tempos.length;i++){
+		const ii = i;
+		Tone.Transport.schedule(function(time){
+			Tone.Transport.bpm.value = Work.global.tempos[ii].bpm;
+			Work.global.bpm = Work.global.tempos[ii].bpm;
+			document.getElementById("input_bpm").value = Work.global.tempos[ii].bpm;
+		}, Work.global.tempos[i].time);
+	}
+	for (var l=0; l<Work.layer.length; l++) if (Work.layer[l].volumes) 
+	for (var i=0; i<Work.layer[l].volumes.length; i++){
+		const ii = i, ll = l;
+		Tone.Transport.schedule(function(time){
+			pianoroll.layer[ll].channel.volume.value = Work.layer[ll].volumes[ii].value;		
+			Work.layer[ll].volume = Work.layer[ll].volumes[ii].value;	
+			document.querySelectorAll(".input_layer_volume")[ll].value = Work.layer[ll].volumes[ii].value;
+		}, Work.layer[l].volumes[i].time);
+	}
 };
 
 Pianoroll.prototype.play=function(){
 	if (!this.ready) return;
-
+	this.schedule();
 	if (Tone.Transport.state=="paused") {
-		this.schedule();
 		Tone.Transport.start(Tone.now(), Tone.Transport.position);
 	} else if (Tone.Transport.state=="stopped") {
 		this.autoScrolling=0;
-		this.schedule();
-		Tone.Transport.start(Tone.now(), this.startTick * Tone.Time("16n"));
+		Tone.Transport.start(Tone.now(), 0);
 		this.dim();
 	}
 }

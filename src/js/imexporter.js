@@ -87,6 +87,8 @@ var midiToSeqXY=(sample)=>{
 		return res;
 	}
 
+	Work.global.tempos=sample.header.tempos;
+
 	Work.layer=[];
 
 	var ch=-1;
@@ -100,6 +102,9 @@ var midiToSeqXY=(sample)=>{
 		Work.layer.push(copyObj(newWork.layer[layer]));
 		if (!sample.tracks[i].instrument.percussion)
 			Work.layer[Work.layer.length-1].instrument = getInstrumentCode(sample.tracks[i].instrument.number);
+
+		if (sample.tracks[i].controlChanges['7']) 
+			Work.layer[Work.layer.length-1].volumes = sample.tracks[i].controlChanges['7'];
 	
 		for (var j=0; j<sample.tracks[i].notes.length; j++)
 		if (sample.tracks[i].notes[j].midi-21<88 && sample.tracks[i].notes[j].midi-21>=0)
