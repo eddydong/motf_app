@@ -857,7 +857,7 @@ var samplerParams=[
         //SD head/rim/stick
         38: "38.mp3",
         40: "40.mp3",
-        37: "37.wav",
+        37: "37.mp3",
   
         //TT t1/t1r t2/t2r t3/t3r
         48: "48.mp3",

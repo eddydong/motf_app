@@ -1753,6 +1753,7 @@ Pianoroll.prototype.schedule=function(){
 			};
 		}, Work.global.seqXY[i].x * Tone.Time("16n"));	
 	};
+	// schedule tempo automation (project)
 	if (Work.global.tempos) for (var i=0; i<Work.global.tempos.length;i++){
 		const ii = i;
 		Tone.Transport.schedule(function(time){
@@ -1761,6 +1762,7 @@ Pianoroll.prototype.schedule=function(){
 			document.getElementById("input_bpm").value = Work.global.tempos[ii].bpm;
 		}, Work.global.tempos[i].time);
 	}
+	// schedule volume automation (track)
 	for (var l=0; l<Work.layer.length; l++) if (Work.layer[l].volumes) 
 	for (var i=0; i<Work.layer[l].volumes.length; i++){
 		const ii = i, ll = l;
