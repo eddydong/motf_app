@@ -295,7 +295,7 @@ Pianoroll.prototype.addNote=function(note, cause){
 	if (cause!=undefined) this.historyPush(cause);
 //	pianoroll.updateChords();
 //	Controls.saveTemp();	
-	Global.XYtoIJ();
+//	Global.XYtoIJ();
 }
 
 Pianoroll.prototype.updateEndTick=function(){

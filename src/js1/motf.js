@@ -663,7 +663,8 @@ class Chorder {
 					v: 0.75 + (3-(pos % 4)) / 6, 
 					l: this.to, //Work.global.layer_sel,
 					t: 1, // type: 0: normal note; 1: just improvised	
-					p: 1	
+					p: 1,
+					pedal: 1
 				};
 				this.proll.addNote(newNote);
 				pos+=this.pattern[0][k][1];
